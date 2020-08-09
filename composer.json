@@ -1,0 +1,14 @@
+{
+    "name": "communityds/nusoap",
+    "version": "1.0.0",
+    "type": "library",
+    "description": "NuSOAP legacy",
+    "license": "MIT",
+    "homepage": "https://github.com/communityds/nusoap",
+    "autoload": {
+      "classmap": [
+        "lib/"
+      ]
+    },
+    "minimum-stability": "stable"
+}
