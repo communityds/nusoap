@@ -56,6 +56,7 @@ class nusoap_client extends nusoap_base  {
 	var $curl_options = array();	// User-specified cURL options
 	var $bindingType = '';			// WSDL operation binding type
 	var $use_curl = false;			// whether to always try to use cURL
+    private $outgoing_http_headers = array();   // Added to HTTP request headers
 
 	/*
 	 * fault related variables
@@ -93,10 +94,12 @@ class nusoap_client extends nusoap_base  {
 	* @param	integer $timeout set the connection timeout
 	* @param	integer $response_timeout set the response timeout
 	* @param	string $portName optional portName in WSDL document
+	* @param	array $httpheaders optional key/value array of HTTP outgoing headers
 	* @access   public
 	*/
-	function nusoap_client($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30, $portName = ''){
-		parent::nusoap_base();
+	function __construct($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30, $portName = '', $httpheaders = array())
+	{
+		parent::__construct();
 		$this->endpoint = $endpoint;
 		$this->proxyhost = $proxyhost;
 		$this->proxyport = $proxyport;

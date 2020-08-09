@@ -34,6 +34,7 @@ class wsdl extends nusoap_base {
     var $status = '';
     var $documentation = false;
     var $endpoint = ''; 
+    private $outgoing_http_headers = array();   // Added to HTTP request headers
     // array of wsdl docs to import
     var $import = array(); 
     // parser vars
@@ -70,8 +71,9 @@ class wsdl extends nusoap_base {
 	 * @param boolean $use_curl try to use cURL
      * @access public 
      */
-    function wsdl($wsdl = '',$proxyhost=false,$proxyport=false,$proxyusername=false,$proxypassword=false,$timeout=0,$response_timeout=30,$curl_options=null,$use_curl=false){
-		parent::nusoap_base();
+    function __construct($wsdl = '',$proxyhost=false,$proxyport=false,$proxyusername=false,$proxypassword=false,$timeout=0,$response_timeout=30,$curl_options=null,$use_curl=false, $httpheaders = array())
+    {
+		parent::__construct();
 		$this->debug("ctor wsdl=$wsdl timeout=$timeout response_timeout=$response_timeout");
         $this->proxyhost = $proxyhost;
         $this->proxyport = $proxyport;
@@ -79,9 +81,13 @@ class wsdl extends nusoap_base {
 		$this->proxypassword = $proxypassword;
 		$this->timeout = $timeout;
 		$this->response_timeout = $response_timeout;
-		if (is_array($curl_options))
+		if (is_array($curl_options)) {
 			$this->curl_options = $curl_options;
+        }
 		$this->use_curl = $use_curl;
+        if (is_array($httpheaders)) {
+            $this->outgoing_http_headers = $httpheaders;
+        }
 		$this->fetchWSDL($wsdl);
     }
 

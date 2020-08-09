@@ -55,10 +55,12 @@ class soap_transport_http extends nusoap_base {
 	* @param string $url The URL to which to connect
 	* @param array $curl_options User-specified cURL options
 	* @param boolean $use_curl Whether to try to force cURL use
+     * @param array $httpheaders optional key/value array of HTTP outgoing headers
 	* @access public
 	*/
-	function soap_transport_http($url, $curl_options = NULL, $use_curl = false){
-		parent::nusoap_base();
+	function __construct($url, $curl_options = NULL, $use_curl = false, $httpheaders = array())
+    {
+		parent::__construct();
 		$this->debug("ctor url=$url use_curl=$use_curl curl_options:");
 		$this->appendDebug($this->varDump($curl_options));
 		$this->setURL($url);
@@ -66,6 +68,15 @@ class soap_transport_http extends nusoap_base {
 			$this->ch_options = $curl_options;
 		}
 		$this->use_curl = $use_curl;
+        if (is_array($httpheaders)) {
+			/*
+			 * Set headers using setHeader() method so that the Host header set in
+			 * setURL() above is preserved, but can be overridden by $httpheaders.
+			 */
+			foreach ($httpheaders as $key =>  $value) {
+				$this->setHeader($key, $value);
+			}
+        }
 		preg_match('/\$Revisio' . 'n: ([^ ]+)/', $this->revision, $rev);
 		$this->setHeader('User-Agent', $this->title.'/'.$this->version.' ('.$rev[1].')');
 	}
@@ -83,14 +94,35 @@ class soap_transport_http extends nusoap_base {
 		curl_setopt($this->ch, $option, $value);
 	}
 
+    /**
+     * Get an HTTP header
+     *
+     * @param string $name The name of the header
+     * @access private
+     * @return mixed|null
+     */
+    private function getHeader($name)
+    {
+        if (isset($this->outgoing_headers[$name])) {
+            return $this->outgoing_headers[$name];
+        }
+        return null;
+    }
+
 	/**
 	* sets an HTTP header
 	*
 	* @param string $name The name of the header
 	* @param string $value The value of the header
+	* @param bool $override_existing when false, don't override an existing value
 	* @access private
 	*/
-	function setHeader($name, $value) {
+	function setHeader($name, $value, $override_existing = true)
+    {
+        if (!$override_existing && !($this->getHeader($name) == null && $this->getHeader($name) == '')) {
+            // Early exit - don't override current value
+            return;
+        }
 		$this->outgoing_headers[$name] = $value;
 		$this->debug("set header $name: $value");
 	}
