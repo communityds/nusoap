@@ -111,12 +111,12 @@ class wsdl extends nusoap_base {
     		$imported = 0;
     		// Schema imports
     		foreach ($this->schemas as $ns => $list) {
-    			foreach ($list as $xs) {
+    			foreach ($list as $sk => $xs) {
 					$wsdlparts = parse_url($this->wsdl);	// this is bogusly simple!
 		            foreach ($xs->imports as $ns2 => $list2) {
 		                for ($ii = 0; $ii < count($list2); $ii++) {
 		                	if (! $list2[$ii]['loaded']) {
-		                		$this->schemas[$ns]->imports[$ns2][$ii]['loaded'] = true;
+		                		$this->schemas[$ns][$sk]->imports[$ns2][$ii]['loaded'] = true;
 		                		$url = $list2[$ii]['location'];
 								if ($url != '') {
 									$urlparts = parse_url($url);
@@ -1554,7 +1554,7 @@ class wsdl extends nusoap_base {
 				$rows = sizeof($value);
 				$contents = '';
 				foreach($value as $k => $v) {
-					$this->debug("serializing array element: $k, $v of type: $typeDef[arrayType]");
+					$this->debug("serializing array element: $k, " . (is_array($v) ? var_export($v, true) : $v) . " of type: $typeDef[arrayType]");
 					//if (strpos($typeDef['arrayType'], ':') ) {
 					if (!in_array($typeDef['arrayType'],$this->typemap['http://www.w3.org/2001/XMLSchema'])) {
 					    $contents .= $this->serializeType('item', $typeDef['arrayType'], $v, $use);
