@@ -1,6 +1,5 @@
 {
     "name": "communityds/nusoap",
-    "version": "1.0.0",
     "type": "library",
     "description": "NuSOAP legacy",
     "license": "MIT",
