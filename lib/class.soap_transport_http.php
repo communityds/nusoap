@@ -172,11 +172,12 @@ class soap_transport_http extends nusoap_base {
 		$this->uri = $this->path;
 		$this->digest_uri = $this->uri;
 		
-		// build headers
+
+		// Add Host Header, but only if not already set
 		if (!isset($u['port'])) {
-			$this->setHeader('Host', $this->host);
+            $this->setHeader('Host', $this->host, false);
 		} else {
-			$this->setHeader('Host', $this->host.':'.$this->port);
+            $this->setHeader('Host', $this->host . ':' . $this->port, false);
 		}
 
 		if (isset($u['user']) && $u['user'] != '') {

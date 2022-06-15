@@ -108,6 +108,7 @@ class nusoap_client extends nusoap_base  {
 		$this->timeout = $timeout;
 		$this->response_timeout = $response_timeout;
 		$this->portName = $portName;
+		$this->setOutgoingHeaders($httpheaders);
 
 		$this->debug("ctor wsdl=$wsdl timeout=$timeout response_timeout=$response_timeout");
 		$this->appendDebug('endpoint=' . $this->varDump($endpoint));
@@ -375,7 +376,7 @@ class nusoap_client extends nusoap_base  {
 	 */
 	function loadWSDL() {
 		$this->debug('instantiating wsdl class with doc: '.$this->wsdlFile);
-		$this->wsdl = new wsdl('',$this->proxyhost,$this->proxyport,$this->proxyusername,$this->proxypassword,$this->timeout,$this->response_timeout,$this->curl_options,$this->use_curl);
+		$this->wsdl = new wsdl('',$this->proxyhost,$this->proxyport,$this->proxyusername,$this->proxypassword,$this->timeout,$this->response_timeout,$this->curl_options,$this->use_curl, $this->outgoing_http_headers);
 		$this->wsdl->setCredentials($this->username, $this->password, $this->authtype, $this->certRequest);
 		$this->wsdl->fetchWSDL($this->wsdlFile);
 		$this->checkWSDL();
@@ -424,7 +425,7 @@ class nusoap_client extends nusoap_base  {
 				if($this->persistentConnection == true && is_object($this->persistentConnection)){
 					$http =& $this->persistentConnection;
 				} else {
-					$http = new soap_transport_http($this->endpoint, $this->curl_options, $this->use_curl);
+					$http = new soap_transport_http($this->endpoint, $this->curl_options, $this->use_curl, $this->outgoing_http_headers);
 					if ($this->persistentConnection) {
 						$http->usePersistentConnection();
 					}
@@ -981,6 +982,21 @@ class nusoap_client extends nusoap_base  {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Sets the headers that should be sent with each request.
+	 *
+	 * @param array $headers
+	 *
+	 * @return $this
+	 */
+	public function setOutgoingHeaders($headers)
+	{
+		if (is_array($headers)) {
+			$this->outgoing_http_headers = $headers;
+		}
+		return $this;
 	}
 }
 
