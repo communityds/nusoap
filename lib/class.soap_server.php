@@ -162,6 +162,13 @@ class nusoap_server extends nusoap_base {
 	 */
 	var $debug_flag = false;
 
+    /**
+     * HTTP code to response when there is a fault.
+     *
+     * @var integer
+     */
+    public $faultHttpCode = 500;
+
 
 	/**
 	* constructor
@@ -751,8 +758,10 @@ class nusoap_server extends nusoap_base {
 		$this->debug('Enter send_response');
 		if ($this->fault) {
 			$payload = $this->fault->serialize();
-			$this->outgoing_headers[] = "HTTP/1.0 500 Internal Server Error";
-			$this->outgoing_headers[] = "Status: 500 Internal Server Error";
+            if ($this->faultHttpCode == 500) {
+                $this->outgoing_headers[] = "HTTP/1.0 500 Internal Server Error";
+                $this->outgoing_headers[] = "Status: 500 Internal Server Error";
+            }
 		} else {
 			$payload = $this->responseSOAP;
 			// Some combinations of PHP+Web server allow the Status
