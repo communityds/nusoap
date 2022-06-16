@@ -17,7 +17,7 @@ class nusoap_server extends nusoap_base
      * @var array
      * @access private
      */
-    var $headers = array();
+    var $headers = [];
     /**
      * HTTP request
      * @var string
@@ -65,7 +65,7 @@ class nusoap_server extends nusoap_base
      * @var array
      * @access private
      */
-    var $methodparams = array();
+    var $methodparams = [];
     /**
      * SOAP Action from request
      * @var string
@@ -90,7 +90,7 @@ class nusoap_server extends nusoap_base
      * @var array
      * @access public
      */
-    var $outgoing_headers = array();
+    var $outgoing_headers = [];
     /**
      * HTTP response
      * @var string
@@ -140,7 +140,7 @@ class nusoap_server extends nusoap_base
      * @var array
      * @access private
      */
-    var $operations = array();
+    var $operations = [];
     /**
      * wsdl instance (if one)
      * @var mixed
@@ -631,16 +631,16 @@ class nusoap_server extends nusoap_base
                 $call_arg = "$this->methodname";    // straight assignment changes $this->methodname to lower case after call_user_func_array()
             } elseif ($delim == '..') {
                 $this->debug('in invoke_method, calling class method using call_user_func_array()');
-                $call_arg = array ($class, $method);
+                $call_arg =  [$class, $method];
             } else {
                 $this->debug('in invoke_method, calling instance method using call_user_func_array()');
                 $instance = new $class();
-                $call_arg = array(&$instance, $method);
+                $call_arg = [&$instance, $method];
             }
             if (is_array($this->methodparams)) {
                 $this->methodreturn = call_user_func_array($call_arg, array_values($this->methodparams));
             } else {
-                $this->methodreturn = call_user_func_array($call_arg, array());
+                $this->methodreturn = call_user_func_array($call_arg, []);
             }
         }
         $this->debug('in invoke_method, methodreturn:');
@@ -683,7 +683,7 @@ class nusoap_server extends nusoap_base
                     //foreach ($this->opData['output']['parts'] as $name => $type) {
                     //  $this->debug('wrap in element named ' . $name);
                     //}
-                    $opParams = array($this->methodreturn);
+                    $opParams = [$this->methodreturn];
                 }
                 $return_val = $this->wsdl->serializeRPCParameters($this->methodname, 'output', $opParams);
                 $this->appendDebug($this->wsdl->getDebug());
@@ -962,7 +962,7 @@ class nusoap_server extends nusoap_base
     */
     function add_to_map($methodname, $in, $out)
     {
-            $this->operations[$methodname] = array('name' => $methodname,'in' => $in,'out' => $out);
+            $this->operations[$methodname] = ['name' => $methodname,'in' => $in,'out' => $out];
     }
 
     /**
@@ -979,7 +979,7 @@ class nusoap_server extends nusoap_base
     * @param    string $encodingStyle optional (usually 'http://schemas.xmlsoap.org/soap/encoding/' for encoded)
     * @access   public
     */
-    function register($name, $in = array(), $out = array(), $namespace = false, $soapaction = false, $style = false, $use = false, $documentation = '', $encodingStyle = '')
+    function register($name, $in = [], $out = [], $namespace = false, $soapaction = false, $style = false, $use = false, $documentation = '', $encodingStyle = '')
     {
         global $HTTP_SERVER_VARS;
 
@@ -1026,13 +1026,13 @@ class nusoap_server extends nusoap_base
             $encodingStyle = 'http://schemas.xmlsoap.org/soap/encoding/';
         }
 
-        $this->operations[$name] = array(
+        $this->operations[$name] = [
         'name' => $name,
         'in' => $in,
         'out' => $out,
         'namespace' => $namespace,
         'soapaction' => $soapaction,
-        'style' => $style);
+        'style' => $style];
         if ($this->wsdl) {
             $this->wsdl->addOperation($name, $in, $out, $namespace, $soapaction, $style, $use, $documentation, $encodingStyle);
         }
@@ -1127,16 +1127,16 @@ class nusoap_server extends nusoap_base
             $this->wsdl->schemas[$schemaTargetNamespace][0]->schemaInfo['elementFormDefault'] = 'qualified';
         }
         $this->wsdl->schemas[$schemaTargetNamespace][0]->schemaTargetNamespace = $schemaTargetNamespace;
-        $this->wsdl->schemas[$schemaTargetNamespace][0]->imports['http://schemas.xmlsoap.org/soap/encoding/'][0] = array('location' => '', 'loaded' => true);
-        $this->wsdl->schemas[$schemaTargetNamespace][0]->imports['http://schemas.xmlsoap.org/wsdl/'][0] = array('location' => '', 'loaded' => true);
-        $this->wsdl->bindings[$serviceName . 'Binding'] = array(
+        $this->wsdl->schemas[$schemaTargetNamespace][0]->imports['http://schemas.xmlsoap.org/soap/encoding/'][0] = ['location' => '', 'loaded' => true];
+        $this->wsdl->schemas[$schemaTargetNamespace][0]->imports['http://schemas.xmlsoap.org/wsdl/'][0] = ['location' => '', 'loaded' => true];
+        $this->wsdl->bindings[$serviceName . 'Binding'] = [
             'name' => $serviceName . 'Binding',
             'style' => $style,
             'transport' => $transport,
-            'portType' => $serviceName . 'PortType');
-        $this->wsdl->ports[$serviceName . 'Port'] = array(
+            'portType' => $serviceName . 'PortType'];
+        $this->wsdl->ports[$serviceName . 'Port'] = [
             'binding' => $serviceName . 'Binding',
             'location' => $endpoint,
-            'bindingType' => 'http://schemas.xmlsoap.org/wsdl/soap/');
+            'bindingType' => 'http://schemas.xmlsoap.org/wsdl/soap/'];
     }
 }

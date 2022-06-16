@@ -48,7 +48,7 @@ class nusoap_wsdlcache
     */
     function __construct($cache_dir = '.', $cache_lifetime = 0)
     {
-        $this->fplock = array();
+        $this->fplock = [];
         $this->cache_dir = $cache_dir != '' ? $cache_dir : '.';
         $this->cache_lifetime = $cache_lifetime;
     }

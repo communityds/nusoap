@@ -54,7 +54,7 @@ class nusoap_server_mime extends nusoap_server
      * data, filename, contenttype, cid
      * @access private
      */
-    var $requestAttachments = array();
+    var $requestAttachments = [];
     /**
      * @var array Each array element in the return is an associative array with keys
      * data, filename, contenttype, cid
@@ -105,7 +105,7 @@ class nusoap_server_mime extends nusoap_server
      */
     function clearAttachments()
     {
-        $this->responseAttachments = array();
+        $this->responseAttachments = [];
     }
 
     /**
@@ -226,7 +226,7 @@ class nusoap_server_mime extends nusoap_server
     function parseRequest($headers, $data)
     {
         $this->debug('Entering parseRequest() for payload of length ' . strlen($data) . ' and type of ' . $headers['content-type']);
-        $this->requestAttachments = array();
+        $this->requestAttachments = [];
         if (strstr($headers['content-type'], 'multipart/related')) {
             $this->debug('Decode multipart/related');
             $input = '';

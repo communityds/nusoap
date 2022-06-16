@@ -21,23 +21,23 @@ class soap_transport_http extends nusoap_base
     var $request_method = 'POST';
     var $protocol_version = '1.0';
     var $encoding = '';
-    var $outgoing_headers = array();
-    var $incoming_headers = array();
-    var $incoming_cookies = array();
+    var $outgoing_headers = [];
+    var $incoming_headers = [];
+    var $incoming_cookies = [];
     var $outgoing_payload = '';
     var $incoming_payload = '';
     var $response_status_line;  // HTTP response status line
     var $useSOAPAction = true;
     var $persistentConnection = false;
     var $ch = false;    // cURL handle
-    var $ch_options = array();  // cURL custom options
+    var $ch_options = [];  // cURL custom options
     var $use_curl = false;      // force cURL use
     var $proxy = null;          // proxy information (associative array)
     var $username = '';
     var $password = '';
     var $authtype = '';
-    var $digestRequest = array();
-    var $certRequest = array(); // keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, certpassword (optional), verifypeer (optional), verifyhost (optional)
+    var $digestRequest = [];
+    var $certRequest = []; // keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, certpassword (optional), verifypeer (optional), verifyhost (optional)
                                 // cainfofile: certificate authority file, e.g. '$pathToPemFiles/rootca.pem'
                                 // sslcertfile: SSL certificate file, e.g. '$pathToPemFiles/mycert.pem'
                                 // sslkeyfile: SSL key file, e.g. '$pathToPemFiles/mykey.pem'
@@ -55,7 +55,7 @@ class soap_transport_http extends nusoap_base
      * @param array $httpheaders optional key/value array of HTTP outgoing headers
     * @access public
     */
-    function __construct($url, $curl_options = null, $use_curl = false, $httpheaders = array())
+    function __construct($url, $curl_options = null, $use_curl = false, $httpheaders = [])
     {
         parent::__construct();
         $this->debug("ctor url=$url use_curl=$use_curl curl_options:");
@@ -510,7 +510,7 @@ class soap_transport_http extends nusoap_base
     * @param    array $certRequest (keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, certpassword (optional), verifypeer (optional), verifyhost (optional): see corresponding options in cURL docs)
     * @access   public
     */
-    function setCredentials($username, $password, $authtype = 'basic', $digestRequest = array(), $certRequest = array())
+    function setCredentials($username, $password, $authtype = 'basic', $digestRequest = [], $certRequest = [])
     {
         $this->debug("setCredentials username=$username authtype=$authtype digestRequest=");
         $this->appendDebug($this->varDump($digestRequest));
@@ -624,13 +624,13 @@ class soap_transport_http extends nusoap_base
     function setProxy($proxyhost, $proxyport, $proxyusername = '', $proxypassword = '', $proxyauthtype = 'basic')
     {
         if ($proxyhost) {
-            $this->proxy = array(
+            $this->proxy = [
                 'host' => $proxyhost,
                 'port' => $proxyport,
                 'username' => $proxyusername,
                 'password' => $proxypassword,
                 'authtype' => $proxyauthtype
-            );
+            ];
             if ($proxyusername != '' && $proxypassword != '' && $proxyauthtype = 'basic') {
                 $this->setHeader('Proxy-Authorization', ' Basic ' . base64_encode($proxyusername . ':' . $proxypassword));
             }
@@ -652,7 +652,7 @@ class soap_transport_http extends nusoap_base
      */
     function isSkippableCurlHeader(&$data)
     {
-        $skipHeaders = array(   'HTTP/1.1 100',
+        $skipHeaders = [   'HTTP/1.1 100',
                                         'HTTP/1.0 301',
                                         'HTTP/1.1 301',
                                         'HTTP/1.0 302',
@@ -660,7 +660,7 @@ class soap_transport_http extends nusoap_base
                                         'HTTP/1.0 401',
                                         'HTTP/1.1 401',
                                         'HTTP/1.0 200 Connection established',
-                                        'HTTP/1.1 200 Connection Established');
+                                        'HTTP/1.1 200 Connection Established'];
         foreach ($skipHeaders as $hd) {
             $prefix = substr($data, 0, strlen($hd));
             if ($prefix == $hd) {
@@ -812,7 +812,7 @@ class soap_transport_http extends nusoap_base
           // turns out that the URI and HTTP version are appended to this, which
           // some servers refuse to work with (so we no longer use this method!)
           //$this->setCurlOption(CURLOPT_CUSTOMREQUEST, $this->outgoing_payload);
-            $curl_headers = array();
+            $curl_headers = [];
             foreach ($this->outgoing_headers as $k => $v) {
                 if ($k == 'Connection' || $k == 'Content-Length' || $k == 'Host' || $k == 'Authorization' || $k == 'Proxy-Authorization') {
                     $this->debug("Skip cURL header $k: $v");
@@ -898,8 +898,8 @@ class soap_transport_http extends nusoap_base
           // process headers
             $header_data = trim(substr($data, 0, $pos));
             $header_array = explode($lb, $header_data);
-            $this->incoming_headers = array();
-            $this->incoming_cookies = array();
+            $this->incoming_headers = [];
+            $this->incoming_cookies = [];
             foreach ($header_array as $header_line) {
                 $arr = explode(':', $header_line, 2);
                 if (count($arr) > 1) {
@@ -1302,13 +1302,13 @@ class soap_transport_http extends nusoap_base
         if ($sep_pos) {
             $name = substr($value_str, 0, $sep_pos);
             $value = substr($value_str, $sep_pos + 1);
-            $cookie = array( 'name' => $name,
+            $cookie = [ 'name' => $name,
                             'value' => $value,
                             'domain' => $domain,
                             'path' => $path,
                             'expires' => $expires,
                             'secure' => $secure
-                            );
+                            ];
             return $cookie;
         }
         return false;

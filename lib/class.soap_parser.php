@@ -24,14 +24,14 @@ class nusoap_parser extends nusoap_base
     var $position = 0;
     var $depth = 0;
     var $default_namespace = '';
-    var $namespaces = array();
-    var $message = array();
+    var $namespaces = [];
+    var $message = [];
     var $parent = '';
     var $fault = false;
     var $fault_code = '';
     var $fault_str = '';
     var $fault_detail = '';
-    var $depth_array = array();
+    var $depth_array = [];
     var $debug_flag = true;
     var $soapresponse = null;   // parsed SOAP Body
     var $soapheader = null;     // parsed SOAP Header
@@ -39,9 +39,9 @@ class nusoap_parser extends nusoap_base
     var $body_position = 0;
     // for multiref parsing:
     // array of id => pos
-    var $ids = array();
+    var $ids = [];
     // array of id => hrefs => pos
-    var $multirefs = array();
+    var $multirefs = [];
     // toggle for auto-decoding element content
     var $decode_utf8 = true;
 
@@ -157,7 +157,7 @@ class nusoap_parser extends nusoap_base
         // update class level pos
         $pos = $this->position++;
         // and set mine
-        $this->message[$pos] = array('pos' => $pos,'children' => '','cdata' => '');
+        $this->message[$pos] = ['pos' => $pos,'children' => '','cdata' => ''];
         // depth = how many levels removed from root?
         // set mine as current global depth and increment global depth value
         $this->message[$pos]['depth'] = $this->depth++;
@@ -521,7 +521,7 @@ class nusoap_parser extends nusoap_base
         }
         // bogus: parser treats array with no elements as a simple type
         if ($type == 'array') {
-            return array();
+            return [];
         }
         // everything else
         return (string) $value;
@@ -590,7 +590,7 @@ class nusoap_parser extends nusoap_base
                         if (isset($params[$this->message[$child_pos]['name']])) {
                             // de-serialize repeated element name into an array
                             if ((!is_array($params[$this->message[$child_pos]['name']])) || (!isset($params[$this->message[$child_pos]['name']][0]))) {
-                                $params[$this->message[$child_pos]['name']] = array($params[$this->message[$child_pos]['name']]);
+                                $params[$this->message[$child_pos]['name']] = [$params[$this->message[$child_pos]['name']]];
                             }
                             $params[$this->message[$child_pos]['name']][] = &$this->message[$child_pos]['result'];
                         } else {
@@ -619,7 +619,7 @@ class nusoap_parser extends nusoap_base
                     }
                 }
             }
-            $ret = is_array($params) ? $params : array();
+            $ret = is_array($params) ? $params : [];
             $this->debug('in buildVal, return:');
             $this->appendDebug($this->varDump($ret));
             return $ret;

@@ -25,7 +25,7 @@ class nusoap_client extends nusoap_base
     var $username = '';             // Username for HTTP authentication
     var $password = '';             // Password for HTTP authentication
     var $authtype = '';             // Type of HTTP authentication
-    var $certRequest = array();     // Certificate for HTTP SSL authentication
+    var $certRequest = [];     // Certificate for HTTP SSL authentication
     var $requestHeaders = false;    // SOAP headers in request (text)
     var $responseHeaders = '';      // SOAP headers from response (incomplete namespace resolution) (text)
     var $responseHeader = null;     // SOAP Header from response (parsed)
@@ -47,13 +47,13 @@ class nusoap_client extends nusoap_base
     var $request = '';              // HTTP request
     var $response = '';             // HTTP response
     var $responseData = '';         // SOAP payload of response
-    var $cookies = array();         // Cookies from response or for request
+    var $cookies = [];         // Cookies from response or for request
     var $decode_utf8 = true;        // toggles whether the parser decodes element content w/ utf8_decode()
-    var $operations = array();      // WSDL operations, empty for WSDL initialization error
-    var $curl_options = array();    // User-specified cURL options
+    var $operations = [];      // WSDL operations, empty for WSDL initialization error
+    var $curl_options = [];    // User-specified cURL options
     var $bindingType = '';          // WSDL operation binding type
     var $use_curl = false;          // whether to always try to use cURL
-    private $outgoing_http_headers = array();   // Added to HTTP request headers
+    private $outgoing_http_headers = [];   // Added to HTTP request headers
 
     /*
      * fault related variables
@@ -94,7 +94,7 @@ class nusoap_client extends nusoap_base
     * @param    array $httpheaders optional key/value array of HTTP outgoing headers
     * @access   public
     */
-    function __construct($endpoint, $wsdl = false, $proxyhost = false, $proxyport = false, $proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30, $portName = '', $httpheaders = array())
+    function __construct($endpoint, $wsdl = false, $proxyhost = false, $proxyport = false, $proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30, $portName = '', $httpheaders = [])
     {
         parent::__construct();
         $this->endpoint = $endpoint;
@@ -155,7 +155,7 @@ class nusoap_client extends nusoap_base
     * @return   mixed   response from SOAP call, normally an associative array mirroring the structure of the XML response, false for certain fatal errors
     * @access   public
     */
-    function call($operation, $params = array(), $namespace = 'http://tempuri.org', $soapAction = '', $headers = false, $rpcParams = null, $style = 'rpc', $use = 'encoded')
+    function call($operation, $params = [], $namespace = 'http://tempuri.org', $soapAction = '', $headers = false, $rpcParams = null, $style = 'rpc', $use = 'encoded')
     {
         $this->operation = $operation;
         $this->fault = false;
@@ -165,7 +165,7 @@ class nusoap_client extends nusoap_base
         $this->responseData = '';
         $this->faultstring = '';
         $this->faultcode = '';
-        $this->opData = array();
+        $this->opData = [];
 
         $this->debug("call: operation=$operation, namespace=$namespace, soapAction=$soapAction, rpcParams=$rpcParams, style=$style, use=$use, endpointType=$this->endpointType");
         $this->appendDebug('params=' . $this->varDump($params));
@@ -253,7 +253,7 @@ class nusoap_client extends nusoap_base
                 $this->setError('params must be array or string');
                 return false;
             }
-            $usedNamespaces = array();
+            $usedNamespaces = [];
             if ($use == 'encoded') {
                 $encodingStyle = 'http://schemas.xmlsoap.org/soap/encoding/';
             } else {
@@ -440,7 +440,7 @@ class nusoap_client extends nusoap_base
                     $http->setProxy($this->proxyhost, $this->proxyport, $this->proxyusername, $this->proxypassword);
                 }
                 if ($this->authtype != '') {
-                    $http->setCredentials($this->username, $this->password, $this->authtype, array(), $this->certRequest);
+                    $http->setCredentials($this->username, $this->password, $this->authtype, [], $this->certRequest);
                 }
                 if ($this->http_encoding != '') {
                     $http->setEncoding($this->http_encoding);
@@ -635,7 +635,7 @@ class nusoap_client extends nusoap_base
     * @param    array $certRequest (keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, verifypeer (optional), verifyhost (optional): see corresponding options in cURL docs)
     * @access   public
     */
-    function setCredentials($username, $password, $authtype = 'basic', $certRequest = array())
+    function setCredentials($username, $password, $authtype = 'basic', $certRequest = [])
     {
         $this->debug("setCredentials username=$username authtype=$authtype certRequest=");
         $this->appendDebug($this->varDump($certRequest));
@@ -898,7 +898,7 @@ class nusoap_client extends nusoap_base
         if (strlen($name) == 0) {
             return false;
         }
-        $this->cookies[] = array('name' => $name, 'value' => $value);
+        $this->cookies[] = ['name' => $name, 'value' => $value];
         return true;
     }
 
@@ -926,7 +926,7 @@ class nusoap_client extends nusoap_base
         }
         $this->debug('checkCookie: check ' . sizeof($this->cookies) . ' cookies');
         $curr_cookies = $this->cookies;
-        $this->cookies = array();
+        $this->cookies = [];
         foreach ($curr_cookies as $cookie) {
             if (! is_array($cookie)) {
                 $this->debug('Remove cookie that is not an array');

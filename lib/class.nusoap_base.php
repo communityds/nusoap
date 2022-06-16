@@ -142,12 +142,12 @@ class nusoap_base
     * @var      array
     * @access   public
     */
-    var $namespaces = array(
+    var $namespaces = [
         'SOAP-ENV' => 'http://schemas.xmlsoap.org/soap/envelope/',
         'xsd' => 'http://www.w3.org/2001/XMLSchema',
         'xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
         'SOAP-ENC' => 'http://schemas.xmlsoap.org/soap/encoding/'
-        );
+        ];
 
     /**
     * namespaces used in the current context, e.g. during serialization
@@ -155,7 +155,7 @@ class nusoap_base
     * @var      array
     * @access   private
     */
-    var $usedNamespaces = array();
+    var $usedNamespaces = [];
 
     /**
     * XML Schema types in an array of uri => (array of xml type => php type)
@@ -164,8 +164,8 @@ class nusoap_base
     * @var      array
     * @access   public
     */
-    var $typemap = array(
-    'http://www.w3.org/2001/XMLSchema' => array(
+    var $typemap = [
+    'http://www.w3.org/2001/XMLSchema' => [
         'string' => 'string','boolean' => 'boolean','float' => 'double','double' => 'double','decimal' => 'double',
         'duration' => '','dateTime' => 'string','time' => 'string','date' => 'string','gYearMonth' => '',
         'gYear' => '','gMonthDay' => '','gDay' => '','gMonth' => '','hexBinary' => 'string','base64Binary' => 'string',
@@ -175,19 +175,19 @@ class nusoap_base
         'normalizedString' => 'string','token' => 'string','language' => '','NMTOKEN' => '','NMTOKENS' => '','Name' => '','NCName' => '','ID' => '',
         'IDREF' => '','IDREFS' => '','ENTITY' => '','ENTITIES' => '','integer' => 'integer','nonPositiveInteger' => 'integer',
         'negativeInteger' => 'integer','long' => 'integer','int' => 'integer','short' => 'integer','byte' => 'integer','nonNegativeInteger' => 'integer',
-        'unsignedLong' => '','unsignedInt' => '','unsignedShort' => '','unsignedByte' => '','positiveInteger' => ''),
-    'http://www.w3.org/2000/10/XMLSchema' => array(
+        'unsignedLong' => '','unsignedInt' => '','unsignedShort' => '','unsignedByte' => '','positiveInteger' => ''],
+    'http://www.w3.org/2000/10/XMLSchema' => [
         'i4' => '','int' => 'integer','boolean' => 'boolean','string' => 'string','double' => 'double',
         'float' => 'double','dateTime' => 'string',
-        'timeInstant' => 'string','base64Binary' => 'string','base64' => 'string','ur-type' => 'array'),
-    'http://www.w3.org/1999/XMLSchema' => array(
+        'timeInstant' => 'string','base64Binary' => 'string','base64' => 'string','ur-type' => 'array'],
+    'http://www.w3.org/1999/XMLSchema' => [
         'i4' => '','int' => 'integer','boolean' => 'boolean','string' => 'string','double' => 'double',
         'float' => 'double','dateTime' => 'string',
-        'timeInstant' => 'string','base64Binary' => 'string','base64' => 'string','ur-type' => 'array'),
-    'http://soapinterop.org/xsd' => array('SOAPStruct' => 'struct'),
-    'http://schemas.xmlsoap.org/soap/encoding/' => array('base64' => 'string','array' => 'array','Array' => 'array'),
-    'http://xml.apache.org/xml-soap' => array('Map')
-    );
+        'timeInstant' => 'string','base64Binary' => 'string','base64' => 'string','ur-type' => 'array'],
+    'http://soapinterop.org/xsd' => ['SOAPStruct' => 'struct'],
+    'http://schemas.xmlsoap.org/soap/encoding/' => ['base64' => 'string','array' => 'array','Array' => 'array'],
+    'http://xml.apache.org/xml-soap' => ['Map']
+    ];
 
     /**
     * XML entities to convert
@@ -197,8 +197,8 @@ class nusoap_base
     * @deprecated
     * @see  expandEntities
     */
-    var $xmlEntities = array('quot' => '"','amp' => '&',
-        'lt' => '<','gt' => '>','apos' => "'");
+    var $xmlEntities = ['quot' => '"','amp' => '&',
+        'lt' => '<','gt' => '>','apos' => "'"];
 
     /**
     * constructor
@@ -668,7 +668,7 @@ class nusoap_base
     * @return string the message
     * @access public
     */
-    function serializeEnvelope($body, $headers = false, $namespaces = array(), $style = 'rpc', $use = 'encoded', $encodingStyle = 'http://schemas.xmlsoap.org/soap/encoding/')
+    function serializeEnvelope($body, $headers = false, $namespaces = [], $style = 'rpc', $use = 'encoded', $encodingStyle = 'http://schemas.xmlsoap.org/soap/encoding/')
     {
     // TODO: add an option to automatically run utf8_encode on $body and $headers
     // if $this->soap_defencoding is UTF-8.  Not doing this automatically allows
