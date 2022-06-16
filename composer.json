@@ -9,7 +9,7 @@
     },
     "autoload": {
         "classmap": [
-            "lib/"
+            "src/"
         ],
         "files": [
             "src/functions.php"
