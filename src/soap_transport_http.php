@@ -7,44 +7,150 @@
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
 * @version  $Id: class.soap_transport_http.php,v 1.68 2010/04/26 20:15:08 snichol Exp $
-* @access public
 */
 class soap_transport_http extends nusoap_base
 {
-    var $url = '';
-    var $uri = '';
-    var $digest_uri = '';
-    var $scheme = '';
-    var $host = '';
-    var $port = '';
-    var $path = '';
-    var $request_method = 'POST';
-    var $protocol_version = '1.0';
-    var $encoding = '';
-    var $outgoing_headers = [];
-    var $incoming_headers = [];
-    var $incoming_cookies = [];
-    var $outgoing_payload = '';
-    var $incoming_payload = '';
-    var $response_status_line;  // HTTP response status line
-    var $useSOAPAction = true;
-    var $persistentConnection = false;
-    var $ch = false;    // cURL handle
-    var $ch_options = [];  // cURL custom options
-    var $use_curl = false;      // force cURL use
-    var $proxy = null;          // proxy information (associative array)
-    var $username = '';
-    var $password = '';
-    var $authtype = '';
-    var $digestRequest = [];
-    var $certRequest = []; // keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, certpassword (optional), verifypeer (optional), verifyhost (optional)
-                                // cainfofile: certificate authority file, e.g. '$pathToPemFiles/rootca.pem'
-                                // sslcertfile: SSL certificate file, e.g. '$pathToPemFiles/mycert.pem'
-                                // sslkeyfile: SSL key file, e.g. '$pathToPemFiles/mykey.pem'
-                                // passphrase: SSL key password/passphrase
-                                // certpassword: SSL certificate password
-                                // verifypeer: default is 1
-                                // verifyhost: default is 1
+    /**
+     * @var string
+     */
+    public $url = '';
+
+    /**
+     * @var string
+     */
+    public $uri = '';
+
+    /**
+     * @var string
+     */
+    public $digest_uri = '';
+
+    /**
+     * @var string
+     */
+    public $scheme = '';
+
+    /**
+     * @var string
+     */
+    public $host = '';
+
+    /**
+     * @var string
+     */
+    public $port = '';
+
+    /**
+     * @var string
+     */
+    public $path = '';
+
+    /**
+     * @var string
+     */
+    public $request_method = 'POST';
+
+    /**
+     * @var string
+     */
+    public $protocol_version = '1.0';
+
+    /**
+     * @var string
+     */
+    public $encoding = '';
+
+    /**
+     * @var array
+     */
+    public $outgoing_headers = [];
+
+    /**
+     * @var array
+     */
+    public $incoming_headers = [];
+
+    /**
+     * @var array
+     */
+    public $incoming_cookies = [];
+
+    /**
+     * @var string
+     */
+    public $outgoing_payload = '';
+
+    /**
+     * @var string
+     */
+    public $incoming_payload = '';
+
+    /**
+     * @var string HTTP response status line
+     */
+    public $response_status_line;
+
+    /**
+     * @var bool
+     */
+    public $useSOAPAction = true;
+
+    /**
+     * @var bool
+     */
+    public $persistentConnection = false;
+
+    /**
+     * @var resource|false cURL handle
+     */
+    public $ch = false;
+
+    /**
+     * @var array cURL custom options
+     */
+    public $ch_options = [];
+
+    /**
+     * @var bool force cURL use
+     */
+    public $use_curl = false;
+
+    /**
+     * @var array|null proxy information (associative array)
+     */
+    public $proxy = null;
+
+    /**
+     * @var string
+     */
+    public $username = '';
+
+    /**
+     * @var string
+     */
+    public $password = '';
+
+    /**
+     * @var string
+     */
+    public $authtype = '';
+
+    /**
+     * @var array
+     */
+    public $digestRequest = [];
+
+    /**
+     * @var array keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, certpassword (optional), verifypeer (optional), verifyhost (optional)
+     * cainfofile: certificate authority file, e.g. '$pathToPemFiles/rootca.pem'
+     * sslcertfile: SSL certificate file, e.g. '$pathToPemFiles/mycert.pem'
+     * sslkeyfile: SSL key file, e.g. '$pathToPemFiles/mykey.pem'
+     * passphrase: SSL key password/passphrase
+     * certpassword: SSL certificate password
+     * verifypeer: default is 1
+     * verifyhost: default is 1
+     */
+    public $certRequest = [];
 
     /**
     * constructor
@@ -53,9 +159,8 @@ class soap_transport_http extends nusoap_base
     * @param array $curl_options User-specified cURL options
     * @param boolean $use_curl Whether to try to force cURL use
      * @param array $httpheaders optional key/value array of HTTP outgoing headers
-    * @access public
     */
-    function __construct($url, $curl_options = null, $use_curl = false, $httpheaders = [])
+    public function __construct($url, $curl_options = null, $use_curl = false, $httpheaders = [])
     {
         parent::__construct();
         $this->debug("ctor url=$url use_curl=$use_curl curl_options:");
@@ -83,9 +188,8 @@ class soap_transport_http extends nusoap_base
     *
     * @param    mixed $option The cURL option (always integer?)
     * @param    mixed $value The cURL option value
-    * @access   private
     */
-    function setCurlOption($option, $value)
+    public function setCurlOption($option, $value)
     {
         $this->debug("setCurlOption option=$option, value=");
         $this->appendDebug($this->varDump($value));
@@ -96,10 +200,9 @@ class soap_transport_http extends nusoap_base
      * Get an HTTP header
      *
      * @param string $name The name of the header
-     * @access private
      * @return mixed|null
      */
-    private function getHeader($name)
+    protected function getHeader($name)
     {
         if (isset($this->outgoing_headers[$name])) {
             return $this->outgoing_headers[$name];
@@ -113,9 +216,8 @@ class soap_transport_http extends nusoap_base
     * @param string $name The name of the header
     * @param string $value The value of the header
     * @param bool $override_existing when false, don't override an existing value
-    * @access private
     */
-    function setHeader($name, $value, $override_existing = true)
+    protected function setHeader($name, $value, $override_existing = true)
     {
         if (!$override_existing && !($this->getHeader($name) == null && $this->getHeader($name) == '')) {
             // Early exit - don't override current value
@@ -129,9 +231,8 @@ class soap_transport_http extends nusoap_base
     * unsets an HTTP header
     *
     * @param string $name The name of the header
-    * @access private
     */
-    function unsetHeader($name)
+    protected function unsetHeader($name)
     {
         if (isset($this->outgoing_headers[$name])) {
             $this->debug("unset header $name");
@@ -143,9 +244,8 @@ class soap_transport_http extends nusoap_base
     * sets the URL to which to connect
     *
     * @param string $url The URL to which to connect
-    * @access private
     */
-    function setURL($url)
+    public function setURL($url)
     {
         $this->url = $url;
 
@@ -189,9 +289,8 @@ class soap_transport_http extends nusoap_base
     * gets the I/O method to use
     *
     * @return   string  I/O method to use (socket|curl|unknown)
-    * @access   private
     */
-    function io_method()
+    protected function io_method()
     {
         if ($this->use_curl || ($this->scheme == 'https') || ($this->scheme == 'http' && $this->authtype == 'ntlm') || ($this->scheme == 'http' && is_array($this->proxy) && $this->proxy['authtype'] == 'ntlm')) {
             return 'curl';
@@ -205,12 +304,11 @@ class soap_transport_http extends nusoap_base
     /**
     * establish an HTTP connection
     *
-    * @param    integer $timeout set connection timeout in seconds
+    * @param    integer $connection_timeout set connection timeout in seconds
     * @param    integer $response_timeout set response timeout in seconds
     * @return   boolean true if connected, false if not
-    * @access   private
     */
-    function connect($connection_timeout = 0, $response_timeout = 30)
+    protected function connect($connection_timeout = 0, $response_timeout = 30)
     {
         // For PHP 4.3 with OpenSSL, change https scheme to ssl, then treat like
         // "regular" socket.
@@ -451,9 +549,8 @@ class soap_transport_http extends nusoap_base
     * @param    integer $response_timeout set response timeout in seconds
     * @param    array $cookies cookies to send
     * @return   string data
-    * @access   public
     */
-    function send($data, $timeout = 0, $response_timeout = 30, $cookies = null)
+    public function send($data, $timeout = 0, $response_timeout = 30, $cookies = null)
     {
 
         $this->debug('entered send() with data of length: ' . strlen($data));
@@ -492,10 +589,9 @@ class soap_transport_http extends nusoap_base
     * @param    integer $response_timeout set response timeout in seconds
     * @param    array $cookies cookies to send
     * @return   string data
-    * @access   public
     * @deprecated
     */
-    function sendHTTPS($data, $timeout = 0, $response_timeout = 30, $cookies)
+    public function sendHTTPS($data, $timeout = 0, $response_timeout = 30, $cookies)
     {
         return $this->send($data, $timeout, $response_timeout, $cookies);
     }
@@ -508,9 +604,8 @@ class soap_transport_http extends nusoap_base
     * @param    string $authtype (basic|digest|certificate|ntlm)
     * @param    array $digestRequest (keys must be nonce, nc, realm, qop)
     * @param    array $certRequest (keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, certpassword (optional), verifypeer (optional), verifyhost (optional): see corresponding options in cURL docs)
-    * @access   public
     */
-    function setCredentials($username, $password, $authtype = 'basic', $digestRequest = [], $certRequest = [])
+    public function setCredentials($username, $password, $authtype = 'basic', $digestRequest = [], $certRequest = [])
     {
         $this->debug("setCredentials username=$username authtype=$authtype digestRequest=");
         $this->appendDebug($this->varDump($digestRequest));
@@ -583,9 +678,8 @@ class soap_transport_http extends nusoap_base
     * set the soapaction value
     *
     * @param    string $soapaction
-    * @access   public
     */
-    function setSOAPAction($soapaction)
+    public function setSOAPAction($soapaction)
     {
         $this->setHeader('SOAPAction', '"' . $soapaction . '"');
     }
@@ -594,9 +688,8 @@ class soap_transport_http extends nusoap_base
     * use http encoding
     *
     * @param    string $enc encoding style. supported values: gzip, deflate, or both
-    * @access   public
     */
-    function setEncoding($enc = 'gzip, deflate')
+    public function setEncoding($enc = 'gzip, deflate')
     {
         if (function_exists('gzdeflate')) {
             $this->protocol_version = '1.1';
@@ -619,9 +712,8 @@ class soap_transport_http extends nusoap_base
     * @param    string $proxyusername
     * @param    string $proxypassword
     * @param    string $proxyauthtype (basic|ntlm)
-    * @access   public
     */
-    function setProxy($proxyhost, $proxyport, $proxyusername = '', $proxypassword = '', $proxyauthtype = 'basic')
+    public function setProxy($proxyhost, $proxyport, $proxyusername = '', $proxypassword = '', $proxyauthtype = 'basic')
     {
         if ($proxyhost) {
             $this->proxy = [
@@ -648,9 +740,8 @@ class soap_transport_http extends nusoap_base
      *
      * @param   string $data The string to check.
      * @returns boolean Whether a skippable header was found.
-     * @access  private
      */
-    function isSkippableCurlHeader(&$data)
+    protected function isSkippableCurlHeader(&$data)
     {
         $skipHeaders = [   'HTTP/1.1 100',
                                         'HTTP/1.0 301',
@@ -678,10 +769,9 @@ class soap_transport_http extends nusoap_base
     * @param    string $buffer
     * @param    string $lb
     * @returns  string
-    * @access   public
     * @deprecated
     */
-    function decodeChunked($buffer, $lb)
+    public function decodeChunked($buffer, $lb)
     {
         // length := 0
         $length = 0;
@@ -737,9 +827,8 @@ class soap_transport_http extends nusoap_base
      * @param   string $data HTTP body
      * @param   string $cookie_str data for HTTP Cookie header
      * @return  void
-     * @access  private
      */
-    function buildPayload($data, $cookie_str = '')
+    protected function buildPayload($data, $cookie_str = '')
     {
         // Note: for cURL connections, $this->outgoing_payload is ignored,
         // as is the Content-Length header, but these are still created as
@@ -787,9 +876,8 @@ class soap_transport_http extends nusoap_base
     * @param    string $data message data
     * @param    array $cookies cookies to send
     * @return   boolean true if OK, false if problem
-    * @access   private
     */
-    function sendRequest($data, $cookies = null)
+    protected function sendRequest($data, $cookies = null)
     {
         // build cookie string
         $cookie_str = $this->getCookiesForRequest($cookies, (($this->scheme == 'ssl') || ($this->scheme == 'https')));
@@ -845,9 +933,8 @@ class soap_transport_http extends nusoap_base
     * gets the SOAP response via HTTP[S]
     *
     * @return   string the response (also sets member variables like incoming_payload)
-    * @access   private
     */
-    function getResponse()
+    protected function getResponse()
     {
         $this->incoming_payload = '';
 
@@ -1223,9 +1310,8 @@ class soap_transport_http extends nusoap_base
      *
      * @param   string $type the content type, MIME style
      * @param   mixed $charset character set used for encoding (or false)
-     * @access  public
      */
-    function setContentType($type, $charset = false)
+    public function setContentType($type, $charset = false)
     {
         $this->setHeader('Content-Type', $type . ($charset ? '; charset=' . $charset : ''));
     }
@@ -1234,9 +1320,8 @@ class soap_transport_http extends nusoap_base
      * specifies that an HTTP persistent connection should be used
      *
      * @return  boolean whether the request was honored by this method.
-     * @access  public
      */
-    function usePersistentConnection()
+    public function usePersistentConnection()
     {
         if (isset($this->outgoing_headers['Accept-Encoding'])) {
             return false;
@@ -1252,12 +1337,10 @@ class soap_transport_http extends nusoap_base
      *
      * @param   string $cookie_str content of cookie
      * @return  array with data of that cookie
-     * @access  private
+     *
+     * @todo allow a Set-Cookie string to be parsed into multiple cookies
      */
-    /*
-     * TODO: allow a Set-Cookie string to be parsed into multiple cookies
-     */
-    function parseCookie($cookie_str)
+    protected function parseCookie($cookie_str)
     {
         $cookie_str = str_replace('; ', ';', $cookie_str) . ';';
         $data = preg_split('/;/', $cookie_str);
@@ -1320,9 +1403,8 @@ class soap_transport_http extends nusoap_base
      * @param   array $cookies array with all cookies
      * @param   boolean $secure is the send-content secure or not?
      * @return  string for Cookie-HTTP-Header
-     * @access  private
      */
-    function getCookiesForRequest($cookies, $secure = false)
+    protected function getCookiesForRequest($cookies, $secure = false)
     {
         $cookie_str = '';
         if ((! is_null($cookies)) && (is_array($cookies))) {

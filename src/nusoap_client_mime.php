@@ -51,22 +51,19 @@ class nusoap_client_mime extends nusoap_client
     /**
      * @var array Each array element in the return is an associative array with keys
      * data, filename, contenttype, cid
-     * @access private
      */
-    var $requestAttachments = [];
+    protected $requestAttachments = [];
 
     /**
      * @var array Each array element in the return is an associative array with keys
      * data, filename, contenttype, cid
-     * @access private
      */
-    var $responseAttachments;
+    protected $responseAttachments;
 
     /**
      * @var string
-     * @access private
      */
-    var $mimeContentType;
+    protected $mimeContentType;
 
     /**
      * adds a MIME attachment to the current request.
@@ -81,9 +78,8 @@ class nusoap_client_mime extends nusoap_client
      * @param string $contenttype The MIME Content-Type of the attachment (default is application/octet-stream)
      * @param string $cid The content-id (cid) of the attachment (default is false)
      * @return string The content-id (cid) of the attachment
-     * @access public
      */
-    function addAttachment($data, $filename = '', $contenttype = 'application/octet-stream', $cid = false)
+    public function addAttachment($data, $filename = '', $contenttype = 'application/octet-stream', $cid = false)
     {
         if (! $cid) {
             $cid = md5(uniqid(time()));
@@ -101,10 +97,8 @@ class nusoap_client_mime extends nusoap_client
 
     /**
      * clears the MIME attachments for the current request.
-     *
-     * @access public
      */
-    function clearAttachments()
+    public function clearAttachments()
     {
         $this->requestAttachments = [];
     }
@@ -117,9 +111,8 @@ class nusoap_client_mime extends nusoap_client
      * for addAttachment.
      *
      * @return array The attachments.
-     * @access public
      */
-    function getAttachments()
+    public function getAttachments()
     {
         return $this->responseAttachments;
     }
@@ -129,9 +122,8 @@ class nusoap_client_mime extends nusoap_client
      *
      * @param string $soapmsg The SOAP payload
      * @return string The HTTP body, which includes the SOAP payload
-     * @access private
      */
-    function getHTTPBody($soapmsg)
+    protected function getHTTPBody($soapmsg)
     {
         if (count($this->requestAttachments) > 0) {
             $params['content_type'] = 'multipart/related; type="text/xml"';
@@ -189,9 +181,8 @@ class nusoap_client_mime extends nusoap_client
      * Note: getHTTPBody must be called before this.
      *
      * @return string the HTTP content type for the current request.
-     * @access private
      */
-    function getHTTPContentType()
+    protected function getHTTPContentType()
     {
         if (count($this->requestAttachments) > 0) {
             return $this->mimeContentType;
@@ -206,9 +197,8 @@ class nusoap_client_mime extends nusoap_client
      * Note: getHTTPBody must be called before this.
      *
      * @return string the HTTP content type charset for the current request.
-     * @access private
      */
-    function getHTTPContentTypeCharset()
+    protected function getHTTPContentTypeCharset()
     {
         if (count($this->requestAttachments) > 0) {
             return false;
@@ -222,9 +212,8 @@ class nusoap_client_mime extends nusoap_client
      * @param    array   $headers    The HTTP headers
      * @param    string  $data       unprocessed response data from server
      * @return   mixed   value of the message, decoded into a PHP type
-     * @access   private
      */
-    function parseResponse($headers, $data)
+    protected function parseResponse($headers, $data)
     {
         $this->debug('Entering parseResponse() for payload of length ' . strlen($data) . ' and type of ' . $headers['content-type']);
         $this->responseAttachments = [];

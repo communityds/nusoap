@@ -14,39 +14,36 @@ nusoap-general@lists.sourceforge.net
 * @author   Scott Nichol <snichol@users.sourceforge.net>
 * @author   Ingo Fischer <ingo@apollon.de>
 * @version  $Id: class.wsdlcache.php,v 1.7 2007/04/17 16:34:03 snichol Exp $
-* @access public
 */
 class nusoap_wsdlcache
 {
     /**
      *  @var resource
-     *  @access private
      */
-    var $fplock;
+    protected $fplock;
+
     /**
      *  @var integer
-     *  @access private
      */
-    var $cache_lifetime;
+    protected $cache_lifetime;
+
     /**
      *  @var string
-     *  @access private
      */
-    var $cache_dir;
+    protected $cache_dir;
+
     /**
      *  @var string
-     *  @access public
      */
-    var $debug_str = '';
+    public $debug_str = '';
 
     /**
     * constructor
     *
     * @param string $cache_dir directory for cache-files
     * @param integer $cache_lifetime lifetime for caching-files in seconds or 0 for unlimited
-    * @access public
     */
-    function __construct($cache_dir = '.', $cache_lifetime = 0)
+    public function __construct($cache_dir = '.', $cache_lifetime = 0)
     {
         $this->fplock = [];
         $this->cache_dir = $cache_dir != '' ? $cache_dir : '.';
@@ -58,9 +55,8 @@ class nusoap_wsdlcache
     *
     * @param string $wsdl The URL of the wsdl instance
     * @return string The filename used to cache the instance
-    * @access private
     */
-    function createFilename($wsdl)
+    protected function createFilename($wsdl)
     {
         return $this->cache_dir . '/wsdlcache-' . md5($wsdl);
     }
@@ -69,9 +65,8 @@ class nusoap_wsdlcache
     * adds debug data to the class level debug string
     *
     * @param    string $string debug data
-    * @access   private
     */
-    function debug($string)
+    protected function debug($string)
     {
         $this->debug_str .= get_class($this) . ": $string\n";
     }
@@ -81,9 +76,8 @@ class nusoap_wsdlcache
     *
     * @param string $wsdl The URL of the wsdl instance
     * @return object wsdl The cached wsdl instance, null if the instance is not in the cache
-    * @access public
     */
-    function get($wsdl)
+    public function get($wsdl)
     {
         $filename = $this->createFilename($wsdl);
         if ($this->obtainMutex($filename, "r")) {
@@ -125,9 +119,8 @@ class nusoap_wsdlcache
     * @param string $filename The Filename of the Cache to lock
     * @param string $mode The open-mode ("r" or "w") or the file - affects lock-mode
     * @return boolean Lock successfully obtained ?!
-    * @access private
     */
-    function obtainMutex($filename, $mode)
+    protected function obtainMutex($filename, $mode)
     {
         if (isset($this->fplock[md5($filename)])) {
             $this->debug("Lock for $filename already exists");
@@ -146,9 +139,8 @@ class nusoap_wsdlcache
     *
     * @param object wsdl $wsdl_instance The wsdl instance to add
     * @return boolean WSDL successfully cached
-    * @access public
     */
-    function put($wsdl_instance)
+    public function put($wsdl_instance)
     {
         $filename = $this->createFilename($wsdl_instance->wsdl);
         $s = serialize($wsdl_instance);
@@ -175,9 +167,8 @@ class nusoap_wsdlcache
     *
     * @param string $filename The Filename of the Cache to lock
     * @return boolean Lock successfully released
-    * @access private
     */
-    function releaseMutex($filename)
+    protected function releaseMutex($filename)
     {
         $ret = flock($this->fplock[md5($filename)], LOCK_UN);
         fclose($this->fplock[md5($filename)]);
@@ -193,9 +184,8 @@ class nusoap_wsdlcache
     *
     * @param string $wsdl The URL of the wsdl instance
     * @return boolean Whether there was an instance to remove
-    * @access public
     */
-    function remove($wsdl)
+    public function remove($wsdl)
     {
         $filename = $this->createFilename($wsdl);
         if (!file_exists($filename)) {

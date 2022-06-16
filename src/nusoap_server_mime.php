@@ -45,27 +45,25 @@ http://www.nusphere.com
  * @author   Scott Nichol <snichol@users.sourceforge.net>
  * @author   Thanks to Guillaume and Henning Reich for posting great attachment code to the mail list
  * @version  $Id: nusoapmime.php,v 1.13 2010/04/26 20:15:08 snichol Exp $
- * @access   public
  */
 class nusoap_server_mime extends nusoap_server
 {
     /**
      * @var array Each array element in the return is an associative array with keys
      * data, filename, contenttype, cid
-     * @access private
      */
-    var $requestAttachments = [];
+    protected $requestAttachments = [];
+
     /**
      * @var array Each array element in the return is an associative array with keys
      * data, filename, contenttype, cid
-     * @access private
      */
-    var $responseAttachments;
+    protected $responseAttachments;
+
     /**
      * @var string
-     * @access private
      */
-    var $mimeContentType;
+    protected $mimeContentType;
 
     /**
      * adds a MIME attachment to the current response.
@@ -80,9 +78,8 @@ class nusoap_server_mime extends nusoap_server
      * @param string $contenttype The MIME Content-Type of the attachment (default is application/octet-stream)
      * @param string $cid The content-id (cid) of the attachment (default is false)
      * @return string The content-id (cid) of the attachment
-     * @access public
      */
-    function addAttachment($data, $filename = '', $contenttype = 'application/octet-stream', $cid = false)
+    public function addAttachment($data, $filename = '', $contenttype = 'application/octet-stream', $cid = false)
     {
         if (! $cid) {
             $cid = md5(uniqid(time()));
@@ -100,10 +97,8 @@ class nusoap_server_mime extends nusoap_server
 
     /**
      * clears the MIME attachments for the current response.
-     *
-     * @access public
      */
-    function clearAttachments()
+    public function clearAttachments()
     {
         $this->responseAttachments = [];
     }
@@ -116,9 +111,8 @@ class nusoap_server_mime extends nusoap_server
      * for addAttachment.
      *
      * @return array The attachments.
-     * @access public
      */
-    function getAttachments()
+    public function getAttachments()
     {
         return $this->requestAttachments;
     }
@@ -128,9 +122,8 @@ class nusoap_server_mime extends nusoap_server
      *
      * @param string $soapmsg The SOAP payload
      * @return string The HTTP body, which includes the SOAP payload
-     * @access private
      */
-    function getHTTPBody($soapmsg)
+    protected function getHTTPBody($soapmsg)
     {
         if (count($this->responseAttachments) > 0) {
             $params['content_type'] = 'multipart/related; type="text/xml"';
@@ -188,9 +181,8 @@ class nusoap_server_mime extends nusoap_server
      * Note: getHTTPBody must be called before this.
      *
      * @return string the HTTP content type for the current response.
-     * @access private
      */
-    function getHTTPContentType()
+    protected function getHTTPContentType()
     {
         if (count($this->responseAttachments) > 0) {
             return $this->mimeContentType;
@@ -205,9 +197,8 @@ class nusoap_server_mime extends nusoap_server
      * Note: getHTTPBody must be called before this.
      *
      * @return string the HTTP content type charset for the current response.
-     * @access private
      */
-    function getHTTPContentTypeCharset()
+    protected function getHTTPContentTypeCharset()
     {
         if (count($this->responseAttachments) > 0) {
             return false;
@@ -221,9 +212,8 @@ class nusoap_server_mime extends nusoap_server
      * @param    array   $headers    The HTTP headers
      * @param    string  $data       unprocessed request data from client
      * @return   mixed   value of the message, decoded into a PHP type
-     * @access   private
      */
-    function parseRequest($headers, $data)
+    protected function parseRequest($headers, $data)
     {
         $this->debug('Entering parseRequest() for payload of length ' . strlen($data) . ' and type of ' . $headers['content-type']);
         $this->requestAttachments = [];

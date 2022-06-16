@@ -6,34 +6,32 @@
 * in a server instance.
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @version  $Id: class.soap_fault.php,v 1.14 2007/04/11 15:49:47 snichol Exp $
-* @access public
 */
 class nusoap_fault extends nusoap_base
 {
     /**
      * The fault code (client|server)
      * @var string
-     * @access private
      */
-    var $faultcode;
+    protected $faultcode;
+
     /**
      * The fault actor
      * @var string
-     * @access private
      */
-    var $faultactor;
+    protected $faultactor;
+
     /**
      * The fault string, a description of the fault
      * @var string
-     * @access private
      */
-    var $faultstring;
+    protected $faultstring;
+
     /**
      * The fault detail, typically a string or array of string
      * @var mixed
-     * @access private
      */
-    var $faultdetail;
+    protected $faultdetail;
 
     /**
     * constructor
@@ -43,7 +41,7 @@ class nusoap_fault extends nusoap_base
     * @param string $faultstring human readable error message
     * @param mixed $faultdetail detail, typically a string or array of string
     */
-    function __construct($faultcode, $faultactor = '', $faultstring = '', $faultdetail = '')
+    public function __construct($faultcode, $faultactor = '', $faultstring = '', $faultdetail = '')
     {
         parent::__construct();
         $this->faultcode = $faultcode;
@@ -56,9 +54,8 @@ class nusoap_fault extends nusoap_base
     * serialize a fault
     *
     * @return   string  The serialization of the fault instance.
-    * @access   public
     */
-    function serialize()
+    public function serialize()
     {
         $ns_string = '';
         foreach ($this->namespaces as $k => $v) {

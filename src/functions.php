@@ -10,7 +10,6 @@
  * @param    int $timestamp Unix time stamp
  * @param    boolean $utc Whether the time stamp is UTC or local
  * @return   mixed ISO 8601 date string or false
- * @access   public
  */
 function timestamp_to_iso8601($timestamp, $utc = true)
 {
@@ -50,7 +49,6 @@ function timestamp_to_iso8601($timestamp, $utc = true)
  *
  * @param    string $datestr ISO 8601 compliant date string
  * @return  mixed Unix timestamp (int) or false
- * @access   public
  */
 function iso8601_to_timestamp($datestr)
 {
@@ -89,7 +87,6 @@ function iso8601_to_timestamp($datestr)
  * sleeps some number of microseconds
  *
  * @param    string $usec the number of microseconds to sleep
- * @access   public
  * @deprecated
  */
 function usleepWindows($usec)

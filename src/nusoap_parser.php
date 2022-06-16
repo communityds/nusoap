@@ -7,43 +7,148 @@
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
 * @version  $Id: class.soap_parser.php,v 1.42 2010/04/26 20:15:08 snichol Exp $
-* @access   public
 */
 class nusoap_parser extends nusoap_base
 {
-    var $xml = '';
-    var $xml_encoding = '';
-    var $method = '';
-    var $root_struct = '';
-    var $root_struct_name = '';
-    var $root_struct_namespace = '';
-    var $root_header = '';
-    var $document = '';         // incoming SOAP body (text)
-    // determines where in the message we are (envelope,header,body,method)
-    var $status = '';
-    var $position = 0;
-    var $depth = 0;
-    var $default_namespace = '';
-    var $namespaces = [];
-    var $message = [];
-    var $parent = '';
-    var $fault = false;
-    var $fault_code = '';
-    var $fault_str = '';
-    var $fault_detail = '';
-    var $depth_array = [];
-    var $debug_flag = true;
-    var $soapresponse = null;   // parsed SOAP Body
-    var $soapheader = null;     // parsed SOAP Header
-    var $responseHeaders = '';  // incoming SOAP headers (text)
-    var $body_position = 0;
-    // for multiref parsing:
-    // array of id => pos
-    var $ids = [];
-    // array of id => hrefs => pos
-    var $multirefs = [];
-    // toggle for auto-decoding element content
-    var $decode_utf8 = true;
+    /**
+     * @var string
+     */
+    public $xml = '';
+
+    /**
+     * @var string
+     */
+    public $xml_encoding = '';
+
+    /**
+     * @var string
+     */
+    public $method = '';
+
+    /**
+     * @var string
+     */
+    public $root_struct = '';
+
+    /**
+     * @var string
+     */
+    public $root_struct_name = '';
+
+    /**
+     * @var string
+     */
+    public $root_struct_namespace = '';
+
+    /**
+     * @var string
+     */
+    public $root_header = '';
+
+    /**
+     * @var string incoming SOAP body (text)
+     */
+    public $document = '';
+
+    /**
+     * @var string determines where in the message we are (envelope,header,body,method)
+     */
+    public $status = '';
+
+    /**
+     * @var int
+     */
+    public $position = 0;
+
+    /**
+     * @var int
+     */
+    public $depth = 0;
+
+    /**
+     * @var string
+     */
+    public $default_namespace = '';
+
+    /**
+     * @var array
+     */
+    public $namespaces = [];
+
+    /**
+     * @var array
+     */
+    public $message = [];
+
+    /**
+     * @var string
+     */
+    public $parent = '';
+
+    /**
+     * @var bool
+     */
+    public $fault = false;
+
+    /**
+     * @var string
+     */
+    public $fault_code = '';
+
+    /**
+     * @var string
+     */
+    public $fault_str = '';
+
+    /**
+     * @var string
+     */
+    public $fault_detail = '';
+
+    /**
+     * @var array
+     */
+    public $depth_array = [];
+
+    /**
+     * @var bool
+     */
+    public $debug_flag = true;
+
+    /**
+     * @var mixed|null parsed SOAP Body
+     */
+    public $soapresponse = null;
+
+    /**
+     * @var mixed|null parsed SOAP Header
+     */
+    public $soapheader = null;
+
+    /**
+     * @var string incoming SOAP headers (text)
+     */
+    public $responseHeaders = '';
+
+    /**
+     * @var int
+     */
+    public $body_position = 0;
+
+    /**
+     * @var array for multiref parsing: array of id => pos
+     */
+    public $ids = [];
+
+    /**
+     * @var array array of id => hrefs => pos
+     */
+    public $multirefs = [];
+
+    /**
+     * @var bool|string toggle for auto-decoding element content
+     */
+    public $decode_utf8 = true;
 
     /**
     * constructor that actually does the parsing
@@ -52,9 +157,8 @@ class nusoap_parser extends nusoap_base
     * @param    string $encoding character encoding scheme of message
     * @param    string $method method for which XML is parsed (unused?)
     * @param    string $decode_utf8 whether to decode UTF-8 to ISO-8859-1
-    * @access   public
     */
-    function __construct($xml, $encoding = 'UTF-8', $method = '', $decode_utf8 = true)
+    public function __construct($xml, $encoding = 'UTF-8', $method = '', $decode_utf8 = true)
     {
         parent::__construct();
         $this->xml = $xml;
@@ -149,9 +253,8 @@ class nusoap_parser extends nusoap_base
     * @param    resource $parser XML parser object
     * @param    string $name element name
     * @param    array $attrs associative array of attributes
-    * @access   private
     */
-    function start_element($parser, $name, $attrs)
+    protected function start_element($parser, $name, $attrs)
     {
         // position in a total number of elements, starting from 0
         // update class level pos
@@ -305,9 +408,8 @@ class nusoap_parser extends nusoap_base
     *
     * @param    resource $parser XML parser object
     * @param    string $name element name
-    * @access   private
     */
-    function end_element($parser, $name)
+    protected function end_element($parser, $name)
     {
         // position of current element is equal to the last value left in depth_array for my depth
         $pos = $this->depth_array[$this->depth--];
@@ -412,9 +514,8 @@ class nusoap_parser extends nusoap_base
     *
     * @param    resource $parser XML parser object
     * @param    string $data element content
-    * @access   private
     */
-    function character_data($parser, $data)
+    protected function character_data($parser, $data)
     {
         $pos = $this->depth_array[$this->depth];
         if ($this->xml_encoding == 'UTF-8') {
@@ -438,10 +539,9 @@ class nusoap_parser extends nusoap_base
     * get the parsed message (SOAP Body)
     *
     * @return   mixed
-    * @access   public
     * @deprecated   use get_soapbody instead
     */
-    function get_response()
+    public function get_response()
     {
         return $this->soapresponse;
     }
@@ -450,9 +550,8 @@ class nusoap_parser extends nusoap_base
     * get the parsed SOAP Body (NULL if there was none)
     *
     * @return   mixed
-    * @access   public
     */
-    function get_soapbody()
+    public function get_soapbody()
     {
         return $this->soapresponse;
     }
@@ -461,9 +560,8 @@ class nusoap_parser extends nusoap_base
     * get the parsed SOAP Header (NULL if there was none)
     *
     * @return   mixed
-    * @access   public
     */
-    function get_soapheader()
+    public function get_soapheader()
     {
         return $this->soapheader;
     }
@@ -472,9 +570,8 @@ class nusoap_parser extends nusoap_base
     * get the unparsed SOAP Header
     *
     * @return   string XML or empty if no Header
-    * @access   public
     */
-    function getHeaders()
+    public function getHeaders()
     {
         return $this->responseHeaders;
     }
@@ -486,9 +583,8 @@ class nusoap_parser extends nusoap_base
     * @param    string $type XML type to decode
     * @param    string $typens XML type namespace to decode
     * @return   mixed PHP value
-    * @access   private
     */
-    function decodeSimple($value, $type, $typens)
+    protected function decodeSimple($value, $type, $typens)
     {
         // TODO: use the namespace!
         if ((!isset($type)) || $type == 'string' || $type == 'long' || $type == 'unsignedLong') {
@@ -533,9 +629,8 @@ class nusoap_parser extends nusoap_base
     *
     * @param    integer $pos position in node tree
     * @return   mixed   PHP value
-    * @access   private
     */
-    function buildVal($pos)
+    protected function buildVal($pos)
     {
         if (!isset($this->message[$pos]['type'])) {
             $this->message[$pos]['type'] = '';

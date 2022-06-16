@@ -7,38 +7,118 @@
 * @author   Dietrich Ayala <dietrich@ganx4.com>
 * @author   Scott Nichol <snichol@users.sourceforge.net>
 * @version  $Id: class.xmlschema.php,v 1.53 2010/04/26 20:15:08 snichol Exp $
-* @access   public
 */
 class nusoap_xmlschema extends nusoap_base
 {
-    // files
-    var $schema = '';
-    var $xml = '';
-    // namespaces
-    var $enclosingNamespaces;
-    // schema info
-    var $schemaInfo = [];
-    var $schemaTargetNamespace = '';
-    // types, elements, attributes defined by the schema
-    var $attributes = [];
-    var $complexTypes = [];
-    var $complexTypeStack = [];
-    var $currentComplexType = null;
-    var $elements = [];
-    var $elementStack = [];
-    var $currentElement = null;
-    var $simpleTypes = [];
-    var $simpleTypeStack = [];
-    var $currentSimpleType = null;
-    // imports
-    var $imports = [];
-    // parser vars
-    var $parser;
-    var $position = 0;
-    var $depth = 0;
-    var $depth_array = [];
-    var $message = [];
-    var $defaultNamespace = [];
+    /**
+     * @var string
+     */
+    public $schema = '';
+
+    /**
+     * @var string
+     */
+    public $xml = '';
+
+    /**
+     * @var array|string
+     */
+    public $enclosingNamespaces;
+
+    /**
+     * @var array
+     */
+    public $schemaInfo = [];
+
+    /**
+     * @var string
+     */
+    public $schemaTargetNamespace = '';
+
+    /**
+     * @var array
+     */
+    public $attributes = [];
+
+    /**
+     * @var array
+     */
+    public $complexTypes = [];
+
+    /**
+     * @var array
+     */
+    public $complexTypeStack = [];
+
+    /**
+     * @var null
+     */
+    public $currentComplexType = null;
+
+    /**
+     * @var array
+     */
+    public $elements = [];
+
+    /**
+     * @var array
+     */
+    public $elementStack = [];
+
+    /**
+     * @var null
+     */
+    public $currentElement = null;
+
+    /**
+     * @var array
+     */
+    public $simpleTypes = [];
+
+    /**
+     * @var array
+     */
+    public $simpleTypeStack = [];
+
+    /**
+     * @var null
+     */
+    public $currentSimpleType = null;
+
+    /**
+     * @var array
+     */
+    public $imports = [];
+
+    /**
+     * @var nusoap_parser
+     */
+    public $parser;
+
+    /**
+     * @var int
+     */
+    public $position = 0;
+
+    /**
+     * @var int
+     */
+    public $depth = 0;
+
+    /**
+     * @var array
+     */
+    public $depth_array = [];
+
+    /**
+     * @var array
+     */
+    public $message = [];
+
+    /**
+     * @var array
+     */
+    public $defaultNamespace = [];
 
     /**
     * constructor
@@ -46,9 +126,8 @@ class nusoap_xmlschema extends nusoap_base
     * @param    string $schema schema document URI
     * @param    string $xml xml document URI
     * @param    string $namespaces namespaces defined in enclosing XML
-    * @access   public
     */
-    function __construct($schema = '', $xml = '', $namespaces = [])
+    public function __construct($schema = '', $xml = '', $namespaces = [])
     {
         parent::__construct();
         $this->debug('nusoap_xmlschema class instantiated, inside constructor');
@@ -79,9 +158,8 @@ class nusoap_xmlschema extends nusoap_base
     * @param string $xml path/URL to XML file
     * @param string $type (schema | xml)
     * @return boolean
-    * @access public
     */
-    function parseFile($xml, $type)
+    public function parseFile($xml, $type)
     {
         // parse xml file
         if ($xml != "") {
@@ -106,9 +184,8 @@ class nusoap_xmlschema extends nusoap_base
     *
     * @param    string $xml path or URL
     * @param    string $type (schema|xml)
-    * @access   private
     */
-    function parseString($xml, $type)
+    protected function parseString($xml, $type)
     {
         // parse xml string
         if ($xml != "") {
@@ -154,9 +231,8 @@ class nusoap_xmlschema extends nusoap_base
      *
      * @param   string  Element name
      * @return  string  A type name for an unnamed type
-     * @access  private
      */
-    function CreateTypeName($ename)
+    protected function CreateTypeName($ename)
     {
         $scope = '';
         for ($i = 0; $i < count($this->complexTypeStack); $i++) {
@@ -171,9 +247,8 @@ class nusoap_xmlschema extends nusoap_base
     * @param    string $parser XML parser object
     * @param    string $name element name
     * @param    string $attrs associative array of attributes
-    * @access   private
     */
-    function schemaStartElement($parser, $name, $attrs)
+    public function schemaStartElement($parser, $name, $attrs)
     {
 
         // position in the total number of elements, starting from 0
@@ -499,9 +574,8 @@ class nusoap_xmlschema extends nusoap_base
     *
     * @param    string $parser XML parser object
     * @param    string $name element name
-    * @access   private
     */
-    function schemaEndElement($parser, $name)
+    protected function schemaEndElement($parser, $name)
     {
         // bring depth down a notch
         $this->depth--;
@@ -539,9 +613,8 @@ class nusoap_xmlschema extends nusoap_base
     *
     * @param    string $parser XML parser object
     * @param    string $data element content
-    * @access   private
     */
-    function schemaCharacterData($parser, $data)
+    protected function schemaCharacterData($parser, $data)
     {
         $pos = $this->depth_array[$this->depth - 1];
         $this->message[$pos]['cdata'] .= $data;
@@ -549,10 +622,8 @@ class nusoap_xmlschema extends nusoap_base
 
     /**
     * serialize the schema
-    *
-    * @access   public
     */
-    function serializeSchema()
+    public function serializeSchema()
     {
 
         $schemaPrefix = $this->getPrefixFromNamespace($this->XMLSchemaVersion);
@@ -669,9 +740,8 @@ class nusoap_xmlschema extends nusoap_base
     * adds debug data to the clas level debug string
     *
     * @param    string $string debug data
-    * @access   private
     */
-    function xdebug($string)
+    protected function xdebug($string)
     {
         $this->debug('<' . $this->schemaTargetNamespace . '> ' . $string);
     }
@@ -685,10 +755,9 @@ class nusoap_xmlschema extends nusoap_base
     * @param string $type name of defined type
     * @param string $ns namespace of type
     * @return mixed
-    * @access public
     * @deprecated
     */
-    function getPHPType($type, $ns)
+    public function getPHPType($type, $ns)
     {
         if (isset($this->typemap[$ns][$type])) {
             //print "found type '$type' and ns $ns in typemap<br>";
@@ -717,12 +786,11 @@ class nusoap_xmlschema extends nusoap_base
     *
     * @param string $type
     * @return mixed
-    * @access public
     * @see addComplexType
     * @see addSimpleType
     * @see addElement
     */
-    function getTypeDef($type)
+    public function getTypeDef($type)
     {
         //$this->debug("in getTypeDef for type $type");
         if (substr($type, -1) == '^') {
@@ -799,10 +867,9 @@ class nusoap_xmlschema extends nusoap_base
     *
     * @param string $type name of type
     * @return mixed
-    * @access public
     * @deprecated
     */
-    function serializeTypeDef($type)
+    public function serializeTypeDef($type)
     {
         //print "in sTD() for type $type<br>";
         if ($typeDef = $this->getTypeDef($type)) {
@@ -836,10 +903,9 @@ class nusoap_xmlschema extends nusoap_base
     * @param string $name name for type instance
     * @param string $type name of type
     * @return string
-    * @access public
     * @deprecated
     */
-    function typeToForm($name, $type)
+    public function typeToForm($name, $type)
     {
         // get typedef
         if ($typeDef = $this->getTypeDef($type)) {
@@ -909,10 +975,9 @@ class nusoap_xmlschema extends nusoap_base
     *   )
     * )
     * @param arrayType: namespace:name (http://www.w3.org/2001/XMLSchema:string)
-    * @access public
     * @see getTypeDef
     */
-    function addComplexType($name, $typeClass = 'complexType', $phpType = 'array', $compositor = '', $restrictionBase = '', $elements = [], $attrs = [], $arrayType = '')
+    public function addComplexType($name, $typeClass = 'complexType', $phpType = 'array', $compositor = '', $restrictionBase = '', $elements = [], $attrs = [], $arrayType = '')
     {
         $this->complexTypes[$name] = [
         'name'      => $name,
@@ -937,11 +1002,10 @@ class nusoap_xmlschema extends nusoap_base
     * @param string $typeClass (should always be simpleType)
     * @param string $phpType (should always be scalar)
     * @param array $enumeration array of values
-    * @access public
     * @see nusoap_xmlschema
     * @see getTypeDef
     */
-    function addSimpleType($name, $restrictionBase = '', $typeClass = 'simpleType', $phpType = 'scalar', $enumeration = [])
+    public function addSimpleType($name, $restrictionBase = '', $typeClass = 'simpleType', $phpType = 'scalar', $enumeration = [])
     {
         $this->simpleTypes[$name] = [
         'name'          => $name,
@@ -960,9 +1024,8 @@ class nusoap_xmlschema extends nusoap_base
     *
     * @param array $attrs attributes that must include name and type
     * @see nusoap_xmlschema
-    * @access public
     */
-    function addElement($attrs)
+    public function addElement($attrs)
     {
         if (! $this->getPrefix($attrs['type'])) {
             $attrs['type'] = $this->schemaTargetNamespace . ':' . $attrs['type'];
