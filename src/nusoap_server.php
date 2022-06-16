@@ -164,6 +164,20 @@ class nusoap_server extends nusoap_base
     public $faultHttpCode = 500;
 
     /**
+     * The default classname to handle function calls.
+     *
+     * @var string
+     */
+    protected $registeredClass = '';
+
+    /**
+     * Closure that can change the endpoint url.
+     *
+     * @var Closure
+     */
+    protected $customEndpoint;
+
+    /**
      * constructor
      * the optional parameter is a path to a WSDL file that you'd like to bind the server instance to.
      *
@@ -493,6 +507,13 @@ class nusoap_server extends nusoap_base
         } else {
             $try_class = '';
             $this->debug("in invoke_method, no class to try");
+        }
+
+        // Use the default class
+        if (empty($delim) && isset($this->registeredClass)) {
+            $class  = $this->registeredClass;
+            $delim = '..';
+            $method = $this->methodname;
         }
 
         // does method exist?
@@ -888,6 +909,83 @@ class nusoap_server extends nusoap_base
     }
 
     /**
+     * Registers a class to handle the service call.
+     *
+     * @param string $className The name of the class
+     *
+     * @return $this
+     */
+    public function register_class($className)
+    {
+        $this->registeredClass = $className;
+        return $this;
+    }
+
+    /**
+     * Changes the start of the SOAP action endpoints within the WSDL.
+     *
+     * If a closure then the following parameters are passed in:
+     * * `string $endpoint`: The default url of the endpoint, including script name
+     * * `string $scriptName`: The default script name
+     *
+     * @param string|Closure $url String or a closure that returns the string
+     *
+     * @return $this
+     */
+    public function setCustomEndpoint($serverName)
+    {
+        $this->customEndpoint = $serverName;
+        return $this;
+    }
+
+    /**
+     * Returns the endpoint for the soap actions.
+     *
+     * @return string|null
+     */
+    protected function getEndpoint()
+    {
+        if (!isset($_SERVER)) {
+            $this->setError("_SERVER is not available");
+        }
+
+        $SERVER_NAME = $_SERVER['SERVER_NAME'];
+        $SERVER_PORT = $_SERVER['SERVER_PORT'];
+        $SCRIPT_NAME = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
+        $HTTPS = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : 'off';
+
+        // If server name has port number attached then strip it (else port number gets duplicated in WSDL output) (occurred using lighttpd and FastCGI)
+        $colon = strpos($SERVER_NAME, ":");
+        if ($colon) {
+            $SERVER_NAME = substr($SERVER_NAME, 0, $colon);
+        }
+
+        if ($SERVER_PORT == 80 || $SERVER_PORT == 443) {
+            $SERVER_PORT = '';
+        } else {
+            $SERVER_PORT = ":{$SERVER_PORT}";
+        }
+
+        if ($HTTPS == '1' || $HTTPS == 'on') {
+            $SCHEME = 'https';
+        } else {
+            $SCHEME = 'http';
+        }
+
+        // Generate the default endpoint
+        $endpoint = "{$SCHEME}://{$SERVER_NAME}{$SERVER_PORT}{$SCRIPT_NAME}";
+
+        // Allow the endpoint to be customised
+        if (is_string($this->customEndpoint)) {
+            $endpoint = $this->customEndpoint;
+        } elseif ($this->customEndpoint instanceof Closure) {
+            $endpoint = call_user_func($this->customEndpoint, $endpoint, $SCRIPT_NAME);
+        }
+
+        return $endpoint;
+    }
+
+    /**
      * register a service function with the server
      *
      * @param    string $name the name of the PHP function, class.method or class..method
@@ -917,19 +1015,7 @@ class nusoap_server extends nusoap_base
         if (false == $namespace) {
         }
         if (false == $soapaction) {
-            if (isset($_SERVER)) {
-                $SERVER_NAME = $_SERVER['SERVER_NAME'];
-                $SCRIPT_NAME = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
-                $HTTPS = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : 'off';
-            } else {
-                $this->setError("_SERVER is not available");
-            }
-            if ($HTTPS == '1' || $HTTPS == 'on') {
-                $SCHEME = 'https';
-            } else {
-                $SCHEME = 'http';
-            }
-            $soapaction = "$SCHEME://$SERVER_NAME$SCRIPT_NAME/$name";
+            $soapaction = "{$this->getEndpoint()}/{$name}";
         }
         if (false == $style) {
             $style = "rpc";
@@ -985,35 +1071,12 @@ class nusoap_server extends nusoap_base
      */
     public function configureWSDL($serviceName, $namespace = false, $endpoint = false, $style = 'rpc', $transport = 'http://schemas.xmlsoap.org/soap/http', $schemaTargetNamespace = false)
     {
-        if (isset($_SERVER)) {
-            $SERVER_NAME = $_SERVER['SERVER_NAME'];
-            $SERVER_PORT = $_SERVER['SERVER_PORT'];
-            $SCRIPT_NAME = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
-            $HTTPS = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : 'off';
-        } else {
-            $this->setError("_SERVER is not available");
-        }
-        // If server name has port number attached then strip it (else port number gets duplicated in WSDL output) (occurred using lighttpd and FastCGI)
-        $colon = strpos($SERVER_NAME, ":");
-        if ($colon) {
-            $SERVER_NAME = substr($SERVER_NAME, 0, $colon);
-        }
-        if ($SERVER_PORT == 80) {
-            $SERVER_PORT = '';
-        } else {
-            $SERVER_PORT = ':' . $SERVER_PORT;
-        }
-        if (false == $namespace) {
-            $namespace = "http://$SERVER_NAME/soap/$serviceName";
+        if ($endpoint == false) {
+            $endpoint = $this->getEndpoint();
         }
 
-        if (false == $endpoint) {
-            if ($HTTPS == '1' || $HTTPS == 'on') {
-                $SCHEME = 'https';
-            } else {
-                $SCHEME = 'http';
-            }
-            $endpoint = "$SCHEME://$SERVER_NAME$SERVER_PORT$SCRIPT_NAME";
+        if (false == $namespace) {
+            $namespace = "http://" . parse_url($endpoint, PHP_URL_HOST) . "/soap/{$serviceName}";
         }
 
         if (false == $schemaTargetNamespace) {
