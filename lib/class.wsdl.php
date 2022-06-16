@@ -111,12 +111,12 @@ class wsdl extends nusoap_base {
     		$imported = 0;
     		// Schema imports
     		foreach ($this->schemas as $ns => $list) {
-    			foreach ($list as $sk => $xs) {
+    			foreach ($list as $lkey => $xs) {
 					$wsdlparts = parse_url($this->wsdl);	// this is bogusly simple!
 		            foreach ($xs->imports as $ns2 => $list2) {
 		                for ($ii = 0; $ii < count($list2); $ii++) {
 		                	if (! $list2[$ii]['loaded']) {
-		                		$this->schemas[$ns][$sk]->imports[$ns2][$ii]['loaded'] = true;
+		                		$this->schemas[$ns][$lkey]->imports[$ns2][$ii]['loaded'] = true;
 		                		$url = $list2[$ii]['location'];
 								if ($url != '') {
 									$urlparts = parse_url($url);
@@ -125,7 +125,8 @@ class wsdl extends nusoap_base {
 												substr($wsdlparts['path'],0,strrpos($wsdlparts['path'],'/') + 1) .$urlparts['path'];
 									}
 									if (! in_array($url, $imported_urls)) {
-					                	$this->parseWSDL($url);
+                                        // Imported URLs should NOT use the outgoing_http_headers
+                                        $this->parseWSDL($url, false);
 				                		$imported++;
 				                		$imported_urls[] = $url;
 				                	}
@@ -197,9 +198,13 @@ class wsdl extends nusoap_base {
      * parses the wsdl document
      * 
      * @param string $wsdl path or URL
-     * @access private 
+     * @param bool $use_outgoing_http_headers Flag if $this->outgoing_http_headers should be used
+     * @access private
+     *
+     * @return bool
      */
-    function parseWSDL($wsdl = '') {
+    function parseWSDL($wsdl = '', $use_outgoing_http_headers = true)
+    {
 		$this->debug("parse WSDL at path=$wsdl");
 
         if ($wsdl == '') {
@@ -214,7 +219,8 @@ class wsdl extends nusoap_base {
         if (isset($wsdl_props['scheme']) && ($wsdl_props['scheme'] == 'http' || $wsdl_props['scheme'] == 'https')) {
             $this->debug('getting WSDL http(s) URL ' . $wsdl);
         	// get wsdl
-	        $tr = new soap_transport_http($wsdl, $this->curl_options, $this->use_curl);
+            $outgoing_http_headers = $use_outgoing_http_headers ? $this->outgoing_http_headers : array();
+	        $tr = new soap_transport_http($wsdl, $this->curl_options, $this->use_curl, $outgoing_http_headers);
 			$tr->request_method = 'GET';
 			$tr->useSOAPAction = false;
 			if($this->proxyhost && $this->proxyport){

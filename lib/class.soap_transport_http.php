@@ -172,11 +172,12 @@ class soap_transport_http extends nusoap_base {
 		$this->uri = $this->path;
 		$this->digest_uri = $this->uri;
 		
-		// build headers
+
+		// Add Host Header, but only if not already set
 		if (!isset($u['port'])) {
-			$this->setHeader('Host', $this->host);
+            $this->setHeader('Host', $this->host, false);
 		} else {
-			$this->setHeader('Host', $this->host.':'.$this->port);
+            $this->setHeader('Host', $this->host . ':' . $this->port, false);
 		}
 
 		if (isset($u['user']) && $u['user'] != '') {
@@ -1084,7 +1085,7 @@ class soap_transport_http extends nusoap_base {
 		$http_reason = count($arr) > 2 ? $arr[2] : '';
 
  		// see if we need to resend the request with http digest authentication
- 		if (isset($this->incoming_headers['location']) && ($http_status == 301 || $http_status == 302)) {
+ 		if (isset($this->incoming_headers['location']) && ($http_status == 301 || $http_status == 302 || $http_status == 307)) {
  			$this->debug("Got $http_status $http_reason with Location: " . $this->incoming_headers['location']);
  			$this->setURL($this->incoming_headers['location']);
 			$this->tryagain = true;
