@@ -55,15 +55,15 @@ class soapval extends nusoap_base
     public $attributes;
 
     /**
-    * constructor
-    *
-    * @param    string $name optional name
-    * @param    mixed $type optional type name
-    * @param    mixed $value optional value
-    * @param    mixed $element_ns optional namespace of value
-    * @param    mixed $type_ns optional namespace of type
-    * @param    mixed $attributes associative array of attributes to add to element serialization
-    */
+     * constructor
+     *
+     * @param    string $name optional name
+     * @param    mixed $type optional type name
+     * @param    mixed $value optional value
+     * @param    mixed $element_ns optional namespace of value
+     * @param    mixed $type_ns optional namespace of type
+     * @param    mixed $attributes associative array of attributes to add to element serialization
+     */
     public function __construct($name = 'soapval', $type = false, $value = -1, $element_ns = false, $type_ns = false, $attributes = false)
     {
         parent::__construct();
@@ -76,21 +76,21 @@ class soapval extends nusoap_base
     }
 
     /**
-    * return serialized value
-    *
-    * @param    string $use The WSDL use value (encoded|literal)
-    * @return   string XML data
-    */
+     * return serialized value
+     *
+     * @param    string $use The WSDL use value (encoded|literal)
+     * @return   string XML data
+     */
     public function serialize($use = 'encoded')
     {
         return $this->serialize_val($this->value, $this->name, $this->type, $this->element_ns, $this->type_ns, $this->attributes, $use, true);
     }
 
     /**
-    * decodes a soapval object into a PHP native type
-    *
-    * @return   mixed
-    */
+     * decodes a soapval object into a PHP native type
+     *
+     * @return   mixed
+     */
     public function decode()
     {
         return $this->value;

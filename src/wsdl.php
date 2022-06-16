@@ -650,11 +650,11 @@ class wsdl extends nusoap_base
     }
 
     /**
-    * end-element handler
-    *
-    * @param string $parser XML parser object
-    * @param string $name element name
-    */
+     * end-element handler
+     *
+     * @param string $parser XML parser object
+     * @param string $name element name
+     */
     protected function end_element($parser, $name)
     {
         // unset schema status
@@ -697,13 +697,13 @@ class wsdl extends nusoap_base
     }
 
     /**
-    * if authenticating, set user credentials here
-    *
-    * @param    string $username
-    * @param    string $password
-    * @param    string $authtype (basic|digest|certificate|ntlm)
-    * @param    array $certRequest (keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, certpassword (optional), verifypeer (optional), verifyhost (optional): see corresponding options in cURL docs)
-    */
+     * if authenticating, set user credentials here
+     *
+     * @param    string $username
+     * @param    string $password
+     * @param    string $authtype (basic|digest|certificate|ntlm)
+     * @param    array $certRequest (keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, certpassword (optional), verifypeer (optional), verifyhost (optional): see corresponding options in cURL docs)
+     */
     public function setCredentials($username, $password, $authtype = 'basic', $certRequest = [])
     {
         $this->debug("setCredentials username=$username authtype=$authtype certRequest=");
@@ -821,22 +821,22 @@ class wsdl extends nusoap_base
     }
 
     /**
-    * returns an array of information about a given type
-    * returns false if no type exists by the given name
-    *
-    *    typeDef = array(
-    *    'elements' => array(), // refs to elements array
-    *   'restrictionBase' => '',
-    *   'phpType' => '',
-    *   'order' => '(sequence|all)',
-    *   'attrs' => array() // refs to attributes array
-    *   )
-    *
-    * @param string $type the type
-    * @param string $ns namespace (not prefix) of the type
-    * @return mixed
-    * @see nusoap_xmlschema
-    */
+     * returns an array of information about a given type
+     * returns false if no type exists by the given name
+     *
+     *    typeDef = array(
+     *    'elements' => array(), // refs to elements array
+     *   'restrictionBase' => '',
+     *   'phpType' => '',
+     *   'order' => '(sequence|all)',
+     *   'attrs' => array() // refs to attributes array
+     *   )
+     *
+     * @param string $type the type
+     * @param string $ns namespace (not prefix) of the type
+     * @return mixed
+     * @see nusoap_xmlschema
+     */
     public function getTypeDef($type, $ns)
     {
         $this->debug("in getTypeDef: type=$type, ns=$ns");
@@ -894,8 +894,8 @@ class wsdl extends nusoap_base
     }
 
     /**
-    * prints html description of services
-    */
+     * prints html description of services
+     */
     public function webDescription()
     {
         if (isset($_SERVER)) {
@@ -1021,11 +1021,11 @@ class wsdl extends nusoap_base
     }
 
     /**
-    * serialize the parsed wsdl
-    *
-    * @param mixed $debug whether to put debug=1 in endpoint URL
-    * @return string serialization of WSDL
-    */
+     * serialize the parsed wsdl
+     *
+     * @param mixed $debug whether to put debug=1 in endpoint URL
+     * @return string serialization of WSDL
+     */
     public function serialize($debug = 0)
     {
         $xml = '<?xml version="1.0" encoding="ISO-8859-1"?>';
@@ -1903,18 +1903,18 @@ class wsdl extends nusoap_base
     }
 
     /**
-    * adds an XML Schema complex type to the WSDL types
-    *
-    * @param string $name
-    * @param string $typeClass (complexType|simpleType|attribute)
-    * @param string $phpType currently supported are array and struct (php assoc array)
-    * @param string $compositor (all|sequence|choice)
-    * @param string $restrictionBase namespace:name (http://schemas.xmlsoap.org/soap/encoding/:Array)
-    * @param array $elements e.g. array ( name => array(name=>'',type=>'') )
-    * @param array $attrs e.g. array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'xsd:string[]'))
-    * @param string $arrayType as namespace:name (xsd:string)
-    * @see nusoap_xmlschema
-    */
+     * adds an XML Schema complex type to the WSDL types
+     *
+     * @param string $name
+     * @param string $typeClass (complexType|simpleType|attribute)
+     * @param string $phpType currently supported are array and struct (php assoc array)
+     * @param string $compositor (all|sequence|choice)
+     * @param string $restrictionBase namespace:name (http://schemas.xmlsoap.org/soap/encoding/:Array)
+     * @param array $elements e.g. array ( name => array(name=>'',type=>'') )
+     * @param array $attrs e.g. array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'xsd:string[]'))
+     * @param string $arrayType as namespace:name (xsd:string)
+     * @see nusoap_xmlschema
+     */
     public function addComplexType($name, $typeClass = 'complexType', $phpType = 'array', $compositor = '', $restrictionBase = '', $elements = [], $attrs = [], $arrayType = '')
     {
         if (count($elements) > 0) {
@@ -1953,15 +1953,15 @@ class wsdl extends nusoap_base
     }
 
     /**
-    * adds an XML Schema simple type to the WSDL types
-    *
-    * @param string $name
-    * @param string $restrictionBase namespace:name (http://schemas.xmlsoap.org/soap/encoding/:Array)
-    * @param string $typeClass (should always be simpleType)
-    * @param string $phpType (should always be scalar)
-    * @param array $enumeration array of values
-    * @see nusoap_xmlschema
-    */
+     * adds an XML Schema simple type to the WSDL types
+     *
+     * @param string $name
+     * @param string $restrictionBase namespace:name (http://schemas.xmlsoap.org/soap/encoding/:Array)
+     * @param string $typeClass (should always be simpleType)
+     * @param string $phpType (should always be scalar)
+     * @param array $enumeration array of values
+     * @see nusoap_xmlschema
+     */
     public function addSimpleType($name, $restrictionBase = '', $typeClass = 'simpleType', $phpType = 'scalar', $enumeration = [])
     {
         $restrictionBase = strpos($restrictionBase, ':') ? $this->expandQname($restrictionBase) : $restrictionBase;
@@ -1971,11 +1971,11 @@ class wsdl extends nusoap_base
     }
 
     /**
-    * adds an element to the WSDL types
-    *
-    * @param array $attrs attributes that must include name and type
-    * @see nusoap_xmlschema
-    */
+     * adds an element to the WSDL types
+     *
+     * @param array $attrs attributes that must include name and type
+     * @see nusoap_xmlschema
+     */
     public function addElement($attrs)
     {
         $typens = isset($this->namespaces['types']) ? $this->namespaces['types'] : $this->namespaces['tns'];
@@ -1983,18 +1983,18 @@ class wsdl extends nusoap_base
     }
 
     /**
-    * register an operation with the server
-    *
-    * @param string $name operation (method) name
-    * @param array $in assoc array of input values: key = param name, value = param type
-    * @param array $out assoc array of output values: key = param name, value = param type
-    * @param string $namespace optional The namespace for the operation
-    * @param string $soapaction optional The soapaction for the operation
-    * @param string $style (rpc|document) optional The style for the operation Note: when 'document' is specified, parameter and return wrappers are created for you automatically
-    * @param string $use (encoded|literal) optional The use for the parameters (cannot mix right now)
-    * @param string $documentation optional The description to include in the WSDL
-    * @param string $encodingStyle optional (usually 'http://schemas.xmlsoap.org/soap/encoding/' for encoded)
-    */
+     * register an operation with the server
+     *
+     * @param string $name operation (method) name
+     * @param array $in assoc array of input values: key = param name, value = param type
+     * @param array $out assoc array of output values: key = param name, value = param type
+     * @param string $namespace optional The namespace for the operation
+     * @param string $soapaction optional The soapaction for the operation
+     * @param string $style (rpc|document) optional The style for the operation Note: when 'document' is specified, parameter and return wrappers are created for you automatically
+     * @param string $use (encoded|literal) optional The use for the parameters (cannot mix right now)
+     * @param string $documentation optional The description to include in the WSDL
+     * @param string $encodingStyle optional (usually 'http://schemas.xmlsoap.org/soap/encoding/' for encoded)
+     */
     public function addOperation($name, $in = false, $out = false, $namespace = false, $soapaction = false, $style = 'rpc', $use = 'encoded', $documentation = '', $encodingStyle = '')
     {
         if ($use == 'encoded' && $encodingStyle == '') {

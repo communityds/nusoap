@@ -153,13 +153,13 @@ class soap_transport_http extends nusoap_base
     public $certRequest = [];
 
     /**
-    * constructor
-    *
-    * @param string $url The URL to which to connect
-    * @param array $curl_options User-specified cURL options
-    * @param boolean $use_curl Whether to try to force cURL use
+     * constructor
+     *
+     * @param string $url The URL to which to connect
+     * @param array $curl_options User-specified cURL options
+     * @param boolean $use_curl Whether to try to force cURL use
      * @param array $httpheaders optional key/value array of HTTP outgoing headers
-    */
+     */
     public function __construct($url, $curl_options = null, $use_curl = false, $httpheaders = [])
     {
         parent::__construct();
@@ -184,11 +184,11 @@ class soap_transport_http extends nusoap_base
     }
 
     /**
-    * sets a cURL option
-    *
-    * @param    mixed $option The cURL option (always integer?)
-    * @param    mixed $value The cURL option value
-    */
+     * sets a cURL option
+     *
+     * @param    mixed $option The cURL option (always integer?)
+     * @param    mixed $value The cURL option value
+     */
     public function setCurlOption($option, $value)
     {
         $this->debug("setCurlOption option=$option, value=");
@@ -211,12 +211,12 @@ class soap_transport_http extends nusoap_base
     }
 
     /**
-    * sets an HTTP header
-    *
-    * @param string $name The name of the header
-    * @param string $value The value of the header
-    * @param bool $override_existing when false, don't override an existing value
-    */
+     * sets an HTTP header
+     *
+     * @param string $name The name of the header
+     * @param string $value The value of the header
+     * @param bool $override_existing when false, don't override an existing value
+     */
     protected function setHeader($name, $value, $override_existing = true)
     {
         if (!$override_existing && !($this->getHeader($name) == null && $this->getHeader($name) == '')) {
@@ -228,10 +228,10 @@ class soap_transport_http extends nusoap_base
     }
 
     /**
-    * unsets an HTTP header
-    *
-    * @param string $name The name of the header
-    */
+     * unsets an HTTP header
+     *
+     * @param string $name The name of the header
+     */
     protected function unsetHeader($name)
     {
         if (isset($this->outgoing_headers[$name])) {
@@ -241,10 +241,10 @@ class soap_transport_http extends nusoap_base
     }
 
     /**
-    * sets the URL to which to connect
-    *
-    * @param string $url The URL to which to connect
-    */
+     * sets the URL to which to connect
+     *
+     * @param string $url The URL to which to connect
+     */
     public function setURL($url)
     {
         $this->url = $url;
@@ -286,10 +286,10 @@ class soap_transport_http extends nusoap_base
     }
 
     /**
-    * gets the I/O method to use
-    *
-    * @return   string  I/O method to use (socket|curl|unknown)
-    */
+     * gets the I/O method to use
+     *
+     * @return   string  I/O method to use (socket|curl|unknown)
+     */
     protected function io_method()
     {
         if ($this->use_curl || ($this->scheme == 'https') || ($this->scheme == 'http' && $this->authtype == 'ntlm') || ($this->scheme == 'http' && is_array($this->proxy) && $this->proxy['authtype'] == 'ntlm')) {
@@ -302,12 +302,12 @@ class soap_transport_http extends nusoap_base
     }
 
     /**
-    * establish an HTTP connection
-    *
-    * @param    integer $connection_timeout set connection timeout in seconds
-    * @param    integer $response_timeout set response timeout in seconds
-    * @return   boolean true if connected, false if not
-    */
+     * establish an HTTP connection
+     *
+     * @param    integer $connection_timeout set connection timeout in seconds
+     * @param    integer $response_timeout set response timeout in seconds
+     * @return   boolean true if connected, false if not
+     */
     protected function connect($connection_timeout = 0, $response_timeout = 30)
     {
         // For PHP 4.3 with OpenSSL, change https scheme to ssl, then treat like
@@ -421,10 +421,8 @@ class soap_transport_http extends nusoap_base
             $hostURL .= $this->path;
             $this->setCurlOption(CURLOPT_URL, $hostURL);
           // follow location headers (re-directs)
-            if (ini_get('safe_mode') || ini_get('open_basedir')) {
-                $this->debug('safe_mode or open_basedir set, so do not set CURLOPT_FOLLOWLOCATION');
-                $this->debug('safe_mode = ');
-                $this->appendDebug($this->varDump(ini_get('safe_mode')));
+            if (ini_get('open_basedir')) {
+                $this->debug('open_basedir set, so do not set CURLOPT_FOLLOWLOCATION');
                 $this->debug('open_basedir = ');
                 $this->appendDebug($this->varDump(ini_get('open_basedir')));
             } else {
@@ -542,14 +540,14 @@ class soap_transport_http extends nusoap_base
     }
 
     /**
-    * sends the SOAP request and gets the SOAP response via HTTP[S]
-    *
-    * @param    string $data message data
-    * @param    integer $timeout set connection timeout in seconds
-    * @param    integer $response_timeout set response timeout in seconds
-    * @param    array $cookies cookies to send
-    * @return   string data
-    */
+     * sends the SOAP request and gets the SOAP response via HTTP[S]
+     *
+     * @param    string $data message data
+     * @param    integer $timeout set connection timeout in seconds
+     * @param    integer $response_timeout set response timeout in seconds
+     * @param    array $cookies cookies to send
+     * @return   string data
+     */
     public function send($data, $timeout = 0, $response_timeout = 30, $cookies = null)
     {
 
@@ -582,29 +580,29 @@ class soap_transport_http extends nusoap_base
 
 
     /**
-    * sends the SOAP request and gets the SOAP response via HTTPS using CURL
-    *
-    * @param    string $data message data
-    * @param    integer $timeout set connection timeout in seconds
-    * @param    integer $response_timeout set response timeout in seconds
-    * @param    array $cookies cookies to send
-    * @return   string data
-    * @deprecated
-    */
+     * sends the SOAP request and gets the SOAP response via HTTPS using CURL
+     *
+     * @param    string $data message data
+     * @param    integer $timeout set connection timeout in seconds
+     * @param    integer $response_timeout set response timeout in seconds
+     * @param    array $cookies cookies to send
+     * @return   string data
+     * @deprecated
+     */
     public function sendHTTPS($data, $timeout = 0, $response_timeout = 30, $cookies = [])
     {
         return $this->send($data, $timeout, $response_timeout, $cookies);
     }
 
     /**
-    * if authenticating, set user credentials here
-    *
-    * @param    string $username
-    * @param    string $password
-    * @param    string $authtype (basic|digest|certificate|ntlm)
-    * @param    array $digestRequest (keys must be nonce, nc, realm, qop)
-    * @param    array $certRequest (keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, certpassword (optional), verifypeer (optional), verifyhost (optional): see corresponding options in cURL docs)
-    */
+     * if authenticating, set user credentials here
+     *
+     * @param    string $username
+     * @param    string $password
+     * @param    string $authtype (basic|digest|certificate|ntlm)
+     * @param    array $digestRequest (keys must be nonce, nc, realm, qop)
+     * @param    array $certRequest (keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, certpassword (optional), verifypeer (optional), verifyhost (optional): see corresponding options in cURL docs)
+     */
     public function setCredentials($username, $password, $authtype = 'basic', $digestRequest = [], $certRequest = [])
     {
         $this->debug("setCredentials username=$username authtype=$authtype digestRequest=");
@@ -675,20 +673,20 @@ class soap_transport_http extends nusoap_base
     }
 
     /**
-    * set the soapaction value
-    *
-    * @param    string $soapaction
-    */
+     * set the soapaction value
+     *
+     * @param    string $soapaction
+     */
     public function setSOAPAction($soapaction)
     {
         $this->setHeader('SOAPAction', '"' . $soapaction . '"');
     }
 
     /**
-    * use http encoding
-    *
-    * @param    string $enc encoding style. supported values: gzip, deflate, or both
-    */
+     * use http encoding
+     *
+     * @param    string $enc encoding style. supported values: gzip, deflate, or both
+     */
     public function setEncoding($enc = 'gzip, deflate')
     {
         if (function_exists('gzdeflate')) {
@@ -705,14 +703,14 @@ class soap_transport_http extends nusoap_base
     }
 
     /**
-    * set proxy info here
-    *
-    * @param    string $proxyhost use an empty string to remove proxy
-    * @param    string $proxyport
-    * @param    string $proxyusername
-    * @param    string $proxypassword
-    * @param    string $proxyauthtype (basic|ntlm)
-    */
+     * set proxy info here
+     *
+     * @param    string $proxyhost use an empty string to remove proxy
+     * @param    string $proxyport
+     * @param    string $proxyusername
+     * @param    string $proxypassword
+     * @param    string $proxyauthtype (basic|ntlm)
+     */
     public function setProxy($proxyhost, $proxyport, $proxyusername = '', $proxypassword = '', $proxyauthtype = 'basic')
     {
         if ($proxyhost) {
@@ -763,14 +761,14 @@ class soap_transport_http extends nusoap_base
     }
 
     /**
-    * decode a string that is encoded w/ "chunked' transfer encoding
-    * as defined in RFC2068 19.4.6
-    *
-    * @param    string $buffer
-    * @param    string $lb
-    * @returns  string
-    * @deprecated
-    */
+     * decode a string that is encoded w/ "chunked' transfer encoding
+     * as defined in RFC2068 19.4.6
+     *
+     * @param    string $buffer
+     * @param    string $lb
+     * @returns  string
+     * @deprecated
+     */
     public function decodeChunked($buffer, $lb)
     {
         // length := 0
@@ -871,12 +869,12 @@ class soap_transport_http extends nusoap_base
     }
 
     /**
-    * sends the SOAP request via HTTP[S]
-    *
-    * @param    string $data message data
-    * @param    array $cookies cookies to send
-    * @return   boolean true if OK, false if problem
-    */
+     * sends the SOAP request via HTTP[S]
+     *
+     * @param    string $data message data
+     * @param    array $cookies cookies to send
+     * @return   boolean true if OK, false if problem
+     */
     protected function sendRequest($data, $cookies = null)
     {
         // build cookie string
@@ -930,10 +928,10 @@ class soap_transport_http extends nusoap_base
     }
 
     /**
-    * gets the SOAP response via HTTP[S]
-    *
-    * @return   string the response (also sets member variables like incoming_payload)
-    */
+     * gets the SOAP response via HTTP[S]
+     *
+     * @return   string the response (also sets member variables like incoming_payload)
+     */
     protected function getResponse()
     {
         $this->incoming_payload = '';

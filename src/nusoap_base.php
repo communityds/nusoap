@@ -116,27 +116,27 @@ class nusoap_base
     protected $debugLevel;
 
     /**
-    * set schema version
-    *
-    * @var      string
-    */
+     * set schema version
+     *
+     * @var      string
+     */
     public $XMLSchemaVersion = 'http://www.w3.org/2001/XMLSchema';
 
     /**
-    * charset encoding for outgoing messages
-    *
-    * @var      string
-    */
+     * charset encoding for outgoing messages
+     *
+     * @var      string
+     */
     public $soap_defencoding = 'ISO-8859-1';
     //var $soap_defencoding = 'UTF-8';
 
     /**
-    * namespaces in an array of prefix => uri
-    *
-    * this is "seeded" by a set of constants, but it may be altered by code
-    *
-    * @var      array
-    */
+     * namespaces in an array of prefix => uri
+     *
+     * this is "seeded" by a set of constants, but it may be altered by code
+     *
+     * @var      array
+     */
     public $namespaces = [
         'SOAP-ENV' => 'http://schemas.xmlsoap.org/soap/envelope/',
         'xsd' => 'http://www.w3.org/2001/XMLSchema',
@@ -145,18 +145,18 @@ class nusoap_base
     ];
 
     /**
-    * namespaces used in the current context, e.g. during serialization
-    *
-    * @var      array
-    */
+     * namespaces used in the current context, e.g. during serialization
+     *
+     * @var      array
+     */
     public $usedNamespaces = [];
 
     /**
-    * XML Schema types in an array of uri => (array of xml type => php type)
-    * is this legacy yet?
-    * no, this is used by the nusoap_xmlschema class to verify type => namespace mappings.
-    * @var      array
-    */
+     * XML Schema types in an array of uri => (array of xml type => php type)
+     * is this legacy yet?
+     * no, this is used by the nusoap_xmlschema class to verify type => namespace mappings.
+     * @var      array
+     */
     public $typemap = [
         'http://www.w3.org/2001/XMLSchema' => [
             'string' => 'string', 'boolean' => 'boolean', 'float' => 'double', 'double' => 'double', 'decimal' => 'double',
@@ -194,12 +194,12 @@ class nusoap_base
     ];
 
     /**
-    * XML entities to convert
-    *
-    * @var      array
-    * @deprecated
-    * @see  expandEntities
-    */
+     * XML entities to convert
+     *
+     * @var      array
+     * @deprecated
+     * @see  expandEntities
+     */
     public $xmlEntities = [
         'quot' => '"',
         'amp' => '&',
@@ -209,58 +209,58 @@ class nusoap_base
     ];
 
     /**
-    * constructor
-    */
+     * constructor
+     */
     public function __construct()
     {
         $this->debugLevel = $GLOBALS['_transient']['static']['nusoap_base']['globalDebugLevel'];
     }
 
     /**
-    * gets the global debug level, which applies to future instances
-    *
-    * @return   integer Debug level 0-9, where 0 turns off
-    */
+     * gets the global debug level, which applies to future instances
+     *
+     * @return   integer Debug level 0-9, where 0 turns off
+     */
     public function getGlobalDebugLevel()
     {
         return $GLOBALS['_transient']['static']['nusoap_base']['globalDebugLevel'];
     }
 
     /**
-    * sets the global debug level, which applies to future instances
-    *
-    * @param    int $level  Debug level 0-9, where 0 turns off
-    */
+     * sets the global debug level, which applies to future instances
+     *
+     * @param    int $level  Debug level 0-9, where 0 turns off
+     */
     public function setGlobalDebugLevel($level)
     {
         $GLOBALS['_transient']['static']['nusoap_base']['globalDebugLevel'] = $level;
     }
 
     /**
-    * gets the debug level for this instance
-    *
-    * @return   int Debug level 0-9, where 0 turns off
-    */
+     * gets the debug level for this instance
+     *
+     * @return   int Debug level 0-9, where 0 turns off
+     */
     public function getDebugLevel()
     {
         return $this->debugLevel;
     }
 
     /**
-    * sets the debug level for this instance
-    *
-    * @param    int $level  Debug level 0-9, where 0 turns off
-    */
+     * sets the debug level for this instance
+     *
+     * @param    int $level  Debug level 0-9, where 0 turns off
+     */
     public function setDebugLevel($level)
     {
         $this->debugLevel = $level;
     }
 
     /**
-    * adds debug data to the instance debug string with formatting
-    *
-    * @param    string $string debug data
-    */
+     * adds debug data to the instance debug string with formatting
+     *
+     * @param    string $string debug data
+     */
     protected function debug($string)
     {
         if ($this->debugLevel > 0) {
@@ -269,10 +269,10 @@ class nusoap_base
     }
 
     /**
-    * adds debug data to the instance debug string without formatting
-    *
-    * @param    string $string debug data
-    */
+     * adds debug data to the instance debug string without formatting
+     *
+     * @param    string $string debug data
+     */
     public function appendDebug($string)
     {
         if ($this->debugLevel > 0) {
@@ -283,8 +283,8 @@ class nusoap_base
     }
 
     /**
-    * clears the current debug data for this instance
-    */
+     * clears the current debug data for this instance
+     */
     public function clearDebug()
     {
         // it would be nice to use a memory stream here to use
@@ -293,10 +293,10 @@ class nusoap_base
     }
 
     /**
-    * gets the current debug data for this instance
-    *
-    * @return   debug data
-    */
+     * gets the current debug data for this instance
+     *
+     * @return   string data
+     */
     public function &getDebug()
     {
         // it would be nice to use a memory stream here to use
@@ -305,11 +305,11 @@ class nusoap_base
     }
 
     /**
-    * gets the current debug data for this instance as an XML comment
-    * this may change the contents of the debug data
-    *
-    * @return   debug data as an XML comment
-    */
+     * gets the current debug data for this instance as an XML comment
+     * this may change the contents of the debug data
+     *
+     * @return   string data as an XML comment
+     */
     public function &getDebugAsXMLComment()
     {
         // it would be nice to use a memory stream here to use
@@ -322,10 +322,10 @@ class nusoap_base
     }
 
     /**
-    * expands entities, e.g. changes '<' to '&lt;'.
-    *
-    * @param    string  $val    The string in which to expand entities.
-    */
+     * expands entities, e.g. changes '<' to '&lt;'.
+     *
+     * @param    string  $val    The string in which to expand entities.
+     */
     protected function expandEntities($val)
     {
         if ($this->charencoding) {
@@ -339,10 +339,10 @@ class nusoap_base
     }
 
     /**
-    * returns error string if present
-    *
-    * @return   mixed error string or false
-    */
+     * returns error string if present
+     *
+     * @return   string|false error string or false
+     */
     public function getError()
     {
         if ($this->error_str != '') {
@@ -352,21 +352,21 @@ class nusoap_base
     }
 
     /**
-    * sets error string
-    *
-    * @return   boolean $string error string
-    */
+     * sets error string
+     *
+     * @param   string $str error string
+     */
     protected function setError($str)
     {
         $this->error_str = $str;
     }
 
     /**
-    * detect if array is a simple array or a struct (associative array)
-    *
-    * @param    mixed   $val    The PHP array
-    * @return   string  (arraySimple|arrayStruct)
-    */
+     * detect if array is a simple array or a struct (associative array)
+     *
+     * @param    mixed   $val    The PHP array
+     * @return   string  (arraySimple|arrayStruct)
+     */
     protected function isArraySimpleOrStruct($val)
     {
         $keyList = array_keys($val);
@@ -379,19 +379,19 @@ class nusoap_base
     }
 
     /**
-    * serializes PHP values in accordance w/ section 5. Type information is
-    * not serialized if $use == 'literal'.
-    *
-    * @param    mixed   $val    The value to serialize
-    * @param    string  $name   The name (local part) of the XML element
-    * @param    string  $type   The XML schema type (local part) for the element
-    * @param    string  $name_ns    The namespace for the name of the XML element
-    * @param    string  $type_ns    The namespace for the type of the element
-    * @param    array   $attributes The attributes to serialize as name=>value pairs
-    * @param    string  $use    The WSDL "use" (encoded|literal)
-    * @param    boolean $soapval    Whether this is called from soapval.
-    * @return   string  The serialized element, possibly with child elements
-    */
+     * serializes PHP values in accordance w/ section 5. Type information is
+     * not serialized if $use == 'literal'.
+     *
+     * @param    mixed   $val    The value to serialize
+     * @param    string  $name   The name (local part) of the XML element
+     * @param    string  $type   The XML schema type (local part) for the element
+     * @param    string  $name_ns    The namespace for the name of the XML element
+     * @param    string  $type_ns    The namespace for the type of the element
+     * @param    array   $attributes The attributes to serialize as name=>value pairs
+     * @param    string  $use    The WSDL "use" (encoded|literal)
+     * @param    boolean $soapval    Whether this is called from soapval.
+     * @return   string  The serialized element, possibly with child elements
+     */
     public function serialize_val($val, $name = false, $type = false, $name_ns = false, $type_ns = false, $attributes = false, $use = 'encoded', $soapval = false)
     {
         $this->debug("in serialize_val: name=$name, type=$type, name_ns=$name_ns, type_ns=$type_ns, use=$use, soapval=$soapval");
@@ -546,7 +546,6 @@ class nusoap_base
                     $xml .= "<$name$xmlns$type_str$atts>$pXml</$name>";
                 }
                 break;
-            break;
             case (is_array($val) || $type):
                 // detect if struct or array
                 $valueType = $this->isArraySimpleOrStruct($val);
@@ -648,16 +647,16 @@ class nusoap_base
     }
 
     /**
-    * serializes a message
-    *
-    * @param string $body the XML of the SOAP body
-    * @param mixed $headers optional string of XML with SOAP header content, or array of soapval objects for SOAP headers, or associative array
-    * @param array $namespaces optional the namespaces used in generating the body and headers
-    * @param string $style optional (rpc|document)
-    * @param string $use optional (encoded|literal)
-    * @param string $encodingStyle optional (usually 'http://schemas.xmlsoap.org/soap/encoding/' for encoded)
-    * @return string the message
-    */
+     * serializes a message
+     *
+     * @param string $body the XML of the SOAP body
+     * @param mixed $headers optional string of XML with SOAP header content, or array of soapval objects for SOAP headers, or associative array
+     * @param array $namespaces optional the namespaces used in generating the body and headers
+     * @param string $style optional (rpc|document)
+     * @param string $use optional (encoded|literal)
+     * @param string $encodingStyle optional (usually 'http://schemas.xmlsoap.org/soap/encoding/' for encoded)
+     * @return string the message
+     */
     public function serializeEnvelope($body, $headers = false, $namespaces = [], $style = 'rpc', $use = 'encoded', $encodingStyle = 'http://schemas.xmlsoap.org/soap/encoding/')
     {
     // TODO: add an option to automatically run utf8_encode on $body and $headers
@@ -720,11 +719,11 @@ class nusoap_base
     }
 
     /**
-    * contracts (changes namespace to prefix) a qualified name
-    *
-    * @param    string $qname qname
-    * @return   string contracted qname
-    */
+     * contracts (changes namespace to prefix) a qualified name
+     *
+     * @param    string $qname qname
+     * @return   string contracted qname
+     */
     protected function contractQname($qname)
     {
         // get element namespace
@@ -745,11 +744,11 @@ class nusoap_base
     }
 
     /**
-    * expands (changes prefix to namespace) a qualified name
-    *
-    * @param    string $qname qname
-    * @return   string expanded qname
-    */
+     * expands (changes prefix to namespace) a qualified name
+     *
+     * @param    string $qname qname
+     * @return   string expanded qname
+     */
     protected function expandQname($qname)
     {
         // get element prefix
@@ -769,12 +768,12 @@ class nusoap_base
     }
 
     /**
-    * returns the local part of a prefixed string
-    * returns the original string, if not prefixed
-    *
-    * @param string $str The prefixed string
-    * @return string The local part
-    */
+     * returns the local part of a prefixed string
+     * returns the original string, if not prefixed
+     *
+     * @param string $str The prefixed string
+     * @return string The local part
+     */
     public function getLocalPart($str)
     {
         if ($sstr = strrchr($str, ':')) {
@@ -786,12 +785,12 @@ class nusoap_base
     }
 
     /**
-    * returns the prefix part of a prefixed string
-    * returns false, if not prefixed
-    *
-    * @param string $str The prefixed string
-    * @return mixed The prefix or false if there is no prefix
-    */
+     * returns the prefix part of a prefixed string
+     * returns false, if not prefixed
+     *
+     * @param string $str The prefixed string
+     * @return string|false The prefix or false if there is no prefix
+     */
     public function getPrefix($str)
     {
         if ($pos = strrpos($str, ':')) {
@@ -802,11 +801,11 @@ class nusoap_base
     }
 
     /**
-    * pass it a prefix, it returns a namespace
-    *
-    * @param string $prefix The prefix
-    * @return mixed The namespace, false if no namespace has the specified prefix
-    */
+     * pass it a prefix, it returns a namespace
+     *
+     * @param string $prefix The prefix
+     * @return mixed The namespace, false if no namespace has the specified prefix
+     */
     public function getNamespaceFromPrefix($prefix)
     {
         if (isset($this->namespaces[$prefix])) {
@@ -817,12 +816,12 @@ class nusoap_base
     }
 
     /**
-    * returns the prefix for a given namespace (or prefix)
-    * or false if no prefixes registered for the given namespace
-    *
-    * @param string $ns The namespace
-    * @return mixed The prefix, false if the namespace has no prefixes
-    */
+     * returns the prefix for a given namespace (or prefix)
+     * or false if no prefixes registered for the given namespace
+     *
+     * @param string $ns The namespace
+     * @return string|false The prefix, false if the namespace has no prefixes
+     */
     public function getPrefixFromNamespace($ns)
     {
         foreach ($this->namespaces as $p => $n) {
@@ -835,10 +834,10 @@ class nusoap_base
     }
 
     /**
-    * returns the time in ODBC canonical form with microseconds
-    *
-    * @return string The time in ODBC canonical form with microseconds
-    */
+     * returns the time in ODBC canonical form with microseconds
+     *
+     * @return string The time in ODBC canonical form with microseconds
+     */
     public function getmicrotime()
     {
         if (function_exists('gettimeofday')) {
@@ -868,10 +867,10 @@ class nusoap_base
     }
 
     /**
-    * represents the object as a string
-    *
-    * @return   string
-    */
+     * represents the object as a string
+     *
+     * @return   string
+     */
     public function __toString()
     {
         return $this->varDump($this);

@@ -34,13 +34,13 @@ class nusoap_fault extends nusoap_base
     protected $faultdetail;
 
     /**
-    * constructor
-    *
-    * @param string $faultcode (SOAP-ENV:Client | SOAP-ENV:Server)
-    * @param string $faultactor only used when msg routed between multiple actors
-    * @param string $faultstring human readable error message
-    * @param mixed $faultdetail detail, typically a string or array of string
-    */
+     * constructor
+     *
+     * @param string $faultcode (SOAP-ENV:Client | SOAP-ENV:Server)
+     * @param string $faultactor only used when msg routed between multiple actors
+     * @param string $faultstring human readable error message
+     * @param mixed $faultdetail detail, typically a string or array of string
+     */
     public function __construct($faultcode, $faultactor = '', $faultstring = '', $faultdetail = '')
     {
         parent::__construct();
@@ -51,10 +51,10 @@ class nusoap_fault extends nusoap_base
     }
 
     /**
-    * serialize a fault
-    *
-    * @return   string  The serialization of the fault instance.
-    */
+     * serialize a fault
+     *
+     * @return   string  The serialization of the fault instance.
+     */
     public function serialize()
     {
         $ns_string = '';

@@ -151,13 +151,13 @@ class nusoap_parser extends nusoap_base
     public $decode_utf8 = true;
 
     /**
-    * constructor that actually does the parsing
-    *
-    * @param    string $xml SOAP message
-    * @param    string $encoding character encoding scheme of message
-    * @param    string $method method for which XML is parsed (unused?)
-    * @param    string $decode_utf8 whether to decode UTF-8 to ISO-8859-1
-    */
+     * constructor that actually does the parsing
+     *
+     * @param    string $xml SOAP message
+     * @param    string $encoding character encoding scheme of message
+     * @param    string $method method for which XML is parsed (unused?)
+     * @param    string $decode_utf8 whether to decode UTF-8 to ISO-8859-1
+     */
     public function __construct($xml, $encoding = 'UTF-8', $method = '', $decode_utf8 = true)
     {
         parent::__construct();
@@ -248,12 +248,12 @@ class nusoap_parser extends nusoap_base
     }
 
     /**
-    * start-element handler
-    *
-    * @param    resource $parser XML parser object
-    * @param    string $name element name
-    * @param    array $attrs associative array of attributes
-    */
+     * start-element handler
+     *
+     * @param    resource $parser XML parser object
+     * @param    string $name element name
+     * @param    array $attrs associative array of attributes
+     */
     protected function start_element($parser, $name, $attrs)
     {
         // position in a total number of elements, starting from 0
@@ -404,11 +404,11 @@ class nusoap_parser extends nusoap_base
     }
 
     /**
-    * end-element handler
-    *
-    * @param    resource $parser XML parser object
-    * @param    string $name element name
-    */
+     * end-element handler
+     *
+     * @param    resource $parser XML parser object
+     * @param    string $name element name
+     */
     protected function end_element($parser, $name)
     {
         // position of current element is equal to the last value left in depth_array for my depth
@@ -510,11 +510,11 @@ class nusoap_parser extends nusoap_base
     }
 
     /**
-    * element content handler
-    *
-    * @param    resource $parser XML parser object
-    * @param    string $data element content
-    */
+     * element content handler
+     *
+     * @param    resource $parser XML parser object
+     * @param    string $data element content
+     */
     protected function character_data($parser, $data)
     {
         $pos = $this->depth_array[$this->depth];
@@ -536,54 +536,54 @@ class nusoap_parser extends nusoap_base
     }
 
     /**
-    * get the parsed message (SOAP Body)
-    *
-    * @return   mixed
-    * @deprecated   use get_soapbody instead
-    */
+     * get the parsed message (SOAP Body)
+     *
+     * @return   mixed
+     * @deprecated   use get_soapbody instead
+     */
     public function get_response()
     {
         return $this->soapresponse;
     }
 
     /**
-    * get the parsed SOAP Body (NULL if there was none)
-    *
-    * @return   mixed
-    */
+     * get the parsed SOAP Body (NULL if there was none)
+     *
+     * @return   mixed
+     */
     public function get_soapbody()
     {
         return $this->soapresponse;
     }
 
     /**
-    * get the parsed SOAP Header (NULL if there was none)
-    *
-    * @return   mixed
-    */
+     * get the parsed SOAP Header (NULL if there was none)
+     *
+     * @return   mixed
+     */
     public function get_soapheader()
     {
         return $this->soapheader;
     }
 
     /**
-    * get the unparsed SOAP Header
-    *
-    * @return   string XML or empty if no Header
-    */
+     * get the unparsed SOAP Header
+     *
+     * @return   string XML or empty if no Header
+     */
     public function getHeaders()
     {
         return $this->responseHeaders;
     }
 
     /**
-    * decodes simple types into PHP variables
-    *
-    * @param    string $value value to decode
-    * @param    string $type XML type to decode
-    * @param    string $typens XML type namespace to decode
-    * @return   mixed PHP value
-    */
+     * decodes simple types into PHP variables
+     *
+     * @param    string $value value to decode
+     * @param    string $type XML type to decode
+     * @param    string $typens XML type namespace to decode
+     * @return   mixed PHP value
+     */
     protected function decodeSimple($value, $type, $typens)
     {
         // TODO: use the namespace!
@@ -624,12 +624,12 @@ class nusoap_parser extends nusoap_base
     }
 
     /**
-    * builds response structures for compound values (arrays/structs)
-    * and scalars
-    *
-    * @param    integer $pos position in node tree
-    * @return   mixed   PHP value
-    */
+     * builds response structures for compound values (arrays/structs)
+     * and scalars
+     *
+     * @param    integer $pos position in node tree
+     * @return   mixed   PHP value
+     */
     protected function buildVal($pos)
     {
         if (!isset($this->message[$pos]['type'])) {

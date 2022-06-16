@@ -201,17 +201,17 @@ class nusoap_client extends nusoap_base
     public $faultdetail;
 
     /**
-    * @param    mixed $endpoint SOAP server or WSDL URL (string), or wsdl instance (object)
-    * @param    mixed $wsdl optional, set to 'wsdl' or true if using WSDL
-    * @param    string $proxyhost optional
-    * @param    string $proxyport optional
-    * @param    string $proxyusername optional
-    * @param    string $proxypassword optional
-    * @param    integer $timeout set the connection timeout
-    * @param    integer $response_timeout set the response timeout
-    * @param    string $portName optional portName in WSDL document
-    * @param    array $httpheaders optional key/value array of HTTP outgoing headers
-    */
+     * @param    mixed $endpoint SOAP server or WSDL URL (string), or wsdl instance (object)
+     * @param    mixed $wsdl optional, set to 'wsdl' or true if using WSDL
+     * @param    string $proxyhost optional
+     * @param    string $proxyport optional
+     * @param    string $proxyusername optional
+     * @param    string $proxypassword optional
+     * @param    integer $timeout set the connection timeout
+     * @param    integer $response_timeout set the response timeout
+     * @param    string $portName optional portName in WSDL document
+     * @param    array $httpheaders optional key/value array of HTTP outgoing headers
+     */
     public function __construct($endpoint, $wsdl = false, $proxyhost = false, $proxyport = false, $proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30, $portName = '', $httpheaders = [])
     {
         parent::__construct();
@@ -249,29 +249,29 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * calls method, returns PHP native type
-    *
-    * @param    string $operation SOAP server URL or path
-    * @param    mixed $params An array, associative or simple, of the parameters
-    *                         for the method call, or a string that is the XML
-    *                         for the call.  For rpc style, this call will
-    *                         wrap the XML in a tag named after the method, as
-    *                         well as the SOAP Envelope and Body.  For document
-    *                         style, this will only wrap with the Envelope and Body.
-    *                         IMPORTANT: when using an array with document style,
-    *                         in which case there
-    *                         is really one parameter, the root of the fragment
-    *                         used in the call, which encloses what programmers
-    *                         normally think of parameters.  A parameter array
-    *                         *must* include the wrapper.
-    * @param    string $namespace optional method namespace (WSDL can override)
-    * @param    string $soapAction optional SOAPAction value (WSDL can override)
-    * @param    mixed $headers optional string of XML with SOAP header content, or array of soapval objects for SOAP headers, or associative array
-    * @param    boolean $rpcParams optional (no longer used)
-    * @param    string  $style optional (rpc|document) the style to use when serializing parameters (WSDL can override)
-    * @param    string  $use optional (encoded|literal) the use when serializing parameters (WSDL can override)
-    * @return   mixed   response from SOAP call, normally an associative array mirroring the structure of the XML response, false for certain fatal errors
-    */
+     * calls method, returns PHP native type
+     *
+     * @param    string $operation SOAP server URL or path
+     * @param    mixed $params An array, associative or simple, of the parameters
+     *                         for the method call, or a string that is the XML
+     *                         for the call.  For rpc style, this call will
+     *                         wrap the XML in a tag named after the method, as
+     *                         well as the SOAP Envelope and Body.  For document
+     *                         style, this will only wrap with the Envelope and Body.
+     *                         IMPORTANT: when using an array with document style,
+     *                         in which case there
+     *                         is really one parameter, the root of the fragment
+     *                         used in the call, which encloses what programmers
+     *                         normally think of parameters.  A parameter array
+     *                         *must* include the wrapper.
+     * @param    string $namespace optional method namespace (WSDL can override)
+     * @param    string $soapAction optional SOAPAction value (WSDL can override)
+     * @param    mixed $headers optional string of XML with SOAP header content, or array of soapval objects for SOAP headers, or associative array
+     * @param    boolean $rpcParams optional (no longer used)
+     * @param    string  $style optional (rpc|document) the style to use when serializing parameters (WSDL can override)
+     * @param    string  $use optional (encoded|literal) the use when serializing parameters (WSDL can override)
+     * @return   mixed   response from SOAP call, normally an associative array mirroring the structure of the XML response, false for certain fatal errors
+     */
     public function call($operation, $params = [], $namespace = 'http://tempuri.org', $soapAction = '', $headers = false, $rpcParams = null, $style = 'rpc', $use = 'encoded')
     {
         $this->operation = $operation;
@@ -452,8 +452,8 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * check WSDL passed as an instance or pulled from an endpoint
-    */
+     * check WSDL passed as an instance or pulled from an endpoint
+     */
     protected function checkWSDL()
     {
         $this->appendDebug($this->wsdl->getDebug());
@@ -497,11 +497,11 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * get available data pertaining to an operation
-    *
-    * @param    string $operation operation name
-    * @return   array array of data pertaining to the operation
-    */
+     * get available data pertaining to an operation
+     *
+     * @param    string $operation operation name
+     * @return   array array of data pertaining to the operation
+     */
     public function getOperationData($operation)
     {
         if ($this->endpointType == 'wsdl' && is_null($this->wsdl)) {
@@ -517,18 +517,18 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * send the SOAP message
-    *
-    * Note: if the operation has multiple return values
-    * the return value of this method will be an array
-    * of those values.
-    *
-    * @param    string $msg a SOAPx4 soapmsg object
-    * @param    string $soapaction SOAPAction value
-    * @param    integer $timeout set connection timeout in seconds
-    * @param    integer $response_timeout set response timeout in seconds
-    * @return   mixed native PHP types.
-    */
+     * send the SOAP message
+     *
+     * Note: if the operation has multiple return values
+     * the return value of this method will be an array
+     * of those values.
+     *
+     * @param    string $msg a SOAPx4 soapmsg object
+     * @param    string $soapaction SOAPAction value
+     * @param    integer $timeout set connection timeout in seconds
+     * @param    integer $response_timeout set response timeout in seconds
+     * @return   mixed native PHP types.
+     */
     protected function send($msg, $soapaction = '', $timeout = 0, $response_timeout = 30)
     {
         $this->checkCookies();
@@ -602,12 +602,12 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * processes SOAP message returned from server
-    *
-    * @param    array   $headers    The HTTP headers
-    * @param    string  $data       unprocessed response data from server
-    * @return   mixed   value of the message, decoded into a PHP type
-    */
+     * processes SOAP message returned from server
+     *
+     * @param    array   $headers    The HTTP headers
+     * @param    string  $data       unprocessed response data from server
+     * @return   mixed   value of the message, decoded into a PHP type
+     */
     protected function parseResponse($headers, $data)
     {
         $this->debug('Entering parseResponse() for data of length ' . strlen($data) . ' headers:');
@@ -659,11 +659,11 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * sets user-specified cURL options
-    *
-    * @param    mixed $option The cURL option (always integer?)
-    * @param    mixed $value The cURL option value
-    */
+     * sets user-specified cURL options
+     *
+     * @param    mixed $option The cURL option (always integer?)
+     * @param    mixed $value The cURL option value
+     */
     public function setCurlOption($option, $value)
     {
         $this->debug("setCurlOption option=$option, value=");
@@ -672,10 +672,10 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * sets the SOAP endpoint, which can override WSDL
-    *
-    * @param    string $endpoint The endpoint URL to use, or empty string or false to prevent override
-    */
+     * sets the SOAP endpoint, which can override WSDL
+     *
+     * @param    string $endpoint The endpoint URL to use, or empty string or false to prevent override
+     */
     public function setEndpoint($endpoint)
     {
         $this->debug("setEndpoint(\"$endpoint\")");
@@ -683,10 +683,10 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * set the SOAP headers
-    *
-    * @param    mixed $headers String of XML with SOAP header content, or array of soapval objects for SOAP headers
-    */
+     * set the SOAP headers
+     *
+     * @param    mixed $headers String of XML with SOAP header content, or array of soapval objects for SOAP headers
+     */
     public function setHeaders($headers)
     {
         $this->debug("setHeaders headers=");
@@ -695,33 +695,33 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * get the SOAP response headers (namespace resolution incomplete)
-    *
-    * @return   string
-    */
+     * get the SOAP response headers (namespace resolution incomplete)
+     *
+     * @return   string
+     */
     public function getHeaders()
     {
         return $this->responseHeaders;
     }
 
     /**
-    * get the SOAP response Header (parsed)
-    *
-    * @return   mixed
-    */
+     * get the SOAP response Header (parsed)
+     *
+     * @return   mixed
+     */
     public function getHeader()
     {
         return $this->responseHeader;
     }
 
     /**
-    * set proxy info here
-    *
-    * @param    string $proxyhost
-    * @param    string $proxyport
-    * @param    string $proxyusername
-    * @param    string $proxypassword
-    */
+     * set proxy info here
+     *
+     * @param    string $proxyhost
+     * @param    string $proxyport
+     * @param    string $proxyusername
+     * @param    string $proxypassword
+     */
     public function setHTTPProxy($proxyhost, $proxyport, $proxyusername = '', $proxypassword = '')
     {
         $this->proxyhost = $proxyhost;
@@ -731,13 +731,13 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * if authenticating, set user credentials here
-    *
-    * @param    string $username
-    * @param    string $password
-    * @param    string $authtype (basic|digest|certificate|ntlm)
-    * @param    array $certRequest (keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, verifypeer (optional), verifyhost (optional): see corresponding options in cURL docs)
-    */
+     * if authenticating, set user credentials here
+     *
+     * @param    string $username
+     * @param    string $password
+     * @param    string $authtype (basic|digest|certificate|ntlm)
+     * @param    array $certRequest (keys must be cainfofile (optional), sslcertfile, sslkeyfile, passphrase, verifypeer (optional), verifyhost (optional): see corresponding options in cURL docs)
+     */
     public function setCredentials($username, $password, $authtype = 'basic', $certRequest = [])
     {
         $this->debug("setCredentials username=$username authtype=$authtype certRequest=");
@@ -749,10 +749,10 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * use HTTP encoding
-    *
-    * @param    string $enc HTTP encoding
-    */
+     * use HTTP encoding
+     *
+     * @param    string $enc HTTP encoding
+     */
     public function setHTTPEncoding($enc = 'gzip, deflate')
     {
         $this->debug("setHTTPEncoding(\"$enc\")");
@@ -760,10 +760,10 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * Set whether to try to use cURL connections if possible
-    *
-    * @param    boolean $use Whether to try to use cURL
-    */
+     * Set whether to try to use cURL connections if possible
+     *
+     * @param    boolean $use Whether to try to use cURL
+     */
     public function setUseCURL($use)
     {
         $this->debug("setUseCURL($use)");
@@ -771,8 +771,8 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * use HTTP persistent connections if possible
-    */
+     * use HTTP persistent connections if possible
+     */
     public function useHTTPPersistentConnection()
     {
         $this->debug("useHTTPPersistentConnection");
@@ -780,41 +780,41 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * gets the default RPC parameter setting.
-    * If true, default is that call params are like RPC even for document style.
-    * Each call() can override this value.
-    *
-    * This is no longer used.
-    *
-    * @return boolean
-    * @deprecated
-    */
+     * gets the default RPC parameter setting.
+     * If true, default is that call params are like RPC even for document style.
+     * Each call() can override this value.
+     *
+     * This is no longer used.
+     *
+     * @return boolean
+     * @deprecated
+     */
     public function getDefaultRpcParams()
     {
         return $this->defaultRpcParams;
     }
 
     /**
-    * sets the default RPC parameter setting.
-    * If true, default is that call params are like RPC even for document style
-    * Each call() can override this value.
-    *
-    * This is no longer used.
-    *
-    * @param    boolean $rpcParams
-    * @deprecated
-    */
+     * sets the default RPC parameter setting.
+     * If true, default is that call params are like RPC even for document style
+     * Each call() can override this value.
+     *
+     * This is no longer used.
+     *
+     * @param    boolean $rpcParams
+     * @deprecated
+     */
     public function setDefaultRpcParams($rpcParams)
     {
         $this->defaultRpcParams = $rpcParams;
     }
 
     /**
-    * dynamically creates an instance of a proxy class,
-    * allowing user to directly call methods from wsdl
-    *
-    * @return   object soap_proxy object
-    */
+     * dynamically creates an instance of a proxy class,
+     * allowing user to directly call methods from wsdl
+     *
+     * @return   object soap_proxy object
+     */
     public function getProxy()
     {
         $r = rand();
@@ -859,10 +859,10 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * dynamically creates proxy class code
-    *
-    * @return   string PHP/NuSOAP code for the proxy class
-    */
+     * dynamically creates proxy class code
+     *
+     * @return   string PHP/NuSOAP code for the proxy class
+     */
     protected function getProxyClassCodeInternal($r)
     {
         $this->debug("in getProxy endpointType=$this->endpointType");
@@ -918,10 +918,10 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * dynamically creates proxy class code
-    *
-    * @return   string PHP/NuSOAP code for the proxy class
-    */
+     * dynamically creates proxy class code
+     *
+     * @return   string PHP/NuSOAP code for the proxy class
+     */
     public function getProxyClassCode()
     {
         $r = rand();
@@ -929,46 +929,46 @@ class nusoap_client extends nusoap_base
     }
 
     /**
-    * gets the HTTP body for the current request.
-    *
-    * @param string $soapmsg The SOAP payload
-    * @return string The HTTP body, which includes the SOAP payload
-    */
+     * gets the HTTP body for the current request.
+     *
+     * @param string $soapmsg The SOAP payload
+     * @return string The HTTP body, which includes the SOAP payload
+     */
     protected function getHTTPBody($soapmsg)
     {
         return $soapmsg;
     }
 
     /**
-    * gets the HTTP content type for the current request.
-    *
-    * Note: getHTTPBody must be called before this.
-    *
-    * @return string the HTTP content type for the current request.
-    */
+     * gets the HTTP content type for the current request.
+     *
+     * Note: getHTTPBody must be called before this.
+     *
+     * @return string the HTTP content type for the current request.
+     */
     protected function getHTTPContentType()
     {
         return 'text/xml';
     }
 
     /**
-    * gets the HTTP content type charset for the current request.
-    * returns false for non-text content types.
-    *
-    * Note: getHTTPBody must be called before this.
-    *
-    * @return string the HTTP content type charset for the current request.
-    */
+     * gets the HTTP content type charset for the current request.
+     * returns false for non-text content types.
+     *
+     * Note: getHTTPBody must be called before this.
+     *
+     * @return string the HTTP content type charset for the current request.
+     */
     protected function getHTTPContentTypeCharset()
     {
         return $this->soap_defencoding;
     }
 
     /**
-    * whether or not parser should decode utf8 element content
-    *
-    * @return   always returns true
-    */
+     * whether or not parser should decode utf8 element content
+     *
+     * @return   always returns true
+     */
     public function decodeUTF8($bool)
     {
         $this->decode_utf8 = $bool;

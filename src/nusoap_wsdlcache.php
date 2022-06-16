@@ -38,11 +38,11 @@ class nusoap_wsdlcache
     public $debug_str = '';
 
     /**
-    * constructor
-    *
-    * @param string $cache_dir directory for cache-files
-    * @param integer $cache_lifetime lifetime for caching-files in seconds or 0 for unlimited
-    */
+     * constructor
+     *
+     * @param string $cache_dir directory for cache-files
+     * @param integer $cache_lifetime lifetime for caching-files in seconds or 0 for unlimited
+     */
     public function __construct($cache_dir = '.', $cache_lifetime = 0)
     {
         $this->fplock = [];
@@ -51,32 +51,32 @@ class nusoap_wsdlcache
     }
 
     /**
-    * creates the filename used to cache a wsdl instance
-    *
-    * @param string $wsdl The URL of the wsdl instance
-    * @return string The filename used to cache the instance
-    */
+     * creates the filename used to cache a wsdl instance
+     *
+     * @param string $wsdl The URL of the wsdl instance
+     * @return string The filename used to cache the instance
+     */
     protected function createFilename($wsdl)
     {
         return $this->cache_dir . '/wsdlcache-' . md5($wsdl);
     }
 
     /**
-    * adds debug data to the class level debug string
-    *
-    * @param    string $string debug data
-    */
+     * adds debug data to the class level debug string
+     *
+     * @param    string $string debug data
+     */
     protected function debug($string)
     {
         $this->debug_str .= get_class($this) . ": $string\n";
     }
 
     /**
-    * gets a wsdl instance from the cache
-    *
-    * @param string $wsdl The URL of the wsdl instance
-    * @return object wsdl The cached wsdl instance, null if the instance is not in the cache
-    */
+     * gets a wsdl instance from the cache
+     *
+     * @param string $wsdl The URL of the wsdl instance
+     * @return object wsdl The cached wsdl instance, null if the instance is not in the cache
+     */
     public function get($wsdl)
     {
         $filename = $this->createFilename($wsdl);
@@ -114,12 +114,12 @@ class nusoap_wsdlcache
     }
 
     /**
-    * obtains the local mutex
-    *
-    * @param string $filename The Filename of the Cache to lock
-    * @param string $mode The open-mode ("r" or "w") or the file - affects lock-mode
-    * @return boolean Lock successfully obtained ?!
-    */
+     * obtains the local mutex
+     *
+     * @param string $filename The Filename of the Cache to lock
+     * @param string $mode The open-mode ("r" or "w") or the file - affects lock-mode
+     * @return boolean Lock successfully obtained ?!
+     */
     protected function obtainMutex($filename, $mode)
     {
         if (isset($this->fplock[md5($filename)])) {
@@ -135,11 +135,11 @@ class nusoap_wsdlcache
     }
 
     /**
-    * adds a wsdl instance to the cache
-    *
-    * @param object wsdl $wsdl_instance The wsdl instance to add
-    * @return boolean WSDL successfully cached
-    */
+     * adds a wsdl instance to the cache
+     *
+     * @param object wsdl $wsdl_instance The wsdl instance to add
+     * @return boolean WSDL successfully cached
+     */
     public function put($wsdl_instance)
     {
         $filename = $this->createFilename($wsdl_instance->wsdl);
@@ -163,11 +163,11 @@ class nusoap_wsdlcache
     }
 
     /**
-    * releases the local mutex
-    *
-    * @param string $filename The Filename of the Cache to lock
-    * @return boolean Lock successfully released
-    */
+     * releases the local mutex
+     *
+     * @param string $filename The Filename of the Cache to lock
+     * @return boolean Lock successfully released
+     */
     protected function releaseMutex($filename)
     {
         $ret = flock($this->fplock[md5($filename)], LOCK_UN);
@@ -180,11 +180,11 @@ class nusoap_wsdlcache
     }
 
     /**
-    * removes a wsdl instance from the cache
-    *
-    * @param string $wsdl The URL of the wsdl instance
-    * @return boolean Whether there was an instance to remove
-    */
+     * removes a wsdl instance from the cache
+     *
+     * @param string $wsdl The URL of the wsdl instance
+     * @return boolean Whether there was an instance to remove
+     */
     public function remove($wsdl)
     {
         $filename = $this->createFilename($wsdl);

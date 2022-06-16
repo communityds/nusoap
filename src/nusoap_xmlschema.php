@@ -121,12 +121,12 @@ class nusoap_xmlschema extends nusoap_base
     public $defaultNamespace = [];
 
     /**
-    * constructor
-    *
-    * @param    string $schema schema document URI
-    * @param    string $xml xml document URI
-    * @param    string $namespaces namespaces defined in enclosing XML
-    */
+     * constructor
+     *
+     * @param    string $schema schema document URI
+     * @param    string $xml xml document URI
+     * @param    string $namespaces namespaces defined in enclosing XML
+     */
     public function __construct($schema = '', $xml = '', $namespaces = [])
     {
         parent::__construct();
@@ -153,12 +153,12 @@ class nusoap_xmlschema extends nusoap_base
     }
 
     /**
-    * parse an XML file
-    *
-    * @param string $xml path/URL to XML file
-    * @param string $type (schema | xml)
-    * @return boolean
-    */
+     * parse an XML file
+     *
+     * @param string $xml path/URL to XML file
+     * @param string $type (schema | xml)
+     * @return boolean
+     */
     public function parseFile($xml, $type)
     {
         // parse xml file
@@ -180,11 +180,11 @@ class nusoap_xmlschema extends nusoap_base
     }
 
     /**
-    * parse an XML string
-    *
-    * @param    string $xml path or URL
-    * @param    string $type (schema|xml)
-    */
+     * parse an XML string
+     *
+     * @param    string $xml path or URL
+     * @param    string $type (schema|xml)
+     */
     protected function parseString($xml, $type)
     {
         // parse xml string
@@ -242,12 +242,12 @@ class nusoap_xmlschema extends nusoap_base
     }
 
     /**
-    * start-element handler
-    *
-    * @param    string $parser XML parser object
-    * @param    string $name element name
-    * @param    string $attrs associative array of attributes
-    */
+     * start-element handler
+     *
+     * @param    string $parser XML parser object
+     * @param    string $name element name
+     * @param    string $attrs associative array of attributes
+     */
     public function schemaStartElement($parser, $name, $attrs)
     {
 
@@ -570,11 +570,11 @@ class nusoap_xmlschema extends nusoap_base
     }
 
     /**
-    * end-element handler
-    *
-    * @param    string $parser XML parser object
-    * @param    string $name element name
-    */
+     * end-element handler
+     *
+     * @param    string $parser XML parser object
+     * @param    string $name element name
+     */
     protected function schemaEndElement($parser, $name)
     {
         // bring depth down a notch
@@ -609,11 +609,11 @@ class nusoap_xmlschema extends nusoap_base
     }
 
     /**
-    * element content handler
-    *
-    * @param    string $parser XML parser object
-    * @param    string $data element content
-    */
+     * element content handler
+     *
+     * @param    string $parser XML parser object
+     * @param    string $data element content
+     */
     protected function schemaCharacterData($parser, $data)
     {
         $pos = $this->depth_array[$this->depth - 1];
@@ -621,8 +621,8 @@ class nusoap_xmlschema extends nusoap_base
     }
 
     /**
-    * serialize the schema
-    */
+     * serialize the schema
+     */
     public function serializeSchema()
     {
 
@@ -737,26 +737,26 @@ class nusoap_xmlschema extends nusoap_base
     }
 
     /**
-    * adds debug data to the clas level debug string
-    *
-    * @param    string $string debug data
-    */
+     * adds debug data to the clas level debug string
+     *
+     * @param    string $string debug data
+     */
     protected function xdebug($string)
     {
         $this->debug('<' . $this->schemaTargetNamespace . '> ' . $string);
     }
 
     /**
-    * get the PHP type of a user defined type in the schema
-    * PHP type is kind of a misnomer since it actually returns 'struct' for assoc. arrays
-    * returns false if no type exists, or not w/ the given namespace
-    * else returns a string that is either a native php type, or 'struct'
-    *
-    * @param string $type name of defined type
-    * @param string $ns namespace of type
-    * @return mixed
-    * @deprecated
-    */
+     * get the PHP type of a user defined type in the schema
+     * PHP type is kind of a misnomer since it actually returns 'struct' for assoc. arrays
+     * returns false if no type exists, or not w/ the given namespace
+     * else returns a string that is either a native php type, or 'struct'
+     *
+     * @param string $type name of defined type
+     * @param string $ns namespace of type
+     * @return mixed
+     * @deprecated
+     */
     public function getPHPType($type, $ns)
     {
         if (isset($this->typemap[$ns][$type])) {
@@ -770,26 +770,26 @@ class nusoap_xmlschema extends nusoap_base
     }
 
     /**
-    * returns an associative array of information about a given type
-    * returns false if no type exists by the given name
-    *
-    *   For a complexType typeDef = array(
-    *   'restrictionBase' => '',
-    *   'phpType' => '',
-    *   'compositor' => '(sequence|all)',
-    *   'elements' => array(), // refs to elements array
-    *   'attrs' => array() // refs to attributes array
-    *   ... and so on (see addComplexType)
-    *   )
-    *
-    *   For simpleType or element, the array has different keys.
-    *
-    * @param string $type
-    * @return mixed
-    * @see addComplexType
-    * @see addSimpleType
-    * @see addElement
-    */
+     * returns an associative array of information about a given type
+     * returns false if no type exists by the given name
+     *
+     *   For a complexType typeDef = array(
+     *   'restrictionBase' => '',
+     *   'phpType' => '',
+     *   'compositor' => '(sequence|all)',
+     *   'elements' => array(), // refs to elements array
+     *   'attrs' => array() // refs to attributes array
+     *   ... and so on (see addComplexType)
+     *   )
+     *
+     *   For simpleType or element, the array has different keys.
+     *
+     * @param string $type
+     * @return mixed
+     * @see addComplexType
+     * @see addSimpleType
+     * @see addElement
+     */
     public function getTypeDef($type)
     {
         //$this->debug("in getTypeDef for type $type");
@@ -863,17 +863,17 @@ class nusoap_xmlschema extends nusoap_base
     }
 
     /**
-    * returns a sample serialization of a given type, or false if no type by the given name
-    *
-    * @param string $type name of type
-    * @return mixed
-    * @deprecated
-    */
+     * returns a sample serialization of a given type, or false if no type by the given name
+     *
+     * @param string $type name of type
+     * @return mixed
+     * @deprecated
+     */
     public function serializeTypeDef($type)
     {
         //print "in sTD() for type $type<br>";
         if ($typeDef = $this->getTypeDef($type)) {
-            $str .= '<' . $type;
+            $str = '<' . $type;
             if (is_array($typeDef['attrs'])) {
                 foreach ($typeDef['attrs'] as $attName => $data) {
                     $str .= " $attName=\"{type = " . $data['type'] . "}\"";
@@ -897,16 +897,17 @@ class nusoap_xmlschema extends nusoap_base
     }
 
     /**
-    * returns HTML form elements that allow a user
-    * to enter values for creating an instance of the given type.
-    *
-    * @param string $name name for type instance
-    * @param string $type name of type
-    * @return string
-    * @deprecated
-    */
+     * returns HTML form elements that allow a user
+     * to enter values for creating an instance of the given type.
+     *
+     * @param string $name name for type instance
+     * @param string $type name of type
+     * @return string
+     * @deprecated
+     */
     public function typeToForm($name, $type)
     {
+        $buffer = '';
         // get typedef
         if ($typeDef = $this->getTypeDef($type)) {
             // if struct
@@ -938,45 +939,45 @@ class nusoap_xmlschema extends nusoap_base
     }
 
     /**
-    * adds a complex type to the schema
-    *
-    * example: array
-    *
-    * addType(
-    *   'ArrayOfstring',
-    *   'complexType',
-    *   'array',
-    *   '',
-    *   'SOAP-ENC:Array',
-    *   array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'string[]'),
-    *   'xsd:string'
-    * );
-    *
-    * example: PHP associative array ( SOAP Struct )
-    *
-    * addType(
-    *   'SOAPStruct',
-    *   'complexType',
-    *   'struct',
-    *   'all',
-    *   array('myVar'=> array('name'=>'myVar','type'=>'string')
-    * );
-    *
-    * @param name
-    * @param typeClass (complexType|simpleType|attribute)
-    * @param phpType: currently supported are array and struct (php assoc array)
-    * @param compositor (all|sequence|choice)
-    * @param restrictionBase namespace:name (http://schemas.xmlsoap.org/soap/encoding/:Array)
-    * @param elements = array ( name = array(name=>'',type=>'') )
-    * @param attrs = array(
-    *   array(
-    *       'ref' => "http://schemas.xmlsoap.org/soap/encoding/:arrayType",
-    *       "http://schemas.xmlsoap.org/wsdl/:arrayType" => "string[]"
-    *   )
-    * )
-    * @param arrayType: namespace:name (http://www.w3.org/2001/XMLSchema:string)
-    * @see getTypeDef
-    */
+     * adds a complex type to the schema
+     *
+     * example: array
+     *
+     * addType(
+     *   'ArrayOfstring',
+     *   'complexType',
+     *   'array',
+     *   '',
+     *   'SOAP-ENC:Array',
+     *   array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'string[]'),
+     *   'xsd:string'
+     * );
+     *
+     * example: PHP associative array ( SOAP Struct )
+     *
+     * addType(
+     *   'SOAPStruct',
+     *   'complexType',
+     *   'struct',
+     *   'all',
+     *   array('myVar'=> array('name'=>'myVar','type'=>'string')
+     * );
+     *
+     * @param name
+     * @param typeClass (complexType|simpleType|attribute)
+     * @param phpType: currently supported are array and struct (php assoc array)
+     * @param compositor (all|sequence|choice)
+     * @param restrictionBase namespace:name (http://schemas.xmlsoap.org/soap/encoding/:Array)
+     * @param elements = array ( name = array(name=>'',type=>'') )
+     * @param attrs = array(
+     *   array(
+     *       'ref' => "http://schemas.xmlsoap.org/soap/encoding/:arrayType",
+     *       "http://schemas.xmlsoap.org/wsdl/:arrayType" => "string[]"
+     *   )
+     * )
+     * @param arrayType: namespace:name (http://www.w3.org/2001/XMLSchema:string)
+     * @see getTypeDef
+     */
     public function addComplexType($name, $typeClass = 'complexType', $phpType = 'array', $compositor = '', $restrictionBase = '', $elements = [], $attrs = [], $arrayType = '')
     {
         $this->complexTypes[$name] = [
@@ -995,16 +996,16 @@ class nusoap_xmlschema extends nusoap_base
     }
 
     /**
-    * adds a simple type to the schema
-    *
-    * @param string $name
-    * @param string $restrictionBase namespace:name (http://schemas.xmlsoap.org/soap/encoding/:Array)
-    * @param string $typeClass (should always be simpleType)
-    * @param string $phpType (should always be scalar)
-    * @param array $enumeration array of values
-    * @see nusoap_xmlschema
-    * @see getTypeDef
-    */
+     * adds a simple type to the schema
+     *
+     * @param string $name
+     * @param string $restrictionBase namespace:name (http://schemas.xmlsoap.org/soap/encoding/:Array)
+     * @param string $typeClass (should always be simpleType)
+     * @param string $phpType (should always be scalar)
+     * @param array $enumeration array of values
+     * @see nusoap_xmlschema
+     * @see getTypeDef
+     */
     public function addSimpleType($name, $restrictionBase = '', $typeClass = 'simpleType', $phpType = 'scalar', $enumeration = [])
     {
         $this->simpleTypes[$name] = [
@@ -1020,11 +1021,11 @@ class nusoap_xmlschema extends nusoap_base
     }
 
     /**
-    * adds an element to the schema
-    *
-    * @param array $attrs attributes that must include name and type
-    * @see nusoap_xmlschema
-    */
+     * adds an element to the schema
+     *
+     * @param array $attrs attributes that must include name and type
+     * @see nusoap_xmlschema
+     */
     public function addElement($attrs)
     {
         if (! $this->getPrefix($attrs['type'])) {

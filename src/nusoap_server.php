@@ -164,11 +164,11 @@ class nusoap_server extends nusoap_base
     public $faultHttpCode = 500;
 
     /**
-    * constructor
-    * the optional parameter is a path to a WSDL file that you'd like to bind the server instance to.
-    *
-    * @param mixed $wsdl file path or URL (string), or wsdl instance (object)
-    */
+     * constructor
+     * the optional parameter is a path to a WSDL file that you'd like to bind the server instance to.
+     *
+     * @param mixed $wsdl file path or URL (string), or wsdl instance (object)
+     */
     public function __construct($wsdl = false)
     {
         parent::__construct();
@@ -216,10 +216,10 @@ class nusoap_server extends nusoap_base
     }
 
     /**
-    * processes request and returns response
-    *
-    * @param    string $data usually is the value of $HTTP_RAW_POST_DATA
-    */
+     * processes request and returns response
+     *
+     * @param    string $data usually is the value of $HTTP_RAW_POST_DATA
+     */
     public function service($data)
     {
         if (isset($_SERVER['REQUEST_METHOD'])) {
@@ -288,15 +288,15 @@ class nusoap_server extends nusoap_base
     }
 
     /**
-    * parses HTTP request headers.
-    *
-    * The following fields are set by this function (when successful)
-    *
-    * headers
-    * request
-    * xml_encoding
-    * SOAPAction
-    */
+     * parses HTTP request headers.
+     *
+     * The following fields are set by this function (when successful)
+     *
+     * headers
+     * request
+     * xml_encoding
+     * SOAPAction
+     */
     protected function parse_http_headers()
     {
         $this->request = '';
@@ -367,26 +367,26 @@ class nusoap_server extends nusoap_base
     }
 
     /**
-    * parses a request
-    *
-    * The following fields are set by this function (when successful)
-    *
-    * headers
-    * request
-    * xml_encoding
-    * SOAPAction
-    * request
-    * requestSOAP
-    * methodURI
-    * methodname
-    * methodparams
-    * requestHeaders
-    * document
-    *
-    * This sets the fault field on error
-    *
-    * @param    string $data XML string
-    */
+     * parses a request
+     *
+     * The following fields are set by this function (when successful)
+     *
+     * headers
+     * request
+     * xml_encoding
+     * SOAPAction
+     * request
+     * requestSOAP
+     * methodURI
+     * methodname
+     * methodparams
+     * requestHeaders
+     * document
+     *
+     * This sets the fault field on error
+     *
+     * @param    string $data XML string
+     */
     protected function parse_request($data = '')
     {
         $this->debug('entering parse_request()');
@@ -419,20 +419,20 @@ class nusoap_server extends nusoap_base
     }
 
     /**
-    * invokes a PHP function for the requested SOAP method
-    *
-    * The following fields are set by this function (when successful)
-    *
-    * methodreturn
-    *
-    * Note that the PHP function that is called may also set the following
-    * fields to affect the response sent to the client
-    *
-    * responseHeaders
-    * outgoing_headers
-    *
-    * This sets the fault field on error
-    */
+     * invokes a PHP function for the requested SOAP method
+     *
+     * The following fields are set by this function (when successful)
+     *
+     * methodreturn
+     *
+     * Note that the PHP function that is called may also set the following
+     * fields to affect the response sent to the client
+     *
+     * responseHeaders
+     * outgoing_headers
+     *
+     * This sets the fault field on error
+     */
     protected function invoke_method()
     {
         $this->debug('in invoke_method, methodname=' . $this->methodname . ' methodURI=' . $this->methodURI . ' SOAPAction=' . $this->SOAPAction);
@@ -581,14 +581,14 @@ class nusoap_server extends nusoap_base
     }
 
     /**
-    * serializes the return value from a PHP function into a full SOAP Envelope
-    *
-    * The following fields are set by this function (when successful)
-    *
-    * responseSOAP
-    *
-    * This sets the fault field on error
-    */
+     * serializes the return value from a PHP function into a full SOAP Envelope
+     *
+     * The following fields are set by this function (when successful)
+     *
+     * responseSOAP
+     *
+     * This sets the fault field on error
+     */
     protected function serialize_return()
     {
         $this->debug('Entering serialize_return methodname: ' . $this->methodname . ' methodURI: ' . $this->methodURI);
@@ -681,13 +681,13 @@ class nusoap_server extends nusoap_base
     }
 
     /**
-    * sends an HTTP response
-    *
-    * The following fields are set by this function (when successful)
-    *
-    * outgoing_headers
-    * response
-    */
+     * sends an HTTP response
+     *
+     * The following fields are set by this function (when successful)
+     *
+     * outgoing_headers
+     * response
+     */
     protected function send_response()
     {
         $this->debug('Enter send_response');
@@ -762,13 +762,13 @@ class nusoap_server extends nusoap_base
     }
 
     /**
-    * takes the value that was created by parsing the request
-    * and compares to the method's signature, if available.
-    *
-    * @param    string  $operation  The operation to be invoked
-    * @param    array   $request    The array of parameter values
-    * @return   boolean Whether the operation was found
-    */
+     * takes the value that was created by parsing the request
+     * and compares to the method's signature, if available.
+     *
+     * @param    string  $operation  The operation to be invoked
+     * @param    array   $request    The array of parameter values
+     * @return   boolean Whether the operation was found
+     */
     protected function verify_method($operation, $request)
     {
         if (isset($this->wsdl) && is_object($this->wsdl)) {
@@ -782,12 +782,12 @@ class nusoap_server extends nusoap_base
     }
 
     /**
-    * processes SOAP message received from client
-    *
-    * @param    array   $headers    The HTTP headers
-    * @param    string  $data       unprocessed request data from client
-    * @return   mixed   value of the message, decoded into a PHP type
-    */
+     * processes SOAP message received from client
+     *
+     * @param    array   $headers    The HTTP headers
+     * @param    string  $data       unprocessed request data from client
+     * @return   mixed   value of the message, decoded into a PHP type
+     */
     protected function parseRequest($headers, $data)
     {
         $this->debug('Entering parseRequest() for data of length ' . strlen($data) . ' headers:');
@@ -839,67 +839,67 @@ class nusoap_server extends nusoap_base
     }
 
     /**
-    * gets the HTTP body for the current response.
-    *
-    * @param string $soapmsg The SOAP payload
-    * @return string The HTTP body, which includes the SOAP payload
-    */
+     * gets the HTTP body for the current response.
+     *
+     * @param string $soapmsg The SOAP payload
+     * @return string The HTTP body, which includes the SOAP payload
+     */
     protected function getHTTPBody($soapmsg)
     {
         return $soapmsg;
     }
 
     /**
-    * gets the HTTP content type for the current response.
-    *
-    * Note: getHTTPBody must be called before this.
-    *
-    * @return string the HTTP content type for the current response.
-    */
+     * gets the HTTP content type for the current response.
+     *
+     * Note: getHTTPBody must be called before this.
+     *
+     * @return string the HTTP content type for the current response.
+     */
     protected function getHTTPContentType()
     {
         return 'text/xml';
     }
 
     /**
-    * gets the HTTP content type charset for the current response.
-    * returns false for non-text content types.
-    *
-    * Note: getHTTPBody must be called before this.
-    *
-    * @return string the HTTP content type charset for the current response.
-    */
+     * gets the HTTP content type charset for the current response.
+     * returns false for non-text content types.
+     *
+     * Note: getHTTPBody must be called before this.
+     *
+     * @return string the HTTP content type charset for the current response.
+     */
     protected function getHTTPContentTypeCharset()
     {
         return $this->soap_defencoding;
     }
 
     /**
-    * add a method to the dispatch map (this has been replaced by the register method)
-    *
-    * @param    string $methodname
-    * @param    string $in array of input values
-    * @param    string $out array of output values
-    * @deprecated
-    */
+     * add a method to the dispatch map (this has been replaced by the register method)
+     *
+     * @param    string $methodname
+     * @param    string $in array of input values
+     * @param    string $out array of output values
+     * @deprecated
+     */
     public function add_to_map($methodname, $in, $out)
     {
             $this->operations[$methodname] = ['name' => $methodname,'in' => $in,'out' => $out];
     }
 
     /**
-    * register a service function with the server
-    *
-    * @param    string $name the name of the PHP function, class.method or class..method
-    * @param    array $in assoc array of input values: key = param name, value = param type
-    * @param    array $out assoc array of output values: key = param name, value = param type
-    * @param    mixed $namespace the element namespace for the method or false
-    * @param    mixed $soapaction the soapaction for the method or false
-    * @param    mixed $style optional (rpc|document) or false Note: when 'document' is specified, parameter and return wrappers are created for you automatically
-    * @param    mixed $use optional (encoded|literal) or false
-    * @param    string $documentation optional Description to include in WSDL
-    * @param    string $encodingStyle optional (usually 'http://schemas.xmlsoap.org/soap/encoding/' for encoded)
-    */
+     * register a service function with the server
+     *
+     * @param    string $name the name of the PHP function, class.method or class..method
+     * @param    array $in assoc array of input values: key = param name, value = param type
+     * @param    array $out assoc array of output values: key = param name, value = param type
+     * @param    mixed $namespace the element namespace for the method or false
+     * @param    mixed $soapaction the soapaction for the method or false
+     * @param    mixed $style optional (rpc|document) or false Note: when 'document' is specified, parameter and return wrappers are created for you automatically
+     * @param    mixed $use optional (encoded|literal) or false
+     * @param    string $documentation optional Description to include in WSDL
+     * @param    string $encodingStyle optional (usually 'http://schemas.xmlsoap.org/soap/encoding/' for encoded)
+     */
     public function register($name, $in = [], $out = [], $namespace = false, $soapaction = false, $style = false, $use = false, $documentation = '', $encodingStyle = '')
     {
         if ($this->externalWSDLURL) {
@@ -955,14 +955,14 @@ class nusoap_server extends nusoap_base
     }
 
     /**
-    * Specify a fault to be returned to the client.
-    * This also acts as a flag to the server that a fault has occured.
-    *
-    * @param    string $faultcode
-    * @param    string $faultstring
-    * @param    string $faultactor
-    * @param    string $faultdetail
-    */
+     * Specify a fault to be returned to the client.
+     * This also acts as a flag to the server that a fault has occured.
+     *
+     * @param    string $faultcode
+     * @param    string $faultstring
+     * @param    string $faultactor
+     * @param    string $faultdetail
+     */
     public function fault($faultcode, $faultstring, $faultactor = '', $faultdetail = '')
     {
         if ($faultdetail == '' && $this->debug_flag) {
@@ -973,16 +973,16 @@ class nusoap_server extends nusoap_base
     }
 
     /**
-    * Sets up wsdl object.
-    * Acts as a flag to enable internal WSDL generation
-    *
-    * @param string $serviceName, name of the service
-    * @param mixed $namespace optional 'tns' service namespace or false
-    * @param mixed $endpoint optional URL of service endpoint or false
-    * @param string $style optional (rpc|document) WSDL style (also specified by operation)
-    * @param string $transport optional SOAP transport
-    * @param mixed $schemaTargetNamespace optional 'types' targetNamespace for service schema or false
-    */
+     * Sets up wsdl object.
+     * Acts as a flag to enable internal WSDL generation
+     *
+     * @param string $serviceName, name of the service
+     * @param mixed $namespace optional 'tns' service namespace or false
+     * @param mixed $endpoint optional URL of service endpoint or false
+     * @param string $style optional (rpc|document) WSDL style (also specified by operation)
+     * @param string $transport optional SOAP transport
+     * @param mixed $schemaTargetNamespace optional 'types' targetNamespace for service schema or false
+     */
     public function configureWSDL($serviceName, $namespace = false, $endpoint = false, $style = 'rpc', $transport = 'http://schemas.xmlsoap.org/soap/http', $schemaTargetNamespace = false)
     {
         if (isset($_SERVER)) {
