@@ -5,9 +5,12 @@
     "license": "MIT",
     "homepage": "https://github.com/communityds/nusoap",
     "autoload": {
-      "classmap": [
-        "lib/"
-      ]
+        "classmap": [
+            "lib/"
+        ],
+        "files": [
+            "src/functions.php"
+        ]
     },
     "minimum-stability": "stable"
 }
