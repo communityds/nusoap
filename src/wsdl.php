@@ -896,7 +896,7 @@ class wsdl extends nusoap_base
     /**
     * prints html description of services
     */
-    protected function webDescription()
+    public function webDescription()
     {
         if (isset($_SERVER)) {
             $PHP_SELF = $_SERVER['PHP_SELF'];
@@ -1525,7 +1525,7 @@ class wsdl extends nusoap_base
                     return $xml;
                 }
                 $this->debug('custom type extends XML Schema or SOAP Encoding namespace (yuck)');
-            } else if ($ns == 'http://xml.apache.org/xml-soap') {
+            } elseif ($ns == 'http://xml.apache.org/xml-soap') {
                 $this->debug('in serializeType: appears to be Apache SOAP type');
                 if ($uqType == 'Map') {
                     $tt_prefix = $this->getPrefixFromNamespace('http://xml.apache.org/xml-soap');
