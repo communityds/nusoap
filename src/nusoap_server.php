@@ -140,9 +140,9 @@ class nusoap_server extends nusoap_base
 
     /**
      * wsdl instance (if one)
-     * @var mixed
+     * @var wsdl|false
      */
-    protected $wsdl = false;
+    public $wsdl = false;
 
     /**
      * URL for WSDL (if one)
