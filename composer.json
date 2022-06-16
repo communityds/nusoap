@@ -4,10 +4,16 @@
     "description": "NuSOAP legacy",
     "license": "MIT",
     "homepage": "https://github.com/communityds/nusoap",
+    "require": {
+        "php": ">=5.6"
+    },
     "autoload": {
-      "classmap": [
-        "lib/"
-      ]
+        "classmap": [
+            "src/"
+        ],
+        "files": [
+            "src/functions.php"
+        ]
     },
     "minimum-stability": "stable"
 }
