@@ -898,14 +898,10 @@ class wsdl extends nusoap_base
     */
     protected function webDescription()
     {
-        global $HTTP_SERVER_VARS;
-
         if (isset($_SERVER)) {
             $PHP_SELF = $_SERVER['PHP_SELF'];
-        } elseif (isset($HTTP_SERVER_VARS)) {
-            $PHP_SELF = $HTTP_SERVER_VARS['PHP_SELF'];
         } else {
-            $this->setError("Neither _SERVER nor HTTP_SERVER_VARS is available");
+            $this->setError("_SERVER is not available");
         }
 
         $b = '
