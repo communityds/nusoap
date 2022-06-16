@@ -575,7 +575,7 @@ class nusoap_xmlschema extends nusoap_base
      * @param    string $parser XML parser object
      * @param    string $name element name
      */
-    protected function schemaEndElement($parser, $name)
+    public function schemaEndElement($parser, $name)
     {
         // bring depth down a notch
         $this->depth--;
