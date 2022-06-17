@@ -952,7 +952,7 @@ class nusoap_server extends nusoap_base
         $SERVER_NAME = $_SERVER['SERVER_NAME'];
         $SERVER_PORT = $_SERVER['SERVER_PORT'];
         $SCRIPT_NAME = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
-        $HTTPS = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : 'off';
+        $HTTPS = isset($_SERVER['HTTP_X_FORWARDED_PROTO']) ? $_SERVER['HTTP_X_FORWARDED_PROTO'] : (isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : 'off');
 
         // If server name has port number attached then strip it (else port number gets duplicated in WSDL output) (occurred using lighttpd and FastCGI)
         $colon = strpos($SERVER_NAME, ":");
@@ -966,7 +966,7 @@ class nusoap_server extends nusoap_base
             $SERVER_PORT = ":{$SERVER_PORT}";
         }
 
-        if ($HTTPS == '1' || $HTTPS == 'on') {
+        if ($HTTPS == '1' || $HTTPS == 'on' || $HTTPS == 'https') {
             $SCHEME = 'https';
         } else {
             $SCHEME = 'http';
