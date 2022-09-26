@@ -282,6 +282,7 @@ class nusoap_client extends nusoap_base
         $this->responseData = '';
         $this->faultstring = '';
         $this->faultcode = '';
+        $this->faultdetail = '';
         $this->opData = [];
 
         $this->debug("call: operation=$operation, namespace=$namespace, soapAction=$soapAction, rpcParams=$rpcParams, style=$style, use=$use, endpointType=$this->endpointType");
@@ -422,7 +423,13 @@ class nusoap_client extends nusoap_base
                 $this->setError($return['faultcode'] . ': ' . $return['faultstring']);
                 $this->fault = true;
                 foreach ($return as $k => $v) {
-                    $this->$k = $v;
+                    // SOAP Fault has `detail` so must be translated to the `faultdetail` property
+                    // https://www.w3.org/TR/2000/NOTE-SOAP-20000508/#_Toc478383507
+                    if ($k == 'detail') {
+                        $this->faultdetail = $v;
+                    } else {
+                        $this->$k = $v;
+                    }
                     //$this->debug("$k = $v<br>");
                 }
                 return $return;
