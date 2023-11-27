@@ -1,15 +1,12 @@
 <?php
 
 /**
-* For creating serializable abstractions of native PHP types.  This class
-* allows element name/namespace, XSD type, and XML attributes to be
-* associated with a value.  This is extremely useful when WSDL is not
-* used, but is also useful when WSDL is used with polymorphic types, including
-* xsd:anyType and user-defined types.
-*
-* @author   Dietrich Ayala <dietrich@ganx4.com>
-* @version  $Id: class.soap_val.php,v 1.11 2007/04/06 13:56:32 snichol Exp $
-*/
+ * For creating serializable abstractions of native PHP types.  This class
+ * allows element name/namespace, XSD type, and XML attributes to be
+ * associated with a value.  This is extremely useful when WSDL is not
+ * used, but is also useful when WSDL is used with polymorphic types, including
+ * xsd:anyType and user-defined types.
+ */
 class soapval extends nusoap_base
 {
     /**
@@ -79,6 +76,7 @@ class soapval extends nusoap_base
      * return serialized value
      *
      * @param    string $use The WSDL use value (encoded|literal)
+     *
      * @return   string XML data
      */
     public function serialize($use = 'encoded')

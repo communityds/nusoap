@@ -1,13 +1,9 @@
 <?php
 
 /**
-* parses a WSDL file, allows access to it's data, other utility methods.
-* also builds WSDL structures programmatically.
-*
-* @author   Dietrich Ayala <dietrich@ganx4.com>
-* @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: class.wsdl.php,v 1.76 2010/04/26 20:15:08 snichol Exp $
-*/
+ * parses a WSDL file, allows access to it's data, other utility methods.
+ * also builds WSDL structures programmatically.
+ */
 class wsdl extends nusoap_base
 {
     /**
@@ -41,12 +37,12 @@ class wsdl extends nusoap_base
     public $messages = [];
 
     /**
-     * @var
+     * @var string
      */
     public $currentMessage;
 
     /**
-     * @var
+     * @var string
      */
     public $currentOperation;
 
@@ -96,7 +92,7 @@ class wsdl extends nusoap_base
     public $status = '';
 
     /**
-     * @var bool
+     * @var boolean
      */
     public $documentation = false;
 
@@ -121,12 +117,12 @@ class wsdl extends nusoap_base
     public $parser;
 
     /**
-     * @var int
+     * @var integer
      */
     public $position = 0;
 
     /**
-     * @var int
+     * @var integer
      */
     public $depth = 0;
 
@@ -156,12 +152,12 @@ class wsdl extends nusoap_base
     public $proxypassword = '';
 
     /**
-     * @var int
+     * @var integer
      */
     public $timeout = 0;
 
     /**
-     * @var int
+     * @var integer
      */
     public $response_timeout = 30;
 
@@ -171,7 +167,7 @@ class wsdl extends nusoap_base
     public $curl_options = [];
 
     /**
-     * @var bool whether to always try to use cURL
+     * @var boolean whether to always try to use cURL
      */
     public $use_curl = false;
 
@@ -207,6 +203,7 @@ class wsdl extends nusoap_base
      * @param integer $response_timeout set the response timeout
      * @param array $curl_options user-specified cURL options
      * @param boolean $use_curl try to use cURL
+     * @param array $httpheaders
      */
     public function __construct($wsdl = '', $proxyhost = false, $proxyport = false, $proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30, $curl_options = null, $use_curl = false, $httpheaders = [])
     {
@@ -230,6 +227,8 @@ class wsdl extends nusoap_base
 
     /**
      * fetches the WSDL document and parses it
+     *
+     * @param string $wsdl
      */
     public function fetchWSDL($wsdl)
     {
@@ -306,24 +305,24 @@ class wsdl extends nusoap_base
                     $this->debug('post-parse data gathering for ' . $operation);
                     $this->bindings[$binding]['operations'][$operation]['input'] =
                         isset($this->bindings[$binding]['operations'][$operation]['input']) ?
-                        array_merge($this->bindings[$binding]['operations'][$operation]['input'], $this->portTypes[ $bindingData['portType'] ][$operation]['input']) :
-                        $this->portTypes[ $bindingData['portType'] ][$operation]['input'];
+                        array_merge($this->bindings[$binding]['operations'][$operation]['input'], $this->portTypes[$bindingData['portType']][$operation]['input']) :
+                        $this->portTypes[$bindingData['portType']][$operation]['input'];
                     $this->bindings[$binding]['operations'][$operation]['output'] =
                         isset($this->bindings[$binding]['operations'][$operation]['output']) ?
-                        array_merge($this->bindings[$binding]['operations'][$operation]['output'], $this->portTypes[ $bindingData['portType'] ][$operation]['output']) :
-                        $this->portTypes[ $bindingData['portType'] ][$operation]['output'];
-                    if (isset($this->messages[ $this->bindings[$binding]['operations'][$operation]['input']['message'] ])) {
-                        $this->bindings[$binding]['operations'][$operation]['input']['parts'] = $this->messages[ $this->bindings[$binding]['operations'][$operation]['input']['message'] ];
+                        array_merge($this->bindings[$binding]['operations'][$operation]['output'], $this->portTypes[$bindingData['portType']][$operation]['output']) :
+                        $this->portTypes[$bindingData['portType']][$operation]['output'];
+                    if (isset($this->messages[$this->bindings[$binding]['operations'][$operation]['input']['message']])) {
+                        $this->bindings[$binding]['operations'][$operation]['input']['parts'] = $this->messages[$this->bindings[$binding]['operations'][$operation]['input']['message']];
                     }
-                    if (isset($this->messages[ $this->bindings[$binding]['operations'][$operation]['output']['message'] ])) {
-                        $this->bindings[$binding]['operations'][$operation]['output']['parts'] = $this->messages[ $this->bindings[$binding]['operations'][$operation]['output']['message'] ];
+                    if (isset($this->messages[$this->bindings[$binding]['operations'][$operation]['output']['message']])) {
+                        $this->bindings[$binding]['operations'][$operation]['output']['parts'] = $this->messages[$this->bindings[$binding]['operations'][$operation]['output']['message']];
                     }
                     // Set operation style if necessary, but do not override one already provided
                     if (isset($bindingData['style']) && !isset($this->bindings[$binding]['operations'][$operation]['style'])) {
                         $this->bindings[$binding]['operations'][$operation]['style'] = $bindingData['style'];
                     }
                     $this->bindings[$binding]['operations'][$operation]['transport'] = isset($bindingData['transport']) ? $bindingData['transport'] : '';
-                    $this->bindings[$binding]['operations'][$operation]['documentation'] = isset($this->portTypes[ $bindingData['portType'] ][$operation]['documentation']) ? $this->portTypes[ $bindingData['portType'] ][$operation]['documentation'] : '';
+                    $this->bindings[$binding]['operations'][$operation]['documentation'] = isset($this->portTypes[$bindingData['portType']][$operation]['documentation']) ? $this->portTypes[$bindingData['portType']][$operation]['documentation'] : '';
                     $this->bindings[$binding]['operations'][$operation]['endpoint'] = isset($bindingData['endpoint']) ? $bindingData['endpoint'] : '';
                 }
             }
@@ -334,9 +333,9 @@ class wsdl extends nusoap_base
      * parses the wsdl document
      *
      * @param string $wsdl path or URL
-     * @param bool $use_outgoing_http_headers Flag if $this->outgoing_http_headers should be used
+     * @param boolean $use_outgoing_http_headers Flag if $this->outgoing_http_headers should be used
      *
-     * @return bool
+     * @return boolean
      */
     protected function parseWSDL($wsdl = '', $use_outgoing_http_headers = true)
     {
@@ -588,8 +587,8 @@ class wsdl extends nusoap_base
                         case 'address':
                             $this->ports[$this->currentPort]['location'] = $attrs['location'];
                             $this->ports[$this->currentPort]['bindingType'] = $namespace;
-                            $this->bindings[ $this->ports[$this->currentPort]['binding'] ]['bindingType'] = $namespace;
-                            $this->bindings[ $this->ports[$this->currentPort]['binding'] ]['endpoint'] = $attrs['location'];
+                            $this->bindings[$this->ports[$this->currentPort]['binding']]['bindingType'] = $namespace;
+                            $this->bindings[$this->ports[$this->currentPort]['binding']]['endpoint'] = $attrs['location'];
                             break;
                     }
                     break;
@@ -726,6 +725,7 @@ class wsdl extends nusoap_base
      *
      * @param string $portName WSDL port name
      * @param string $bindingType eg: soap, smtp, dime (only soap and soap12 are currently supported)
+     *
      * @return array
      */
     public function getOperations($portName = '', $bindingType = 'soap')
@@ -749,8 +749,8 @@ class wsdl extends nusoap_base
                     //$this->debug("port data: " . $this->varDump($portData));
                     //$this->debug("bindings: " . $this->varDump($this->bindings[ $portData['binding'] ]));
                     // merge bindings
-                    if (isset($this->bindings[ $portData['binding'] ]['operations'])) {
-                        $ops = array_merge($ops, $this->bindings[ $portData['binding'] ]['operations']);
+                    if (isset($this->bindings[$portData['binding']]['operations'])) {
+                        $ops = array_merge($ops, $this->bindings[$portData['binding']]['operations']);
                     }
                 }
             }
@@ -766,6 +766,7 @@ class wsdl extends nusoap_base
      *
      * @param string $operation name of operation
      * @param string $bindingType type of binding eg: soap, soap12
+     *
      * @return array
      */
     public function getOperationData($operation, $bindingType = 'soap')
@@ -781,10 +782,10 @@ class wsdl extends nusoap_base
             if ($portData['bindingType'] == $bindingType) {
                 // get binding
                 //foreach($this->bindings[ $portData['binding'] ]['operations'] as $bOperation => $opData) {
-                foreach (array_keys($this->bindings[ $portData['binding'] ]['operations']) as $bOperation) {
+                foreach (array_keys($this->bindings[$portData['binding']]['operations']) as $bOperation) {
                     // note that we could/should also check the namespace here
                     if ($operation == $bOperation) {
-                        $opData = $this->bindings[ $portData['binding'] ]['operations'][$operation];
+                        $opData = $this->bindings[$portData['binding']]['operations'][$operation];
                         return $opData;
                     }
                 }
@@ -797,6 +798,7 @@ class wsdl extends nusoap_base
      *
      * @param string $soapAction soapAction for operation
      * @param string $bindingType type of binding eg: soap, soap12
+     *
      * @return array
      */
     public function getOperationDataForSoapAction($soapAction, $bindingType = 'soap')
@@ -811,7 +813,7 @@ class wsdl extends nusoap_base
             // binding type of port matches parameter
             if ($portData['bindingType'] == $bindingType) {
                 // loop through operations for the binding
-                foreach ($this->bindings[ $portData['binding'] ]['operations'] as $bOperation => $opData) {
+                foreach ($this->bindings[$portData['binding']]['operations'] as $bOperation => $opData) {
                     if ($opData['soapAction'] == $soapAction) {
                         return $opData;
                     }
@@ -834,6 +836,7 @@ class wsdl extends nusoap_base
      *
      * @param string $type the type
      * @param string $ns namespace (not prefix) of the type
+     *
      * @return mixed
      * @see nusoap_xmlschema
      */
@@ -895,6 +898,8 @@ class wsdl extends nusoap_base
 
     /**
      * prints html description of services
+     *
+     * @return string
      */
     public function webDescription()
     {
@@ -1024,6 +1029,7 @@ class wsdl extends nusoap_base
      * serialize the parsed wsdl
      *
      * @param mixed $debug whether to put debug=1 in endpoint URL
+     *
      * @return string serialization of WSDL
      */
     public function serialize($debug = 0)
@@ -1132,7 +1138,7 @@ class wsdl extends nusoap_base
                     }
                     $portType_xml .= '>';
                     if (isset($opParts['documentation']) && $opParts['documentation'] != '') {
-                        $portType_xml .= "\n" . '    <documentation>' . htmlspecialchars($opParts['documentation']) . '</documentation>';
+                        $portType_xml .= "\n" . '    <documentation>' . htmlspecialchars($opParts['documentation'], ENT_COMPAT) . '</documentation>';
                     }
                     $portType_xml .= "\n" . '    <input message="tns:' . $opParts['input']['message'] . '"/>';
                     $portType_xml .= "\n" . '    <output message="tns:' . $opParts['output']['message'] . '"/>';
@@ -1162,6 +1168,7 @@ class wsdl extends nusoap_base
      *
      * @param string $type the type (element name) of the wrapper
      * @param array $parameters the parameter values for the SOAP call
+     *
      * @return boolean whether they parameters are unwrapped (and should be wrapped)
      */
     protected function parametersMatchWrapped($type, &$parameters)
@@ -1245,6 +1252,7 @@ class wsdl extends nusoap_base
      * @param string $direction (input|output)
      * @param mixed $parameters parameter value(s)
      * @param string $bindingType (soap|soap12)
+     *
      * @return mixed parameters serialized as XML or false on error (e.g. operation not found)
      */
     public function serializeRPCParameters($operation, $direction, $parameters, $bindingType = 'soap')
@@ -1345,6 +1353,7 @@ class wsdl extends nusoap_base
      * @param string $operation operation name
      * @param string $direction (input|output)
      * @param mixed $parameters parameter value(s)
+     *
      * @return mixed parameters serialized as XML or false on error (e.g. operation not found)
      * @deprecated
      */
@@ -1423,6 +1432,7 @@ class wsdl extends nusoap_base
      * @param string $use use for part (encoded|literal)
      * @param string $encodingStyle SOAP encoding style for the value (if different than the enclosing style)
      * @param boolean $unqualified a kludge for what should be XML namespace form handling
+     *
      * @return string value serialized as an XML string
      */
     protected function serializeType($name, $type, $value, $use = 'encoded', $encodingStyle = false, $unqualified = false)
@@ -1741,6 +1751,7 @@ class wsdl extends nusoap_base
      * @param mixed $value a native PHP value (parameter value)
      * @param string $ns the namespace of the type
      * @param string $uqType the local part of the type
+     *
      * @return string value serialized as an XML string
      */
     protected function serializeComplexTypeAttributes($typeDef, $value, $ns, $uqType)
@@ -1804,6 +1815,7 @@ class wsdl extends nusoap_base
      * @param string $uqType the local part of the type
      * @param string $use use for part (encoded|literal)
      * @param string $encodingStyle SOAP encoding style for the value (if different than the enclosing style)
+     *
      * @return string value serialized as an XML string
      */
     protected function serializeComplexTypeElements($typeDef, $value, $ns, $uqType, $use = 'encoded', $encodingStyle = false)
@@ -1913,6 +1925,7 @@ class wsdl extends nusoap_base
      * @param array $elements e.g. array ( name => array(name=>'',type=>'') )
      * @param array $attrs e.g. array(array('ref'=>'SOAP-ENC:arrayType','wsdl:arrayType'=>'xsd:string[]'))
      * @param string $arrayType as namespace:name (xsd:string)
+     *
      * @see nusoap_xmlschema
      */
     public function addComplexType($name, $typeClass = 'complexType', $phpType = 'array', $compositor = '', $restrictionBase = '', $elements = [], $attrs = [], $arrayType = '')
@@ -1960,6 +1973,7 @@ class wsdl extends nusoap_base
      * @param string $typeClass (should always be simpleType)
      * @param string $phpType (should always be scalar)
      * @param array $enumeration array of values
+     *
      * @see nusoap_xmlschema
      */
     public function addSimpleType($name, $restrictionBase = '', $typeClass = 'simpleType', $phpType = 'scalar', $enumeration = [])
@@ -1974,6 +1988,7 @@ class wsdl extends nusoap_base
      * adds an element to the WSDL types
      *
      * @param array $attrs attributes that must include name and type
+     *
      * @see nusoap_xmlschema
      */
     public function addElement($attrs)
@@ -1994,6 +2009,8 @@ class wsdl extends nusoap_base
      * @param string $use (encoded|literal) optional The use for the parameters (cannot mix right now)
      * @param string $documentation optional The description to include in the WSDL
      * @param string $encodingStyle optional (usually 'http://schemas.xmlsoap.org/soap/encoding/' for encoded)
+     *
+     * @return boolean
      */
     public function addOperation($name, $in = false, $out = false, $namespace = false, $soapaction = false, $style = 'rpc', $use = 'encoded', $documentation = '', $encodingStyle = '')
     {
@@ -2020,7 +2037,7 @@ class wsdl extends nusoap_base
         }
 
         // get binding
-        $this->bindings[ $this->serviceName . 'Binding' ]['operations'][$name] =
+        $this->bindings[$this->serviceName . 'Binding']['operations'][$name] =
         [
         'name' => $name,
         'binding' => $this->serviceName . 'Binding',

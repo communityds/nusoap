@@ -56,13 +56,8 @@ http://www.nusphere.com
 $GLOBALS['_transient']['static']['nusoap_base']['globalDebugLevel'] = 9;
 
 /**
-*
-* nusoap_base
-*
-* @author   Dietrich Ayala <dietrich@ganx4.com>
-* @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: class.nusoap_base.php,v 1.56 2010/04/26 20:15:08 snichol Exp $
-*/
+ * nusoap_base
+ */
 class nusoap_base
 {
     /**
@@ -141,7 +136,7 @@ class nusoap_base
         'SOAP-ENV' => 'http://schemas.xmlsoap.org/soap/envelope/',
         'xsd' => 'http://www.w3.org/2001/XMLSchema',
         'xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
-        'SOAP-ENC' => 'http://schemas.xmlsoap.org/soap/encoding/'
+        'SOAP-ENC' => 'http://schemas.xmlsoap.org/soap/encoding/',
     ];
 
     /**
@@ -168,12 +163,12 @@ class nusoap_base
             'normalizedString' => 'string', 'token' => 'string', 'language' => '', 'NMTOKEN' => '', 'NMTOKENS' => '', 'Name' => '', 'NCName' => '', 'ID' => '',
             'IDREF' => '', 'IDREFS' => '', 'ENTITY' => '', 'ENTITIES' => '', 'integer' => 'integer', 'nonPositiveInteger' => 'integer',
             'negativeInteger' => 'integer', 'long' => 'integer', 'int' => 'integer', 'short' => 'integer', 'byte' => 'integer', 'nonNegativeInteger' => 'integer',
-            'unsignedLong' => '', 'unsignedInt' => '', 'unsignedShort' => '', 'unsignedByte' => '', 'positiveInteger' => ''
+            'unsignedLong' => '', 'unsignedInt' => '', 'unsignedShort' => '', 'unsignedByte' => '', 'positiveInteger' => '',
         ],
         'http://www.w3.org/2000/10/XMLSchema' => [
             'i4' => '', 'int' => 'integer', 'boolean' => 'boolean', 'string' => 'string', 'double' => 'double',
             'float' => 'double', 'dateTime' => 'string',
-            'timeInstant' => 'string', 'base64Binary' => 'string', 'base64' => 'string', 'ur-type' => 'array'
+            'timeInstant' => 'string', 'base64Binary' => 'string', 'base64' => 'string', 'ur-type' => 'array',
         ],
         'http://www.w3.org/1999/XMLSchema' => [
             'i4' => '', 'int' => 'integer', 'boolean' => 'boolean', 'string' => 'string', 'double' => 'double',
@@ -189,8 +184,8 @@ class nusoap_base
             'Array' => 'array',
         ],
         'http://xml.apache.org/xml-soap' => [
-            'Map'
-        ]
+            'Map',
+        ],
     ];
 
     /**
@@ -205,7 +200,7 @@ class nusoap_base
         'amp' => '&',
         'lt' => '<',
         'gt' => '>',
-        'apos' => "'"
+        'apos' => "'",
     ];
 
     /**
@@ -229,7 +224,7 @@ class nusoap_base
     /**
      * sets the global debug level, which applies to future instances
      *
-     * @param    int $level  Debug level 0-9, where 0 turns off
+     * @param    integer $level Debug level 0-9, where 0 turns off
      */
     public function setGlobalDebugLevel($level)
     {
@@ -239,7 +234,7 @@ class nusoap_base
     /**
      * gets the debug level for this instance
      *
-     * @return   int Debug level 0-9, where 0 turns off
+     * @return   integer Debug level 0-9, where 0 turns off
      */
     public function getDebugLevel()
     {
@@ -249,7 +244,7 @@ class nusoap_base
     /**
      * sets the debug level for this instance
      *
-     * @param    int $level  Debug level 0-9, where 0 turns off
+     * @param    integer $level Debug level 0-9, where 0 turns off
      */
     public function setDebugLevel($level)
     {
@@ -324,7 +319,9 @@ class nusoap_base
     /**
      * expands entities, e.g. changes '<' to '&lt;'.
      *
-     * @param    string  $val    The string in which to expand entities.
+     * @param    string $val The string in which to expand entities.
+     *
+     * @return string
      */
     protected function expandEntities($val)
     {
@@ -364,7 +361,8 @@ class nusoap_base
     /**
      * detect if array is a simple array or a struct (associative array)
      *
-     * @param    mixed   $val    The PHP array
+     * @param    mixed $val The PHP array
+     *
      * @return   string  (arraySimple|arrayStruct)
      */
     protected function isArraySimpleOrStruct($val)
@@ -382,14 +380,15 @@ class nusoap_base
      * serializes PHP values in accordance w/ section 5. Type information is
      * not serialized if $use == 'literal'.
      *
-     * @param    mixed   $val    The value to serialize
-     * @param    string  $name   The name (local part) of the XML element
-     * @param    string  $type   The XML schema type (local part) for the element
-     * @param    string  $name_ns    The namespace for the name of the XML element
-     * @param    string  $type_ns    The namespace for the type of the element
-     * @param    array   $attributes The attributes to serialize as name=>value pairs
-     * @param    string  $use    The WSDL "use" (encoded|literal)
-     * @param    boolean $soapval    Whether this is called from soapval.
+     * @param    mixed $val The value to serialize
+     * @param    string $name The name (local part) of the XML element
+     * @param    string $type The XML schema type (local part) for the element
+     * @param    string $name_ns The namespace for the name of the XML element
+     * @param    string $type_ns The namespace for the type of the element
+     * @param    array $attributes The attributes to serialize as name=>value pairs
+     * @param    string $use The WSDL "use" (encoded|literal)
+     * @param    boolean $soapval Whether this is called from soapval.
+     *
      * @return   string  The serialized element, possibly with child elements
      */
     public function serialize_val($val, $name = false, $type = false, $name_ns = false, $type_ns = false, $attributes = false, $use = 'encoded', $soapval = false)
@@ -655,6 +654,7 @@ class nusoap_base
      * @param string $style optional (rpc|document)
      * @param string $use optional (encoded|literal)
      * @param string $encodingStyle optional (usually 'http://schemas.xmlsoap.org/soap/encoding/' for encoded)
+     *
      * @return string the message
      */
     public function serializeEnvelope($body, $headers = false, $namespaces = [], $style = 'rpc', $use = 'encoded', $encodingStyle = 'http://schemas.xmlsoap.org/soap/encoding/')
@@ -709,12 +709,13 @@ class nusoap_base
      * formats a string to be inserted into an HTML stream
      *
      * @param string $str The string to format
+     *
      * @return string The formatted string
      * @deprecated
      */
     public function formatDump($str)
     {
-        $str = htmlspecialchars($str);
+        $str = htmlspecialchars($str, ENT_COMPAT);
         return nl2br($str);
     }
 
@@ -722,6 +723,7 @@ class nusoap_base
      * contracts (changes namespace to prefix) a qualified name
      *
      * @param    string $qname qname
+     *
      * @return   string contracted qname
      */
     protected function contractQname($qname)
@@ -747,6 +749,7 @@ class nusoap_base
      * expands (changes prefix to namespace) a qualified name
      *
      * @param    string $qname qname
+     *
      * @return   string expanded qname
      */
     protected function expandQname($qname)
@@ -772,6 +775,7 @@ class nusoap_base
      * returns the original string, if not prefixed
      *
      * @param string $str The prefixed string
+     *
      * @return string The local part
      */
     public function getLocalPart($str)
@@ -789,6 +793,7 @@ class nusoap_base
      * returns false, if not prefixed
      *
      * @param string $str The prefixed string
+     *
      * @return string|false The prefix or false if there is no prefix
      */
     public function getPrefix($str)
@@ -804,6 +809,7 @@ class nusoap_base
      * pass it a prefix, it returns a namespace
      *
      * @param string $prefix The prefix
+     *
      * @return mixed The namespace, false if no namespace has the specified prefix
      */
     public function getNamespaceFromPrefix($prefix)
@@ -820,6 +826,7 @@ class nusoap_base
      * or false if no prefixes registered for the given namespace
      *
      * @param string $ns The namespace
+     *
      * @return string|false The prefix, false if the namespace has no prefixes
      */
     public function getPrefixFromNamespace($ns)
@@ -855,6 +862,7 @@ class nusoap_base
      * Returns a string with the output of var_dump
      *
      * @param mixed $data The variable to var_dump
+     *
      * @return string The output of var_dump
      */
     public function varDump($data)

@@ -1,13 +1,9 @@
 <?php
 
 /**
-* transport class for sending/receiving data via HTTP and HTTPS
-* NOTE: PHP must be compiled with the CURL extension for HTTPS support
-*
-* @author   Dietrich Ayala <dietrich@ganx4.com>
-* @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: class.soap_transport_http.php,v 1.68 2010/04/26 20:15:08 snichol Exp $
-*/
+ * for sending/receiving data via HTTP and HTTPS
+ * NOTE: PHP must be compiled with the CURL extension for HTTPS support
+ */
 class soap_transport_http extends nusoap_base
 {
     /**
@@ -91,12 +87,12 @@ class soap_transport_http extends nusoap_base
     public $response_status_line;
 
     /**
-     * @var bool
+     * @var boolean
      */
     public $useSOAPAction = true;
 
     /**
-     * @var bool
+     * @var boolean
      */
     public $persistentConnection = false;
 
@@ -111,7 +107,7 @@ class soap_transport_http extends nusoap_base
     public $ch_options = [];
 
     /**
-     * @var bool force cURL use
+     * @var boolean force cURL use
      */
     public $use_curl = false;
 
@@ -200,6 +196,7 @@ class soap_transport_http extends nusoap_base
      * Get an HTTP header
      *
      * @param string $name The name of the header
+     *
      * @return mixed|null
      */
     protected function getHeader($name)
@@ -215,7 +212,7 @@ class soap_transport_http extends nusoap_base
      *
      * @param string $name The name of the header
      * @param string $value The value of the header
-     * @param bool $override_existing when false, don't override an existing value
+     * @param boolean $override_existing when false, don't override an existing value
      */
     protected function setHeader($name, $value, $override_existing = true)
     {
@@ -306,6 +303,7 @@ class soap_transport_http extends nusoap_base
      *
      * @param    integer $connection_timeout set connection timeout in seconds
      * @param    integer $response_timeout set response timeout in seconds
+     *
      * @return   boolean true if connected, false if not
      */
     protected function connect($connection_timeout = 0, $response_timeout = 30)
@@ -546,6 +544,7 @@ class soap_transport_http extends nusoap_base
      * @param    integer $timeout set connection timeout in seconds
      * @param    integer $response_timeout set response timeout in seconds
      * @param    array $cookies cookies to send
+     *
      * @return   string data
      */
     public function send($data, $timeout = 0, $response_timeout = 30, $cookies = null)
@@ -578,7 +577,6 @@ class soap_transport_http extends nusoap_base
         return $respdata;
     }
 
-
     /**
      * sends the SOAP request and gets the SOAP response via HTTPS using CURL
      *
@@ -586,6 +584,7 @@ class soap_transport_http extends nusoap_base
      * @param    integer $timeout set connection timeout in seconds
      * @param    integer $response_timeout set response timeout in seconds
      * @param    array $cookies cookies to send
+     *
      * @return   string data
      * @deprecated
      */
@@ -719,7 +718,7 @@ class soap_transport_http extends nusoap_base
                 'port' => $proxyport,
                 'username' => $proxyusername,
                 'password' => $proxypassword,
-                'authtype' => $proxyauthtype
+                'authtype' => $proxyauthtype,
             ];
             if ($proxyusername != '' && $proxypassword != '' && $proxyauthtype = 'basic') {
                 $this->setHeader('Proxy-Authorization', ' Basic ' . base64_encode($proxyusername . ':' . $proxypassword));
@@ -731,13 +730,13 @@ class soap_transport_http extends nusoap_base
         }
     }
 
-
     /**
      * Test if the given string starts with a header that is to be skipped.
      * Skippable headers result from chunked transfer and proxy requests.
      *
      * @param   string $data The string to check.
-     * @returns boolean Whether a skippable header was found.
+     *
+     * @return boolean Whether a skippable header was found.
      */
     protected function isSkippableCurlHeader(&$data)
     {
@@ -766,7 +765,9 @@ class soap_transport_http extends nusoap_base
      *
      * @param    string $buffer
      * @param    string $lb
-     * @returns  string
+     *
+     * @return  string
+     *
      * @deprecated
      */
     public function decodeChunked($buffer, $lb)
@@ -824,6 +825,7 @@ class soap_transport_http extends nusoap_base
      *
      * @param   string $data HTTP body
      * @param   string $cookie_str data for HTTP Cookie header
+     *
      * @return  void
      */
     protected function buildPayload($data, $cookie_str = '')
@@ -873,6 +875,7 @@ class soap_transport_http extends nusoap_base
      *
      * @param    string $data message data
      * @param    array $cookies cookies to send
+     *
      * @return   boolean true if OK, false if problem
      */
     protected function sendRequest($data, $cookies = null)
@@ -1334,6 +1337,7 @@ class soap_transport_http extends nusoap_base
      * parse an incoming Cookie into it's parts
      *
      * @param   string $cookie_str content of cookie
+     *
      * @return  array with data of that cookie
      *
      * @todo allow a Set-Cookie string to be parsed into multiple cookies
@@ -1388,7 +1392,7 @@ class soap_transport_http extends nusoap_base
                             'domain' => $domain,
                             'path' => $path,
                             'expires' => $expires,
-                            'secure' => $secure
+                            'secure' => $secure,
                             ];
             return $cookie;
         }
@@ -1400,6 +1404,7 @@ class soap_transport_http extends nusoap_base
      *
      * @param   array $cookies array with all cookies
      * @param   boolean $secure is the send-content secure or not?
+     *
      * @return  string for Cookie-HTTP-Header
      */
     protected function getCookiesForRequest($cookies, $secure = false)

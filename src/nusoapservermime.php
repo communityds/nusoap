@@ -38,8 +38,8 @@ http://www.nusphere.com
 
 */
 
-/*
- *	For backwards compatiblity
+/**
+ * For backwards compatibility
  */
 class nusoapservermime extends nusoap_server_mime
 {
