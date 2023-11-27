@@ -14,7 +14,7 @@ nusoap-general@lists.sourceforge.net
 class nusoap_wsdlcache
 {
     /**
-     * @var resource
+     * @var resource[]
      */
     protected $fplock;
 

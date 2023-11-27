@@ -7,9 +7,14 @@
 class wsdl extends nusoap_base
 {
     /**
-     * @var URL or filename of the root of this WSDL
+     * @var string URL or filename of the root of this WSDL
      */
     public $wsdl;
+
+    /**
+     * @var array
+     */
+    public $wsdl_info = [];
 
     /**
      * @var array
@@ -85,6 +90,11 @@ class wsdl extends nusoap_base
      * @var array
      */
     public $opData = [];
+
+    /**
+     * @var string
+     */
+    public $opStatus = '';
 
     /**
      * @var string
@@ -190,6 +200,11 @@ class wsdl extends nusoap_base
      * @var array Certificate for HTTP SSL authentication
      */
     public $certRequest = [];
+
+    /**
+     * @var string
+     */
+    public $serviceName = '';
 
     /**
      * constructor
@@ -480,6 +495,7 @@ class wsdl extends nusoap_base
                     }
                 }
                 // expand each attribute prefix to its namespace
+                $eAttrs = [];
                 foreach ($attrs as $k => $v) {
                     $k = strpos($k, ':') ? $this->expandQname($k) : $k;
                     if ($k != 'location' && $k != 'soapAction' && $k != 'namespace') {
@@ -791,6 +807,7 @@ class wsdl extends nusoap_base
                 }
             }
         }
+        return [];
     }
 
     /**
@@ -820,6 +837,7 @@ class wsdl extends nusoap_base
                 }
             }
         }
+        return [];
     }
 
     /**

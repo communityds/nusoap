@@ -17,6 +17,16 @@
 class nusoap_client extends nusoap_base
 {
     /**
+     * @var string|null
+     */
+    public $wsdl = null;
+
+    /**
+     * @var string
+     */
+    public $wsdlFile = '';
+
+    /**
      * @var string Username for HTTP authentication
      */
     public $username = '';
@@ -197,6 +207,21 @@ class nusoap_client extends nusoap_base
      * @var      string
      */
     public $faultdetail;
+
+    /**
+     * @var string
+     */
+    protected $operation = '';
+
+    /**
+     * @var array
+     */
+    public $opData = [];
+
+    /**
+     * @var mixed
+     */
+    public $return;
 
     /**
      * @param    mixed $endpoint SOAP server or WSDL URL (string), or wsdl instance (object)
@@ -521,6 +546,7 @@ class nusoap_client extends nusoap_base
             return $this->operations[$operation];
         }
         $this->debug("No data for operation: $operation");
+        return [];
     }
 
     /**
@@ -837,6 +863,8 @@ class nusoap_client extends nusoap_base
         // eval the class
         eval($evalStr);
         // instantiate proxy object
+        /** @var nusoap_client $proxy */
+        $proxy = null;
         eval("\$proxy = new nusoap_proxy_$r('');");
         // transfer current wsdl data to the proxy thereby avoiding parsing the wsdl twice
         $proxy->endpointType = 'wsdl';

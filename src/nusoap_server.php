@@ -173,6 +173,11 @@ class nusoap_server extends nusoap_base
     protected $customEndpoint;
 
     /**
+     * @var array
+     */
+    public $opData = [];
+
+    /**
      * constructor
      * the optional parameter is a path to a WSDL file that you'd like to bind the server instance to.
      *
