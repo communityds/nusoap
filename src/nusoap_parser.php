@@ -146,6 +146,16 @@ class nusoap_parser extends nusoap_base
     public $decode_utf8 = true;
 
     /**
+     * @var string
+     */
+    public $methodNamespace;
+
+    /**
+     * @var XMLParser
+     */
+    protected $parser;
+
+    /**
      * constructor that actually does the parsing
      *
      * @param    string $xml SOAP message

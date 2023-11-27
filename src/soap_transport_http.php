@@ -32,7 +32,7 @@ class soap_transport_http extends nusoap_base
     public $host = '';
 
     /**
-     * @var string
+     * @var string|integer
      */
     public $port = '';
 
@@ -149,6 +149,21 @@ class soap_transport_http extends nusoap_base
     public $certRequest = [];
 
     /**
+     * @var boolean
+     */
+    protected $tryagain;
+
+    /**
+     * @var resource
+     */
+    protected $fp;
+
+    /**
+     * @var string
+     */
+    public $errno = '';
+
+    /**
      * constructor
      *
      * @param string $url The URL to which to connect
@@ -249,7 +264,14 @@ class soap_transport_http extends nusoap_base
         $u = parse_url($url);
         foreach ($u as $k => $v) {
             $this->debug("parsed URL $k = $v");
-            $this->$k = $v;
+            switch ($k) {
+                case 'host':
+                case 'path':
+                case 'port':
+                case 'scheme':
+                    $this->$k = $v;
+                    break;
+            }
         }
 
         // add any GET params to path
@@ -726,7 +748,7 @@ class soap_transport_http extends nusoap_base
         } else {
             $this->debug('remove proxy');
             $proxy = null;
-            unsetHeader('Proxy-Authorization');
+            $this->unsetHeader('Proxy-Authorization');
         }
     }
 
@@ -928,6 +950,8 @@ class soap_transport_http extends nusoap_base
             $this->debug('set cURL payload');
             return true;
         }
+
+        return false;
     }
 
     /**

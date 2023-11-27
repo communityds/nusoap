@@ -291,6 +291,7 @@ class nusoap_xmlschema extends nusoap_base
                     }
                 }
             }
+            $eAttrs = [];
             foreach ($attrs as $k => $v) {
                 // expand each attribute
                 $k = strpos($k, ':') ? $this->expandQname($k) : $k;
@@ -331,6 +332,8 @@ class nusoap_xmlschema extends nusoap_base
                         }
                     }
                 }
+
+                $aname = '';
                 if (isset($attrs['name'])) {
                     $this->attributes[$attrs['name']] = $attrs;
                     $aname = $attrs['name'];
