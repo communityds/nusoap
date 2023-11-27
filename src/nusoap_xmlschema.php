@@ -1,13 +1,9 @@
 <?php
 
 /**
-* parses an XML Schema, allows access to it's data, other utility methods.
-* imperfect, no validation... yet, but quite functional.
-*
-* @author   Dietrich Ayala <dietrich@ganx4.com>
-* @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: class.xmlschema.php,v 1.53 2010/04/26 20:15:08 snichol Exp $
-*/
+ * parses an XML Schema, allows access to it's data, other utility methods.
+ * imperfect, no validation... yet, but quite functional.
+ */
 class nusoap_xmlschema extends nusoap_base
 {
     /**
@@ -96,12 +92,12 @@ class nusoap_xmlschema extends nusoap_base
     public $parser;
 
     /**
-     * @var int
+     * @var integer
      */
     public $position = 0;
 
     /**
-     * @var int
+     * @var integer
      */
     public $depth = 0;
 
@@ -157,6 +153,7 @@ class nusoap_xmlschema extends nusoap_base
      *
      * @param string $xml path/URL to XML file
      * @param string $type (schema | xml)
+     *
      * @return boolean
      */
     public function parseFile($xml, $type)
@@ -229,7 +226,8 @@ class nusoap_xmlschema extends nusoap_base
     /**
      * gets a type name for an unnamed type
      *
-     * @param   string  Element name
+     * @param   string $ename Element name
+     *
      * @return  string  A type name for an unnamed type
      */
     protected function CreateTypeName($ename)
@@ -465,8 +463,8 @@ class nusoap_xmlschema extends nusoap_base
                     $this->complexTypes[$this->currentComplexType]['elements'][$ename] = $attrs;
                 } elseif (!isset($attrs['ref'])) {
                     $this->xdebug("add element $ename to elements array");
-                    $this->elements[ $attrs['name'] ] = $attrs;
-                    $this->elements[ $attrs['name'] ]['typeClass'] = 'element';
+                    $this->elements[$attrs['name']] = $attrs;
+                    $this->elements[$attrs['name']]['typeClass'] = 'element';
                 }
                 break;
             case 'enumeration': //  restriction value list member
@@ -549,9 +547,9 @@ class nusoap_xmlschema extends nusoap_base
                 if (isset($attrs['name'])) {
                     $this->xdebug("processing simpleType for name " . $attrs['name']);
                     $this->currentSimpleType = $attrs['name'];
-                    $this->simpleTypes[ $attrs['name'] ] = $attrs;
-                    $this->simpleTypes[ $attrs['name'] ]['typeClass'] = 'simpleType';
-                    $this->simpleTypes[ $attrs['name'] ]['phpType'] = 'scalar';
+                    $this->simpleTypes[$attrs['name']] = $attrs;
+                    $this->simpleTypes[$attrs['name']]['typeClass'] = 'simpleType';
+                    $this->simpleTypes[$attrs['name']]['phpType'] = 'scalar';
                 } else {
                     $name = $this->CreateTypeName($this->currentComplexType . '_' . $this->currentElement);
                     $this->xdebug('processing unnamed simpleType for element ' . $this->currentElement . ' named ' . $name);
@@ -622,6 +620,8 @@ class nusoap_xmlschema extends nusoap_base
 
     /**
      * serialize the schema
+     *
+     * @return string
      */
     public function serializeSchema()
     {
@@ -754,6 +754,7 @@ class nusoap_xmlschema extends nusoap_base
      *
      * @param string $type name of defined type
      * @param string $ns namespace of type
+     *
      * @return mixed
      * @deprecated
      */
@@ -785,6 +786,7 @@ class nusoap_xmlschema extends nusoap_base
      *   For simpleType or element, the array has different keys.
      *
      * @param string $type
+     *
      * @return mixed
      * @see addComplexType
      * @see addSimpleType
@@ -866,6 +868,7 @@ class nusoap_xmlschema extends nusoap_base
      * returns a sample serialization of a given type, or false if no type by the given name
      *
      * @param string $type name of type
+     *
      * @return mixed
      * @deprecated
      */
@@ -902,6 +905,7 @@ class nusoap_xmlschema extends nusoap_base
      *
      * @param string $name name for type instance
      * @param string $type name of type
+     *
      * @return string
      * @deprecated
      */
@@ -963,32 +967,33 @@ class nusoap_xmlschema extends nusoap_base
      *   array('myVar'=> array('name'=>'myVar','type'=>'string')
      * );
      *
-     * @param name
-     * @param typeClass (complexType|simpleType|attribute)
-     * @param phpType: currently supported are array and struct (php assoc array)
-     * @param compositor (all|sequence|choice)
-     * @param restrictionBase namespace:name (http://schemas.xmlsoap.org/soap/encoding/:Array)
-     * @param elements = array ( name = array(name=>'',type=>'') )
-     * @param attrs = array(
+     * @param string $name
+     * @param string $typeClass (complexType|simpleType|attribute)
+     * @param string $phpType currently supported are array and struct (php assoc array)
+     * @param string $compositor (all|sequence|choice)
+     * @param string $restrictionBase namespace:name (http://schemas.xmlsoap.org/soap/encoding/:Array)
+     * @param array $elements
+     * @param array $attrs
      *   array(
      *       'ref' => "http://schemas.xmlsoap.org/soap/encoding/:arrayType",
      *       "http://schemas.xmlsoap.org/wsdl/:arrayType" => "string[]"
      *   )
      * )
-     * @param arrayType: namespace:name (http://www.w3.org/2001/XMLSchema:string)
+     * @param string $arrayType namespace:name (http://www.w3.org/2001/XMLSchema:string)
+     *
      * @see getTypeDef
      */
     public function addComplexType($name, $typeClass = 'complexType', $phpType = 'array', $compositor = '', $restrictionBase = '', $elements = [], $attrs = [], $arrayType = '')
     {
         $this->complexTypes[$name] = [
-        'name'      => $name,
-        'typeClass' => $typeClass,
-        'phpType'   => $phpType,
-        'compositor' => $compositor,
-        'restrictionBase' => $restrictionBase,
-        'elements'  => $elements,
-        'attrs'     => $attrs,
-        'arrayType' => $arrayType
+            'name'      => $name,
+            'typeClass' => $typeClass,
+            'phpType'   => $phpType,
+            'compositor' => $compositor,
+            'restrictionBase' => $restrictionBase,
+            'elements'  => $elements,
+            'attrs'     => $attrs,
+            'arrayType' => $arrayType,
         ];
 
         $this->xdebug("addComplexType $name:");
@@ -1003,17 +1008,18 @@ class nusoap_xmlschema extends nusoap_base
      * @param string $typeClass (should always be simpleType)
      * @param string $phpType (should always be scalar)
      * @param array $enumeration array of values
+     *
      * @see nusoap_xmlschema
      * @see getTypeDef
      */
     public function addSimpleType($name, $restrictionBase = '', $typeClass = 'simpleType', $phpType = 'scalar', $enumeration = [])
     {
         $this->simpleTypes[$name] = [
-        'name'          => $name,
-        'typeClass'     => $typeClass,
-        'phpType'       => $phpType,
-        'type'          => $restrictionBase,
-        'enumeration'   => $enumeration
+            'name'          => $name,
+            'typeClass'     => $typeClass,
+            'phpType'       => $phpType,
+            'type'          => $restrictionBase,
+            'enumeration'   => $enumeration,
         ];
 
         $this->xdebug("addSimpleType $name:");
@@ -1024,6 +1030,7 @@ class nusoap_xmlschema extends nusoap_base
      * adds an element to the schema
      *
      * @param array $attrs attributes that must include name and type
+     *
      * @see nusoap_xmlschema
      */
     public function addElement($attrs)
@@ -1031,10 +1038,10 @@ class nusoap_xmlschema extends nusoap_base
         if (! $this->getPrefix($attrs['type'])) {
             $attrs['type'] = $this->schemaTargetNamespace . ':' . $attrs['type'];
         }
-        $this->elements[ $attrs['name'] ] = $attrs;
-        $this->elements[ $attrs['name'] ]['typeClass'] = 'element';
+        $this->elements[$attrs['name']] = $attrs;
+        $this->elements[$attrs['name']]['typeClass'] = 'element';
 
         $this->xdebug("addElement " . $attrs['name']);
-        $this->appendDebug($this->varDump($this->elements[ $attrs['name'] ]));
+        $this->appendDebug($this->varDump($this->elements[$attrs['name']]));
     }
 }

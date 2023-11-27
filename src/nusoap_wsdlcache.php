@@ -9,31 +9,27 @@ nusoap-general@lists.sourceforge.net
 */
 
 /**
-* caches instances of the wsdl class
-*
-* @author   Scott Nichol <snichol@users.sourceforge.net>
-* @author   Ingo Fischer <ingo@apollon.de>
-* @version  $Id: class.wsdlcache.php,v 1.7 2007/04/17 16:34:03 snichol Exp $
-*/
+ * caches instances of the wsdl class
+ */
 class nusoap_wsdlcache
 {
     /**
-     *  @var resource
+     * @var resource
      */
     protected $fplock;
 
     /**
-     *  @var integer
+     * @var integer
      */
     protected $cache_lifetime;
 
     /**
-     *  @var string
+     * @var string
      */
     protected $cache_dir;
 
     /**
-     *  @var string
+     * @var string
      */
     public $debug_str = '';
 
@@ -54,6 +50,7 @@ class nusoap_wsdlcache
      * creates the filename used to cache a wsdl instance
      *
      * @param string $wsdl The URL of the wsdl instance
+     *
      * @return string The filename used to cache the instance
      */
     protected function createFilename($wsdl)
@@ -75,6 +72,7 @@ class nusoap_wsdlcache
      * gets a wsdl instance from the cache
      *
      * @param string $wsdl The URL of the wsdl instance
+     *
      * @return object wsdl The cached wsdl instance, null if the instance is not in the cache
      */
     public function get($wsdl)
@@ -118,6 +116,7 @@ class nusoap_wsdlcache
      *
      * @param string $filename The Filename of the Cache to lock
      * @param string $mode The open-mode ("r" or "w") or the file - affects lock-mode
+     *
      * @return boolean Lock successfully obtained ?!
      */
     protected function obtainMutex($filename, $mode)
@@ -138,6 +137,7 @@ class nusoap_wsdlcache
      * adds a wsdl instance to the cache
      *
      * @param object wsdl $wsdl_instance The wsdl instance to add
+     *
      * @return boolean WSDL successfully cached
      */
     public function put($wsdl_instance)
@@ -166,6 +166,7 @@ class nusoap_wsdlcache
      * releases the local mutex
      *
      * @param string $filename The Filename of the Cache to lock
+     *
      * @return boolean Lock successfully released
      */
     protected function releaseMutex($filename)
@@ -183,6 +184,7 @@ class nusoap_wsdlcache
      * removes a wsdl instance from the cache
      *
      * @param string $wsdl The URL of the wsdl instance
+     *
      * @return boolean Whether there was an instance to remove
      */
     public function remove($wsdl)

@@ -41,10 +41,6 @@ http://www.nusphere.com
 /**
  * nusoap_server_mime server supporting MIME attachments defined at
  * http://www.w3.org/TR/SOAP-attachments.  It depends on the PEAR Mail_MIME library.
- *
- * @author   Scott Nichol <snichol@users.sourceforge.net>
- * @author   Thanks to Guillaume and Henning Reich for posting great attachment code to the mail list
- * @version  $Id: nusoapmime.php,v 1.13 2010/04/26 20:15:08 snichol Exp $
  */
 class nusoap_server_mime extends nusoap_server
 {
@@ -77,6 +73,7 @@ class nusoap_server_mime extends nusoap_server
      * @param string $filename The filename of the attachment (default is empty string)
      * @param string $contenttype The MIME Content-Type of the attachment (default is application/octet-stream)
      * @param string $cid The content-id (cid) of the attachment (default is false)
+     *
      * @return string The content-id (cid) of the attachment
      */
     public function addAttachment($data, $filename = '', $contenttype = 'application/octet-stream', $cid = false)
@@ -121,6 +118,7 @@ class nusoap_server_mime extends nusoap_server
      * gets the HTTP body for the current response.
      *
      * @param string $soapmsg The SOAP payload
+     *
      * @return string The HTTP body, which includes the SOAP payload
      */
     protected function getHTTPBody($soapmsg)
@@ -209,8 +207,9 @@ class nusoap_server_mime extends nusoap_server
     /**
      * processes SOAP message received from client
      *
-     * @param    array   $headers    The HTTP headers
-     * @param    string  $data       unprocessed request data from client
+     * @param    array $headers The HTTP headers
+     * @param    string $data unprocessed request data from client
+     *
      * @return   mixed   value of the message, decoded into a PHP type
      */
     protected function parseRequest($headers, $data)

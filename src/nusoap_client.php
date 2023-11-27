@@ -1,24 +1,19 @@
 <?php
 
 /**
-*
-* [nu]soapclient higher level class for easy usage.
-*
-* usage:
-*
-* // instantiate client with server info
-* $soapclient = new nusoap_client( string path [ ,mixed wsdl] );
-*
-* // call method, get results
-* echo $soapclient->call( string methodname [ ,array parameters] );
-*
-* // bye bye client
-* unset($soapclient);
-*
-* @author   Dietrich Ayala <dietrich@ganx4.com>
-* @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: class.soapclient.php,v 1.69 2010/04/26 20:15:08 snichol Exp $
-*/
+ * [nu]soapclient higher level class for easy usage.
+ *
+ * usage:
+ *
+ * // instantiate client with server info
+ * $soapclient = new nusoap_client( string path [ ,mixed wsdl] );
+ *
+ * // call method, get results
+ * echo $soapclient->call( string methodname [ ,array parameters] );
+ *
+ * // bye bye client
+ * unset($soapclient);
+ */
 class nusoap_client extends nusoap_base
 {
     /**
@@ -42,7 +37,7 @@ class nusoap_client extends nusoap_base
     public $certRequest = [];
 
     /**
-     * @var bool SOAP headers in request (text)
+     * @var boolean SOAP headers in request (text)
      */
     public $requestHeaders = false;
 
@@ -102,17 +97,17 @@ class nusoap_client extends nusoap_base
     public $xml_encoding = '';
 
     /**
-     * @var bool
+     * @var boolean
      */
     public $http_encoding = false;
 
     /**
-     * @var int HTTP connection timeout
+     * @var integer HTTP connection timeout
      */
     public $timeout = 0;
 
     /**
-     * @var int HTTP response timeout
+     * @var integer HTTP response timeout
      */
     public $response_timeout = 30;
 
@@ -122,12 +117,12 @@ class nusoap_client extends nusoap_base
     public $endpointType = '';
 
     /**
-     * @var bool
+     * @var boolean
      */
     public $persistentConnection = false;
 
     /**
-     * @var bool This is no longer used
+     * @var boolean This is no longer used
      *
      * @deprecated
      */
@@ -154,7 +149,7 @@ class nusoap_client extends nusoap_base
     public $cookies = [];
 
     /**
-     * @var bool toggles whether the parser decodes element content w/ utf8_decode()
+     * @var boolean toggles whether the parser decodes element content w/ utf8_decode()
      */
     public $decode_utf8 = true;
 
@@ -174,10 +169,13 @@ class nusoap_client extends nusoap_base
     public $bindingType = '';
 
     /**
-     * @var bool whether to always try to use cURL
+     * @var boolean whether to always try to use cURL
      */
     public $use_curl = false;
 
+    /**
+     * @var array
+     */
     private $outgoing_http_headers = [];   // Added to HTTP request headers
 
     /**
@@ -268,8 +266,9 @@ class nusoap_client extends nusoap_base
      * @param    string $soapAction optional SOAPAction value (WSDL can override)
      * @param    mixed $headers optional string of XML with SOAP header content, or array of soapval objects for SOAP headers, or associative array
      * @param    boolean $rpcParams optional (no longer used)
-     * @param    string  $style optional (rpc|document) the style to use when serializing parameters (WSDL can override)
-     * @param    string  $use optional (encoded|literal) the use when serializing parameters (WSDL can override)
+     * @param    string $style optional (rpc|document) the style to use when serializing parameters (WSDL can override)
+     * @param    string $use optional (encoded|literal) the use when serializing parameters (WSDL can override)
+     *
      * @return   mixed   response from SOAP call, normally an associative array mirroring the structure of the XML response, false for certain fatal errors
      */
     public function call($operation, $params = [], $namespace = 'http://tempuri.org', $soapAction = '', $headers = false, $rpcParams = null, $style = 'rpc', $use = 'encoded')
@@ -507,6 +506,7 @@ class nusoap_client extends nusoap_base
      * get available data pertaining to an operation
      *
      * @param    string $operation operation name
+     *
      * @return   array array of data pertaining to the operation
      */
     public function getOperationData($operation)
@@ -534,6 +534,7 @@ class nusoap_client extends nusoap_base
      * @param    string $soapaction SOAPAction value
      * @param    integer $timeout set connection timeout in seconds
      * @param    integer $response_timeout set response timeout in seconds
+     *
      * @return   mixed native PHP types.
      */
     protected function send($msg, $soapaction = '', $timeout = 0, $response_timeout = 30)
@@ -611,8 +612,9 @@ class nusoap_client extends nusoap_base
     /**
      * processes SOAP message returned from server
      *
-     * @param    array   $headers    The HTTP headers
-     * @param    string  $data       unprocessed response data from server
+     * @param    array $headers The HTTP headers
+     * @param    string $data unprocessed response data from server
+     *
      * @return   mixed   value of the message, decoded into a PHP type
      */
     protected function parseResponse($headers, $data)
@@ -809,7 +811,8 @@ class nusoap_client extends nusoap_base
      * This is no longer used.
      *
      * @param    boolean $rpcParams
-     * @deprecated
+     *
+     * @deprecated No longer used
      */
     public function setDefaultRpcParams($rpcParams)
     {
@@ -867,6 +870,8 @@ class nusoap_client extends nusoap_base
 
     /**
      * dynamically creates proxy class code
+     *
+     * @param string $r
      *
      * @return   string PHP/NuSOAP code for the proxy class
      */
@@ -939,6 +944,7 @@ class nusoap_client extends nusoap_base
      * gets the HTTP body for the current request.
      *
      * @param string $soapmsg The SOAP payload
+     *
      * @return string The HTTP body, which includes the SOAP payload
      */
     protected function getHTTPBody($soapmsg)
@@ -974,6 +980,8 @@ class nusoap_client extends nusoap_base
     /**
      * whether or not parser should decode utf8 element content
      *
+     * @param boolean $bool
+     *
      * @return   always returns true
      */
     public function decodeUTF8($bool)
@@ -987,6 +995,7 @@ class nusoap_client extends nusoap_base
      *
      * @param   string $name Cookie Name
      * @param   string $value Cookie Value
+     *
      * @return  boolean if cookie-set was successful returns true, else false
      */
     public function setCookie($name, $value)
@@ -1044,6 +1053,7 @@ class nusoap_client extends nusoap_base
      * updates the current cookies with a new set
      *
      * @param   array $cookies new cookies with which to update current ones
+     *
      * @return  boolean always return true
      */
     protected function UpdateCookies($cookies)

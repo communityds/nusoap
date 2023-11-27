@@ -7,8 +7,9 @@
 /**
  * convert unix timestamp to ISO 8601 compliant date string
  *
- * @param    int $timestamp Unix time stamp
+ * @param    integer $timestamp Unix time stamp
  * @param    boolean $utc Whether the time stamp is UTC or local
+ *
  * @return   mixed ISO 8601 date string or false
  */
 function timestamp_to_iso8601($timestamp, $utc = true)
@@ -25,12 +26,12 @@ function timestamp_to_iso8601($timestamp, $utc = true)
     }
     if ($utc) {
         $pattern = '/' .
-            '([0-9]{4})-' .  // centuries & years CCYY-
-            '([0-9]{2})-' .  // months MM-
-            '([0-9]{2})' .   // days DD
-            'T' .            // separator T
-            '([0-9]{2}):' .  // hours hh:
-            '([0-9]{2}):' .  // minutes mm:
+            '([0-9]{4})-' . // centuries & years CCYY-
+            '([0-9]{2})-' . // months MM-
+            '([0-9]{2})' . // days DD
+            'T' . // separator T
+            '([0-9]{2}):' . // hours hh:
+            '([0-9]{2}):' . // minutes mm:
             '([0-9]{2})(\.[0-9]*)?' . // seconds ss.ss...
             '(Z|[+\-][0-9]{2}:?[0-9]{2})?' . // Z to indicate UTC, -/+HH:MM:SS.SS... for local tz's
             '/';
@@ -48,17 +49,18 @@ function timestamp_to_iso8601($timestamp, $utc = true)
  * convert ISO 8601 compliant date string to unix timestamp
  *
  * @param    string $datestr ISO 8601 compliant date string
+ *
  * @return  mixed Unix timestamp (int) or false
  */
 function iso8601_to_timestamp($datestr)
 {
     $pattern = '/' .
-        '([0-9]{4})-' .  // centuries & years CCYY-
-        '([0-9]{2})-' .  // months MM-
-        '([0-9]{2})' .   // days DD
-        'T' .            // separator T
-        '([0-9]{2}):' .  // hours hh:
-        '([0-9]{2}):' .  // minutes mm:
+        '([0-9]{4})-' . // centuries & years CCYY-
+        '([0-9]{2})-' . // months MM-
+        '([0-9]{2})' . // days DD
+        'T' . // separator T
+        '([0-9]{2}):' . // hours hh:
+        '([0-9]{2}):' . // minutes mm:
         '([0-9]{2})(\.[0-9]+)?' . // seconds ss.ss...
         '(Z|[+\-][0-9]{2}:?[0-9]{2})?' . // Z to indicate UTC, -/+HH:MM:SS.SS... for local tz's
         '/';
@@ -87,6 +89,7 @@ function iso8601_to_timestamp($datestr)
  * sleeps some number of microseconds
  *
  * @param    string $usec the number of microseconds to sleep
+ *
  * @deprecated
  */
 function usleepWindows($usec)

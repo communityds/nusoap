@@ -1,13 +1,8 @@
 <?php
 
 /**
-*
-* nusoap_parser class parses SOAP XML messages into native PHP values
-*
-* @author   Dietrich Ayala <dietrich@ganx4.com>
-* @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: class.soap_parser.php,v 1.42 2010/04/26 20:15:08 snichol Exp $
-*/
+ * parses SOAP XML messages into native PHP values
+ */
 class nusoap_parser extends nusoap_base
 {
     /**
@@ -56,12 +51,12 @@ class nusoap_parser extends nusoap_base
     public $status = '';
 
     /**
-     * @var int
+     * @var integer
      */
     public $position = 0;
 
     /**
-     * @var int
+     * @var integer
      */
     public $depth = 0;
 
@@ -86,7 +81,7 @@ class nusoap_parser extends nusoap_base
     public $parent = '';
 
     /**
-     * @var bool
+     * @var boolean
      */
     public $fault = false;
 
@@ -111,7 +106,7 @@ class nusoap_parser extends nusoap_base
     public $depth_array = [];
 
     /**
-     * @var bool
+     * @var boolean
      */
     public $debug_flag = true;
 
@@ -131,7 +126,7 @@ class nusoap_parser extends nusoap_base
     public $responseHeaders = '';
 
     /**
-     * @var int
+     * @var integer
      */
     public $body_position = 0;
 
@@ -146,7 +141,7 @@ class nusoap_parser extends nusoap_base
     public $multirefs = [];
 
     /**
-     * @var bool|string toggle for auto-decoding element content
+     * @var boolean|string toggle for auto-decoding element content
      */
     public $decode_utf8 = true;
 
@@ -260,7 +255,7 @@ class nusoap_parser extends nusoap_base
         // update class level pos
         $pos = $this->position++;
         // and set mine
-        $this->message[$pos] = ['pos' => $pos,'children' => '','cdata' => ''];
+        $this->message[$pos] = ['pos' => $pos, 'children' => '', 'cdata' => ''];
         // depth = how many levels removed from root?
         // set mine as current global depth and increment global depth value
         $this->message[$pos]['depth'] = $this->depth++;
@@ -302,7 +297,7 @@ class nusoap_parser extends nusoap_base
         // set my status
         $this->message[$pos]['status'] = $this->status;
         // set name
-        $this->message[$pos]['name'] = htmlspecialchars($name);
+        $this->message[$pos]['name'] = htmlspecialchars($name, ENT_COMPAT);
         // set attrs
         $this->message[$pos]['attrs'] = $attrs;
 
@@ -582,6 +577,7 @@ class nusoap_parser extends nusoap_base
      * @param    string $value value to decode
      * @param    string $type XML type to decode
      * @param    string $typens XML type namespace to decode
+     *
      * @return   mixed PHP value
      */
     protected function decodeSimple($value, $type, $typens)
@@ -628,6 +624,7 @@ class nusoap_parser extends nusoap_base
      * and scalars
      *
      * @param    integer $pos position in node tree
+     *
      * @return   mixed   PHP value
      */
     protected function buildVal($pos)

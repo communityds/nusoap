@@ -1,14 +1,9 @@
 <?php
 
 /**
-*
-* nusoap_server allows the user to create a SOAP server
-* that is capable of receiving messages and returning responses
-*
-* @author   Dietrich Ayala <dietrich@ganx4.com>
-* @author   Scott Nichol <snichol@users.sourceforge.net>
-* @version  $Id: class.soap_server.php,v 1.63 2010/04/26 20:15:08 snichol Exp $
-*/
+ * nusoap_server allows the user to create a SOAP server
+ * that is capable of receiving messages and returning responses
+ */
 class nusoap_server extends nusoap_base
 {
     /**
@@ -786,8 +781,9 @@ class nusoap_server extends nusoap_base
      * takes the value that was created by parsing the request
      * and compares to the method's signature, if available.
      *
-     * @param    string  $operation  The operation to be invoked
-     * @param    array   $request    The array of parameter values
+     * @param    string $operation The operation to be invoked
+     * @param    array $request The array of parameter values
+     *
      * @return   boolean Whether the operation was found
      */
     protected function verify_method($operation, $request)
@@ -805,8 +801,9 @@ class nusoap_server extends nusoap_base
     /**
      * processes SOAP message received from client
      *
-     * @param    array   $headers    The HTTP headers
-     * @param    string  $data       unprocessed request data from client
+     * @param    array $headers The HTTP headers
+     * @param    string $data unprocessed request data from client
+     *
      * @return   mixed   value of the message, decoded into a PHP type
      */
     protected function parseRequest($headers, $data)
@@ -863,6 +860,7 @@ class nusoap_server extends nusoap_base
      * gets the HTTP body for the current response.
      *
      * @param string $soapmsg The SOAP payload
+     *
      * @return string The HTTP body, which includes the SOAP payload
      */
     protected function getHTTPBody($soapmsg)
@@ -901,11 +899,12 @@ class nusoap_server extends nusoap_base
      * @param    string $methodname
      * @param    string $in array of input values
      * @param    string $out array of output values
-     * @deprecated
+     *
+     * @deprecated Not in use
      */
     public function add_to_map($methodname, $in, $out)
     {
-            $this->operations[$methodname] = ['name' => $methodname,'in' => $in,'out' => $out];
+            $this->operations[$methodname] = ['name' => $methodname, 'in' => $in, 'out' => $out];
     }
 
     /**
@@ -928,7 +927,7 @@ class nusoap_server extends nusoap_base
      * * `string $endpoint`: The default url of the endpoint, including script name
      * * `string $scriptName`: The default script name
      *
-     * @param string|Closure $url String or a closure that returns the string
+     * @param string|Closure $serverName String or a closure that returns the string
      *
      * @return $this
      */
@@ -997,6 +996,8 @@ class nusoap_server extends nusoap_base
      * @param    mixed $use optional (encoded|literal) or false
      * @param    string $documentation optional Description to include in WSDL
      * @param    string $encodingStyle optional (usually 'http://schemas.xmlsoap.org/soap/encoding/' for encoded)
+     *
+     * @return boolean
      */
     public function register($name, $in = [], $out = [], $namespace = false, $soapaction = false, $style = false, $use = false, $documentation = '', $encodingStyle = '')
     {
@@ -1062,7 +1063,7 @@ class nusoap_server extends nusoap_base
      * Sets up wsdl object.
      * Acts as a flag to enable internal WSDL generation
      *
-     * @param string $serviceName, name of the service
+     * @param string $serviceName name of the service
      * @param mixed $namespace optional 'tns' service namespace or false
      * @param mixed $endpoint optional URL of service endpoint or false
      * @param string $style optional (rpc|document) WSDL style (also specified by operation)
