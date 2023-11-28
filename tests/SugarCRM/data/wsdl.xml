@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<definitions xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://www.sugarcrm.com/sugarcrm" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://www.sugarcrm.com/sugarcrm">
+<types>
+<xsd:schema targetNamespace="http://www.sugarcrm.com/sugarcrm"
+>
+ <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+ <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+ <xsd:complexType name="entry_value">
+  <xsd:all>
+   <xsd:element name="id" type="xsd:string"/>
+   <xsd:element name="module_name" type="xsd:string"/>
+   <xsd:element name="name_value_list" type="tns:name_value_list"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="name_value">
+  <xsd:all>
+   <xsd:element name="name" type="xsd:string"/>
+   <xsd:element name="value" type="xsd:string"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="name_value_list">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:name_value[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="set_entry_result">
+  <xsd:all>
+   <xsd:element name="id" type="xsd:string"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="user_auth">
+  <xsd:all>
+   <xsd:element name="user_name" type="xsd:string"/>
+   <xsd:element name="password" type="xsd:string"/>
+  </xsd:all>
+ </xsd:complexType>
+</xsd:schema>
+</types>
+<message name="loginRequest">
+  <part name="user_auth" type="tns:user_auth" />
+  <part name="application_name" type="xsd:string" />
+  <part name="name_value_list" type="tns:name_value_list" /></message>
+<message name="loginResponse">
+  <part name="return" type="tns:entry_value" /></message>
+<message name="set_entryRequest">
+  <part name="session" type="xsd:string" />
+  <part name="module_name" type="xsd:string" />
+  <part name="name_value_list" type="tns:name_value_list" /></message>
+<message name="set_entryResponse">
+  <part name="return" type="tns:set_entry_result" /></message>
+<portType name="sugarsoapPortType">
+  <operation name="login">
+    <input message="tns:loginRequest"/>
+    <output message="tns:loginResponse"/>
+  </operation>
+  <operation name="set_entry">
+    <input message="tns:set_entryRequest"/>
+    <output message="tns:set_entryResponse"/>
+  </operation>
+</portType>
+<binding name="sugarsoapBinding" type="tns:sugarsoapPortType">
+  <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+  <operation name="login">
+    <soap:operation soapAction="http://communityds.com.au/soap.php/login" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://www.sugarcrm.com/sugarcrm" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://www.sugarcrm.com/sugarcrm" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="set_entry">
+    <soap:operation soapAction="http://communityds.com.au/soap.php/set_entry" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://www.sugarcrm.com/sugarcrm" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://www.sugarcrm.com/sugarcrm" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+</binding>
+<service name="sugarsoap">
+  <port name="sugarsoapPort" binding="tns:sugarsoapBinding">
+    <soap:address location="https://communityds.com.au/soap.php"/>
+  </port>
+</service>
+</definitions>
