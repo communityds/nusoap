@@ -51,10 +51,6 @@ http://www.nusphere.com
  *	RFC 2617 HTTP Authentication: Basic and Digest Access Authentication
  */
 
-// class variable emulation
-// cf. http://www.webkreator.com/php/techniques/php-static-class-variables.html
-$GLOBALS['_transient']['static']['nusoap_base']['globalDebugLevel'] = 9;
-
 /**
  * nusoap_base
  */
@@ -204,11 +200,16 @@ class nusoap_base
     ];
 
     /**
+     * @integer
+     */
+    protected static $globalDebugLevel = 9;
+
+    /**
      * constructor
      */
     public function __construct()
     {
-        $this->debugLevel = $GLOBALS['_transient']['static']['nusoap_base']['globalDebugLevel'];
+        $this->debugLevel = $this->getGlobalDebugLevel();
     }
 
     /**
@@ -218,7 +219,7 @@ class nusoap_base
      */
     public function getGlobalDebugLevel()
     {
-        return $GLOBALS['_transient']['static']['nusoap_base']['globalDebugLevel'];
+        return static::$globalDebugLevel;
     }
 
     /**
@@ -228,7 +229,7 @@ class nusoap_base
      */
     public function setGlobalDebugLevel($level)
     {
-        $GLOBALS['_transient']['static']['nusoap_base']['globalDebugLevel'] = $level;
+        static::$globalDebugLevel = $level;
     }
 
     /**
@@ -855,7 +856,7 @@ class nusoap_base
             $sec = time();
             $usec = 0;
         }
-        return strftime('%Y-%m-%d %H:%M:%S', $sec) . '.' . sprintf('%06d', $usec);
+        return date('Y-m-d H:i:s', $sec) . '.' . sprintf('%06d', $usec);
     }
 
     /**

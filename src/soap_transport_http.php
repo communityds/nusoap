@@ -281,7 +281,7 @@ class soap_transport_http extends nusoap_base
 
         // set default port
         if (!isset($u['port'])) {
-            if ($u['scheme'] == 'https') {
+            if (isset($u['scheme']) && $u['scheme'] == 'https') {
                 $this->port = 443;
             } else {
                 $this->port = 80;
