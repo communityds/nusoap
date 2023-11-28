@@ -13,6 +13,8 @@ class SugarCRMTest extends TestCase
     {
         $namespace = $this->getSugarNamespace();
 
+        error_reporting(E_ALL);
+
         MockServer::mockServerVars();
 
         $server = new MockServer();

@@ -189,7 +189,7 @@ class nusoap_client extends nusoap_base
     private $outgoing_http_headers = [];   // Added to HTTP request headers
 
     /**
-     * @var      string
+     * @var boolean
      */
     public $fault;
 
