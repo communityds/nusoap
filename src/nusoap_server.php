@@ -774,11 +774,13 @@ class nusoap_server extends nusoap_base
         }
         //end code
         $this->outgoing_headers[] = "Content-Length: " . strlen($payload);
-        reset($this->outgoing_headers);
-        foreach ($this->outgoing_headers as $hdr) {
-            header($hdr, false);
+        if (!defined('NUSOAP_TEST')) {
+            reset($this->outgoing_headers);
+            foreach ($this->outgoing_headers as $hdr) {
+                header($hdr, false);
+            }
+            print $payload;
         }
-        print $payload;
         $this->response = join("\r\n", $this->outgoing_headers) . "\r\n\r\n" . $payload;
     }
 
