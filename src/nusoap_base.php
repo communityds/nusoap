@@ -200,7 +200,7 @@ class nusoap_base
     ];
 
     /**
-     * @integer
+     * @var integer
      */
     protected static $globalDebugLevel = 9;
 
